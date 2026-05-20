@@ -196,10 +196,10 @@ function mostrarHistoriaClinica() {
         if (canvas) {
             // Asegurar dimensiones del canvas
             if (canvas.width === 0 || canvas.width === undefined) {
-                canvas.width = Math.min(window.innerWidth - 60, 1000);
+                canvas.width = Math.min(window.innerWidth - 60, 1200);
             }
             if (canvas.height === 0 || canvas.height === undefined) {
-                canvas.height = 700;
+                canvas.height = 900;
             }
             dibujarOdontograma(canvas, pacienteActual.odontograma || {});
         }

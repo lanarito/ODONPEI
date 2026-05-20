@@ -93,19 +93,22 @@ function generarFormulario(tipo, dataPaciente = null) {
                 <span style="color: #FF6B6B;">● Rojo = Prácticas Existentes</span> |
                 <span style="color: #4A90E2;">● Azul = Prácticas Requeridas</span>
             </p>
-            <canvas id="odontograma-canvas" class="odontograma-canvas"></canvas>
-            <div class="odontograma-legend">
-                <div class="legend-item">
-                    <div class="legend-color red"></div>
-                    <span>Prácticas Existentes</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color blue"></div>
-                    <span>Prácticas Requeridas</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: white;"></div>
-                    <span>Sin marcar</span>
+            <canvas id="odontograma-canvas" class="odontograma-canvas" style="border: 1px solid #E0E0E0; border-radius: 5px; background: white;"></canvas>
+            <div class="odontograma-legend" style="margin-top: 20px; padding: 15px; background: #F5F5F5; border-radius: 5px; text-align: center;">
+                <p style="margin: 0 0 15px; font-weight: bold; color: #333;">Leyenda de colores:</p>
+                <div style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap;">
+                    <div class="legend-item" style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 30px; height: 30px; background: #FF6B6B; border: 2px solid #333; border-radius: 3px;"></div>
+                        <span style="font-weight: 500;">🔴 Prácticas Existentes (Rojo)</span>
+                    </div>
+                    <div class="legend-item" style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 30px; height: 30px; background: #4A90E2; border: 2px solid #333; border-radius: 3px;"></div>
+                        <span style="font-weight: 500;">🔵 Prácticas Requeridas (Azul)</span>
+                    </div>
+                    <div class="legend-item" style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 30px; height: 30px; background: #FFFFFF; border: 2px solid #333; border-radius: 3px;"></div>
+                        <span style="font-weight: 500;">⚪ Sin marcar (Blanco)</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -120,10 +123,10 @@ function generarFormulario(tipo, dataPaciente = null) {
         if (canvas) {
             // Asegurar que el canvas tiene dimensiones
             if (canvas.width === 0 || canvas.width === undefined) {
-                canvas.width = Math.min(window.innerWidth - 60, 1000);
+                canvas.width = Math.min(window.innerWidth - 60, 1200);
             }
             if (canvas.height === 0 || canvas.height === undefined) {
-                canvas.height = 700;
+                canvas.height = 900;
             }
 
             const datosOdontograma = datos.odontograma || {};

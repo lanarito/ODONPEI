@@ -25,83 +25,97 @@ const estructura = {
 function dibujarOdontograma(canvas, datosOdontograma = {}) {
     // Establecer tamaño del canvas si no tiene
     if (canvas.width === 0) {
-        canvas.width = Math.min(window.innerWidth - 60, 1000);
-        canvas.height = 700;
+        canvas.width = Math.min(window.innerWidth - 80, 1200);
+        canvas.height = 900;
     }
 
     const ctx = canvas.getContext('2d');
     canvas.datosOdontograma = datosOdontograma; // Guardar datos en el canvas
-    const padding = 40;
+    const padding = 50;
     const anchoDisponible = canvas.width - 2 * padding;
     const altoDisponible = canvas.height - 2 * padding;
 
-    // Limpiar canvas
-    ctx.fillStyle = '#FFFFFF';
+    // Limpiar canvas con gradiente
+    ctx.fillStyle = '#F8F9FA';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Dibujar bordes
-    ctx.strokeStyle = '#E0E0E0';
+    // Dibujar bordes con sombra
+    ctx.shadowColor = 'rgba(0,0,0,0.1)';
+    ctx.shadowBlur = 8;
+    ctx.strokeStyle = '#CCC';
     ctx.lineWidth = 2;
     ctx.strokeRect(padding, padding, anchoDisponible, altoDisponible);
+    ctx.shadowColor = 'transparent';
 
-    // Parámetros de dientes
+    // Parámetros de dientes - AUMENTADOS para mejor interacción
     const dimensionesDiente = {
-        ancho: 50,
-        alto: 50,
-        espacioEntreGrupos: 40,
-        espacioEntreLineas: 10
+        ancho: 70,
+        alto: 70,
+        espacioEntreGrupos: 50,
+        espacioEntreLineas: 15
     };
 
-    let y = padding + 20;
+    let y = padding + 30;
+
+    // Título y instrucciones
+    ctx.font = 'bold 14px Arial';
+    ctx.fillStyle = '#333';
+    ctx.textAlign = 'center';
+    ctx.fillText('ODONTOGRAMA - Haz clic en cada zona para pintar (Rojo → Azul → Blanco)', canvas.width / 2, y - 10);
+    y += 20;
 
     // Dibujar dientes temporales superiores
-    ctx.font = 'bold 12px Arial';
-    ctx.fillStyle = '#999';
+    ctx.font = 'bold 11px Arial';
+    ctx.fillStyle = '#666';
     ctx.textAlign = 'center';
-    ctx.fillText('Dientes Temporales Superiores', canvas.width / 2, y - 10);
+    ctx.fillText('Dientes Temporales Superiores', canvas.width / 2, y);
 
+    y += 15;
     dibujarFilaDientes(
         ctx, canvas, y,
         [...estructura.temporal_superior_derecha.reverse(), ...estructura.temporal_superior_izquierda],
         datosOdontograma,
         dimensionesDiente
     );
-    y += dimensionesDiente.alto + 10;
+    y += dimensionesDiente.alto + 25;
 
     // Dibujar dientes permanentes superiores
-    ctx.fillText('Dientes Permanentes Superiores', canvas.width / 2, y - 10);
+    ctx.fillText('Dientes Permanentes Superiores', canvas.width / 2, y);
+    y += 15;
     dibujarFilaDientes(
         ctx, canvas, y,
         [...estructura.superior_derecha.reverse(), ...estructura.superior_izquierda],
         datosOdontograma,
         dimensionesDiente
     );
-    y += dimensionesDiente.alto + 20;
+    y += dimensionesDiente.alto + 30;
 
     // Línea divisoria
-    ctx.strokeStyle = '#CCCCCC';
-    ctx.setLineDash([5, 5]);
-    ctx.beginPath();
-    ctx.moveTo(padding, y);
-    ctx.lineTo(canvas.width - padding, y);
-    ctx.stroke();
+    ctx.strokeStyle = '#AAA';
+    ctx.lineWidth = 2;
     ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(padding + 20, y);
+    ctx.lineTo(canvas.width - padding - 20, y);
+    ctx.stroke();
 
-    y += 20;
+    y += 25;
 
     // Dibujar dientes permanentes inferiores
-    ctx.fillStyle = '#999';
-    ctx.fillText('Dientes Permanentes Inferiores', canvas.width / 2, y - 10);
+    ctx.fillStyle = '#666';
+    ctx.fillText('Dientes Permanentes Inferiores', canvas.width / 2, y);
+    y += 15;
     dibujarFilaDientes(
         ctx, canvas, y,
         [...estructura.inferior_izquierda.reverse(), ...estructura.inferior_derecha],
         datosOdontograma,
         dimensionesDiente
     );
-    y += dimensionesDiente.alto + 10;
+    y += dimensionesDiente.alto + 25;
 
     // Dibujar dientes temporales inferiores
-    ctx.fillText('Dientes Temporales Inferiores', canvas.width / 2, y - 10);
+    ctx.fillStyle = '#666';
+    ctx.fillText('Dientes Temporales Inferiores', canvas.width / 2, y);
     dibujarFilaDientes(
         ctx, canvas, y,
         [...estructura.temporal_inferior_izquierda.reverse(), ...estructura.temporal_inferior_derecha],
@@ -129,7 +143,7 @@ function dibujarFilaDientes(ctx, canvas, y, dientes, datosOdontograma, dim) {
 }
 
 function dibujarDiente(ctx, x, y, numero, datosOdontograma, dim) {
-    const tamanio = 40;
+    const tamanio = 60;
     const tamanioZona = tamanio / 3;
 
     // Obtener datos del diente
@@ -169,11 +183,11 @@ function dibujarDiente(ctx, x, y, numero, datosOdontograma, dim) {
     ctx.fillRect(x, y + tamanioZona, tamanioZona, tamanioZona);
     ctx.strokeRect(x, y + tamanioZona, tamanioZona, tamanioZona);
 
-    // Número del diente
-    ctx.font = 'bold 10px Arial';
-    ctx.fillStyle = '#666';
+    // Número del diente (más grande y visible)
+    ctx.font = 'bold 12px Arial';
+    ctx.fillStyle = '#333';
     ctx.textAlign = 'center';
-    ctx.fillText(numero, x + tamanioZona + tamanioZona / 2, y + tamanioZona * 2.5 + 15);
+    ctx.fillText(numero, x + tamanioZona + tamanioZona / 2, y + tamanioZona * 2.8 + 18);
 
     // Guardar información de posición para clicks
     if (!canvas.datosZonas) canvas.datosZonas = [];
