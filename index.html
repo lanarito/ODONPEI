@@ -85,6 +85,17 @@
                     <button onclick="cambiarPagina('pacientes')" class="btn btn-outline">Cancelar</button>
                     <button onclick="guardarPaciente()" class="btn btn-primary">Guardar Paciente</button>
                 </div>
+
+            <!-- SCRIPT PARA INICIALIZAR CANVAS -->
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const canvas = document.getElementById('odontograma-canvas');
+                    if (canvas) {
+                        canvas.width = Math.min(window.innerWidth - 100, 900);
+                        canvas.height = 600;
+                    }
+                });
+            </script>
             </section>
 
             <!-- Página de Detalle del Paciente -->
@@ -95,8 +106,11 @@
                         <button onclick="cambiarPagina('pacientes')" class="btn btn-outline">
                             ← Atrás
                         </button>
+                        <button onclick="cambiarTab('presupuesto')" class="btn btn-primary" style="background: #FFD700; color: #333;">
+                            💰 Presupuesto
+                        </button>
                         <button onclick="imprimirHistoriaCompleta()" class="btn btn-primary">
-                            🖨️ Imprimir Todo
+                            🖨️ Imprimir Historia
                         </button>
                         <button onclick="editarPaciente()" class="btn btn-secondary">
                             ✏️ Editar
