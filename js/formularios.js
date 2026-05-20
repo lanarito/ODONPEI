@@ -117,29 +117,44 @@ function generarFormulario(tipo, dataPaciente = null) {
 
     container.innerHTML = html;
 
-    // Renderizar odontograma
+    // Renderizar odontograma - Esperar a que el DOM esté completamente listo
     setTimeout(() => {
-        const canvas = document.getElementById('odontograma-canvas');
-        if (canvas) {
-            // Asegurar que el canvas tiene dimensiones
-            if (canvas.width === 0 || canvas.width === undefined) {
-                canvas.width = Math.min(window.innerWidth - 60, 1200);
+        try {
+            const canvas = document.getElementById('odontograma-canvas');
+            if (!canvas) {
+                console.error('Canvas no encontrado');
+                return;
             }
-            if (canvas.height === 0 || canvas.height === undefined) {
-                canvas.height = 900;
+
+            // Establecer dimensiones del canvas ANTES de dibujar
+            const ancho = Math.min(window.innerWidth - 60, 1200);
+            const alto = 900;
+            canvas.width = ancho;
+            canvas.height = alto;
+
+            // Forzar que el canvas se renderice con las dimensiones correctas
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                console.error('No se pudo obtener el contexto 2D del canvas');
+                return;
             }
 
             const datosOdontograma = datos.odontograma || {};
             canvas.datosOdontograma = datosOdontograma;
             canvas.datosZonas = [];
+
+            // Dibujar el odontograma
             dibujarOdontograma(canvas, datosOdontograma);
 
-            // Agregar event listener para clicks en el odontograma
+            // Agregar event listener para clicks
             canvas.addEventListener('click', (event) => {
                 manejarClickOdontograma(event, canvas, datosOdontograma);
             });
+
+        } catch (error) {
+            console.error('Error al renderizar odontograma:', error);
         }
-    }, 100);
+    }, 150);
 }
 
 function generarSeccionNeuro(datos) {

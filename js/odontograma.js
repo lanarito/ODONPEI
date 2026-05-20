@@ -23,19 +23,33 @@ const estructura = {
 };
 
 function dibujarOdontograma(canvas, datosOdontograma = {}) {
-    // Establecer tamaño del canvas si no tiene
-    if (canvas.width === 0) {
-        canvas.width = Math.min(window.innerWidth - 80, 1200);
-        canvas.height = 900;
+    if (!canvas || !canvas.getContext) {
+        console.error('Canvas no válido');
+        return;
     }
 
     const ctx = canvas.getContext('2d');
-    canvas.datosOdontograma = datosOdontograma; // Guardar datos en el canvas
+    if (!ctx) {
+        console.error('No se pudo obtener contexto 2D');
+        return;
+    }
+
+    // Guardar datos en el canvas
+    canvas.datosOdontograma = datosOdontograma;
+
+    // Establecer dimensiones si es necesario
+    if (canvas.width === 0 || !canvas.width) {
+        canvas.width = 1200;
+    }
+    if (canvas.height === 0 || !canvas.height) {
+        canvas.height = 900;
+    }
+
     const padding = 50;
     const anchoDisponible = canvas.width - 2 * padding;
     const altoDisponible = canvas.height - 2 * padding;
 
-    // Limpiar canvas con gradiente
+    // Limpiar canvas
     ctx.fillStyle = '#F8F9FA';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
