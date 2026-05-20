@@ -161,11 +161,17 @@ function obtenerColor(valor) {
 }
 
 function manejarClickOdontograma(event, canvas, datosOdontograma) {
+    if (!canvas.datosZonas || canvas.datosZonas.length === 0) {
+        console.warn('datosZonas vacío, rediujando');
+        dibujarOdontograma(canvas, datosOdontograma);
+        return;
+    }
+
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    for (let zona of canvas.datosZonas) {
+    for (let zona of canvas.datosZonas || []) {
         if (x >= zona.x && x <= zona.x + zona.ancho &&
             y >= zona.y && y <= zona.y + zona.alto) {
 
@@ -176,21 +182,16 @@ function manejarClickOdontograma(event, canvas, datosOdontograma) {
             }
 
             const actual = datosOdontograma[zona.numero][zona.parte];
-            let nuevo;
+            let nuevo = null;
             if (actual === null) {
                 nuevo = 'rojo';
             } else if (actual === 'rojo') {
                 nuevo = 'azul';
-            } else {
-                nuevo = null;
             }
 
             datosOdontograma[zona.numero][zona.parte] = nuevo;
-
-            // Redibujar
             canvas.datosZonas = [];
             dibujarOdontograma(canvas, datosOdontograma);
-
             return;
         }
     }

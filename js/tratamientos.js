@@ -1002,36 +1002,92 @@ function generarHistoriaOdontoHTML(pac) {
 }
 
 function generarTablaOdontogramaPrint(odontograma) {
-    const dientes = [
-        { fila: 'SUPERIOR DERECHA', numeros: [18, 17, 16, 15, 14, 13, 12, 11] },
-        { fila: 'SUPERIOR IZQUIERDA', numeros: [21, 22, 23, 24, 25, 26, 27, 28] },
-        { fila: 'INFERIOR IZQUIERDA', numeros: [31, 32, 33, 34, 35, 36, 37, 38] },
-        { fila: 'INFERIOR DERECHA', numeros: [48, 47, 46, 45, 44, 43, 42, 41] }
-    ];
+    const colorRojo = '#FF6B6B';
+    const colorAzul = '#4A90E2';
+    const colorBlanco = '#FFFFFF';
+    const colorBorde = '#333333';
 
-    let html = '<table class="tabla-odonto"><tbody>';
+    function obtenerColor(valor) {
+        if (valor === 'rojo') return colorRojo;
+        if (valor === 'azul') return colorAzul;
+        return colorBlanco;
+    }
 
-    dientes.forEach(fila => {
-        html += `<tr><td style="font-weight: bold; width: 150px; background: #E0E0E0;">${fila.fila}</td>`;
-        fila.numeros.forEach(num => {
-            const dato = odontograma[num] || { centro: null, norte: null, sur: null, este: null, oeste: null };
-            const colores = [dato.norte, dato.oeste, dato.centro, dato.este, dato.sur]
-                .map(c => c === 'rojo' ? 'rojo' : c === 'azul' ? 'azul' : 'blanco');
+    function generarDiente(numero, dato) {
+        const tamanio = 40;
+        const zona = tamanio / 3;
+        const d = dato || { centro: null, norte: null, sur: null, este: null, oeste: null };
 
-            const coloresClass = colores.map(c => c).join(' ');
-            const background = dato.centro === 'rojo' ? '#FF6B6B' : dato.centro === 'azul' ? '#4A90E2' : 'white';
-            const color = (dato.centro === 'rojo' || dato.centro === 'azul') ? 'white' : 'black';
+        let html = `
+            <div style="position: relative; width: ${tamanio}px; height: ${tamanio + 15}px; margin: 5px; display: inline-block; text-align: center;">
+                <div style="position: relative; width: ${tamanio}px; height: ${tamanio}px;">
+                    <!-- Centro -->
+                    <div style="position: absolute; left: ${zona}px; top: ${zona}px; width: ${zona}px; height: ${zona}px; background: ${obtenerColor(d.centro)}; border: 1px solid ${colorBorde};"></div>
+                    <!-- Norte -->
+                    <div style="position: absolute; left: ${zona}px; top: 0; width: ${zona}px; height: ${zona}px; background: ${obtenerColor(d.norte)}; border: 1px solid ${colorBorde};"></div>
+                    <!-- Sur -->
+                    <div style="position: absolute; left: ${zona}px; top: ${zona * 2}px; width: ${zona}px; height: ${zona}px; background: ${obtenerColor(d.sur)}; border: 1px solid ${colorBorde};"></div>
+                    <!-- Este -->
+                    <div style="position: absolute; left: ${zona * 2}px; top: ${zona}px; width: ${zona}px; height: ${zona}px; background: ${obtenerColor(d.este)}; border: 1px solid ${colorBorde};"></div>
+                    <!-- Oeste -->
+                    <div style="position: absolute; left: 0; top: ${zona}px; width: ${zona}px; height: ${zona}px; background: ${obtenerColor(d.oeste)}; border: 1px solid ${colorBorde};"></div>
+                </div>
+                <div style="font-weight: bold; font-size: 10px; margin-top: 3px;">${numero}</div>
+            </div>
+        `;
+        return html;
+    }
 
-            html += `
-                <td class="numero" style="background: ${background}; color: ${color};">
-                    <strong>${num}</strong>
-                </td>
-            `;
-        });
-        html += '</tr>';
-    });
+    let html = `
+        <div style="margin: 20px 0; padding: 20px; border: 1px solid #DDD; border-radius: 5px;">
+            <h3 style="text-align: center; margin-bottom: 20px;">ODONTOGRAMA</h3>
 
-    html += '</tbody></table>';
+            <div style="margin-bottom: 15px;">
+                <strong>Dientes Temporales Superiores</strong>
+                <div style="text-align: center;">
+                    ${['55', '54', '53', '52', '51', '61', '62', '63', '64', '65']
+                        .map(num => generarDiente(num, odontograma[num]))
+                        .join('')}
+                </div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <strong>Dientes Permanentes Superiores</strong>
+                <div style="text-align: center;">
+                    ${[18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28]
+                        .map(num => generarDiente(num, odontograma[num]))
+                        .join('')}
+                </div>
+            </div>
+
+            <div style="border-top: 2px solid #999; margin: 15px 0;"></div>
+
+            <div style="margin-bottom: 15px;">
+                <strong>Dientes Permanentes Inferiores</strong>
+                <div style="text-align: center;">
+                    ${[31, 32, 33, 34, 35, 36, 37, 38, 48, 47, 46, 45, 44, 43, 42, 41]
+                        .map(num => generarDiente(num, odontograma[num]))
+                        .join('')}
+                </div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <strong>Dientes Temporales Inferiores</strong>
+                <div style="text-align: center;">
+                    ${['71', '72', '73', '74', '75', '85', '84', '83', '82', '81']
+                        .map(num => generarDiente(num, odontograma[num]))
+                        .join('')}
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; padding: 10px; background: #F5F5F5; border-radius: 3px;">
+                <strong>Leyenda:</strong>
+                <span style="display: inline-block; margin: 0 15px;"><span style="display: inline-block; width: 15px; height: 15px; background: #FF6B6B; border: 1px solid #333; margin-right: 5px;"></span>Rojo = Prácticas Existentes</span>
+                <span style="display: inline-block; margin: 0 15px;"><span style="display: inline-block; width: 15px; height: 15px; background: #4A90E2; border: 1px solid #333; margin-right: 5px;"></span>Azul = Prácticas Requeridas</span>
+            </div>
+        </div>
+    `;
+
     return html;
 }
 
