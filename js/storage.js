@@ -6,9 +6,11 @@ const STORAGE_KEY = 'ODONPEI_PACIENTES';
 function guardar(paciente) {
     paciente.id = Date.now().toString();
     paciente.fechaCreacion = new Date().toISOString();
-    paciente.odontograma = {};
-    paciente.fotos = [];
-    paciente.archivos = [];
+
+    // No sobrescribir datos existentes
+    if (!paciente.odontograma) paciente.odontograma = {};
+    if (!paciente.fotos) paciente.fotos = [];
+    if (!paciente.archivos) paciente.archivos = [];
 
     const pacientes = obtenerTodos();
     pacientes.push(paciente);
