@@ -38,9 +38,6 @@ function cambiarPagina(pagina) {
                 alert('Error al cargar el formulario. Recarga la página.');
             }
             break;
-        case 'datos':
-            mostrarInfoDatos();
-            break;
     }
 
     // Scroll to top
@@ -557,81 +554,3 @@ function cambiarTipoHistoria(tipo) {
     generarFormulario(tipo);
 }
 
-// ========== EXPORT/IMPORT DATOS ==========
-function exportarDatosJSON() {
-    const pacientes = obtenerTodos();
-    const json = JSON.stringify(pacientes, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `ODONPEI_datos_${new Date().toISOString().split('T')[0]}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
-    alert('✅ Datos exportados correctamente');
-}
-
-function importarDatosJSON(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        try {
-            const pacientes = JSON.parse(e.target.result);
-            if (!Array.isArray(pacientes)) {
-                alert('❌ Formato de archivo inválido');
-                return;
-            }
-
-            // Obtener pacientes existentes
-            const existentes = obtenerTodos();
-            const ids = new Set(existentes.map(p => p.id));
-
-            // Agregar solo pacientes nuevos
-            let agregados = 0;
-            pacientes.forEach(p => {
-                if (!ids.has(p.id)) {
-                    existentes.push(p);
-                    agregados++;
-                }
-            });
-
-            // Guardar todos
-            localStorage.setItem('ODONPEI_PACIENTES', JSON.stringify(existentes));
-            alert(`✅ Datos importados correctamente. Se agregaron ${agregados} pacientes nuevos.`);
-
-            // Actualizar vista
-            cargarPacientes();
-            mostrarInfoDatos();
-
-            // Limpiar input
-            event.target.value = '';
-
-        } catch (error) {
-            alert('❌ Error al importar: ' + error.message);
-        }
-    };
-    reader.readAsText(file);
-}
-
-function mostrarInfoDatos() {
-    const pacientes = obtenerTodos();
-    const totalFotos = pacientes.reduce((sum, p) => sum + (p.fotos ? p.fotos.length : 0), 0);
-    const totalArchivos = pacientes.reduce((sum, p) => sum + (p.archivos ? p.archivos.length : 0), 0);
-
-    const info = `
-        <strong>📊 Información de tu Base de Datos:</strong><br>
-        • Pacientes: <strong>${pacientes.length}</strong><br>
-        • Fotos: <strong>${totalFotos}</strong><br>
-        • Archivos: <strong>${totalArchivos}</strong><br>
-        <br>
-        <strong>💡 Consejo:</strong> Si tu pareja o colegas quieren ver tus pacientes en otra máquina,
-        exporta aquí y pídeles que importen el archivo en su máquina.
-    `;
-
-    const infoDatos = document.getElementById('info-datos');
-    if (infoDatos) {
-        infoDatos.innerHTML = info;
-    }
-}

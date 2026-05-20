@@ -19,7 +19,6 @@
                     <li><a href="#" onclick="cambiarPagina('inicio')">Inicio</a></li>
                     <li><a href="#" onclick="cambiarPagina('pacientes')">Pacientes</a></li>
                     <li><a href="#" onclick="cambiarPagina('nuevo-paciente')">Nuevo Paciente</a></li>
-                    <li><a href="#" onclick="cambiarPagina('datos')">⚙️ Datos</a></li>
                 </ul>
             </div>
         </nav>
@@ -102,41 +101,6 @@
                     }
                 });
             </script>
-            </section>
-
-            <!-- Página de Datos y Configuración -->
-            <section id="pagina-datos" class="page" style="display: none;">
-                <div class="page-header">
-                    <h2>⚙️ Datos y Configuración</h2>
-                </div>
-
-                <div style="max-width: 600px; margin: 0 auto;">
-                    <div class="historia-clinica">
-                        <div class="historia-section">
-                            <h3>Exportar y Compartir Datos</h3>
-                            <p style="color: #666; margin-bottom: 15px;">Si quieres ver tus datos en otra máquina o navegador, exporta tu base de datos y importa en la otra máquina.</p>
-                            <button onclick="exportarDatosJSON()" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">
-                                📥 Exportar Todos mis Datos
-                            </button>
-                            <p style="color: #999; font-size: 12px; margin-bottom: 15px;">Se descargará un archivo JSON con todos tus pacientes</p>
-                        </div>
-
-                        <div class="historia-section">
-                            <h3>Importar Datos</h3>
-                            <p style="color: #666; margin-bottom: 15px;">Carga datos desde otro dispositivo o navegador.</p>
-                            <input type="file" id="input-datos-json" accept=".json" onchange="importarDatosJSON(event)" style="display: none;">
-                            <button onclick="document.getElementById('input-datos-json').click()" class="btn btn-secondary" style="width: 100%; margin-bottom: 10px;">
-                                📤 Importar Datos
-                            </button>
-                            <p style="color: #999; font-size: 12px;">Selecciona un archivo JSON que hayas exportado</p>
-                        </div>
-
-                        <div class="historia-section">
-                            <h3>Información</h3>
-                            <p id="info-datos" style="color: #666;"></p>
-                        </div>
-                    </div>
-                </div>
             </section>
 
             <!-- Página de Detalle del Paciente -->

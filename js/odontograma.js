@@ -5,6 +5,8 @@ const colorAzul = '#4A90E2';
 const colorBlanco = '#FFFFFF';
 const colorBorde = '#333333';
 
+let colorSeleccionado = 'rojo'; // Color a usar al hacer clic
+
 const estructura = {
     superior_derecha: [18, 17, 16, 15, 14, 13, 12, 11],
     superior_izquierda: [21, 22, 23, 24, 25, 26, 27, 28],
@@ -41,12 +43,18 @@ function dibujarOdontograma(canvas, datosOdontograma = {}) {
 
         let y = 30;
 
-        // Título
+        // Selector de color
         ctx.font = 'bold 13px Arial';
         ctx.fillStyle = '#333';
         ctx.textAlign = 'center';
-        ctx.fillText('ODONTOGRAMA - Haz clic en cada zona para pintar (Rojo → Azul → Blanco)', w / 2, y);
-        y += 30;
+        ctx.fillText('ODONTOGRAMA - Elige color y haz clic en cada zona', w / 2, y);
+        y += 25;
+
+        // Mostrar color seleccionado
+        const colorMostrar = colorSeleccionado === 'rojo' ? '🔴' : '🔵';
+        ctx.font = 'bold 11px Arial';
+        ctx.fillText(`Color actual: ${colorMostrar} ${colorSeleccionado.toUpperCase()}`, w / 2, y);
+        y += 20;
 
         // Temporales Superiores
         ctx.font = 'bold 11px Arial';
@@ -54,13 +62,13 @@ function dibujarOdontograma(canvas, datosOdontograma = {}) {
         ctx.fillText('Dientes Temporales Superiores', w / 2, y);
         y += 18;
         dibujarFilaDientes(ctx, canvas, y, [...estructura.temporal_superior_derecha.reverse(), ...estructura.temporal_superior_izquierda], datosOdontograma);
-        y += 75;
+        y += 90;
 
         // Permanentes Superiores
         ctx.fillText('Dientes Permanentes Superiores', w / 2, y);
         y += 18;
         dibujarFilaDientes(ctx, canvas, y, [...estructura.superior_derecha.reverse(), ...estructura.superior_izquierda], datosOdontograma);
-        y += 75;
+        y += 90;
 
         // Línea
         ctx.strokeStyle = '#999';
@@ -75,7 +83,7 @@ function dibujarOdontograma(canvas, datosOdontograma = {}) {
         ctx.fillText('Dientes Permanentes Inferiores', w / 2, y);
         y += 18;
         dibujarFilaDientes(ctx, canvas, y, [...estructura.inferior_izquierda.reverse(), ...estructura.inferior_derecha], datosOdontograma);
-        y += 75;
+        y += 90;
 
         // Temporales Inferiores
         ctx.fillText('Dientes Temporales Inferiores', w / 2, y);
@@ -89,8 +97,8 @@ function dibujarOdontograma(canvas, datosOdontograma = {}) {
 
 function dibujarFilaDientes(ctx, canvas, y, dientes, datosOdontograma) {
     const w = canvas.width || 1200;
-    const tamDiente = 55;
-    const espaciado = 8;
+    const tamDiente = 60;
+    const espaciado = 4;
 
     const totalAncho = dientes.length * tamDiente + (dientes.length - 1) * espaciado;
     let x = (w - totalAncho) / 2;
@@ -102,55 +110,60 @@ function dibujarFilaDientes(ctx, canvas, y, dientes, datosOdontograma) {
 }
 
 function dibujarDiente(ctx, canvas, x, y, numero, datosOdontograma) {
-    const tamanio = 50;
-    const zona = tamanio / 3;
+    const SIZE = 55;  // Tamaño total del diente
+    const TERCIO = SIZE / 3;
 
     const dato = datosOdontograma[numero] || {
         centro: null, norte: null, sur: null, este: null, oeste: null
     };
 
     ctx.strokeStyle = colorBorde;
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth = 2;
 
-    // Centro
-    ctx.fillStyle = obtenerColor(dato.centro);
-    ctx.fillRect(x + zona, y + zona, zona, zona);
-    ctx.strokeRect(x + zona, y + zona, zona, zona);
+    // DIBUJAR COMO CUADRADO DIVIDIDO EN 5 ZONAS (no cruz)
+    // La idea es hacer un cuadrado 3x3 donde usamos 5 zonas del medio
 
-    // Norte
-    ctx.fillStyle = obtenerColor(dato.norte);
-    ctx.fillRect(x + zona, y, zona, zona);
-    ctx.strokeRect(x + zona, y, zona, zona);
-
-    // Sur
-    ctx.fillStyle = obtenerColor(dato.sur);
-    ctx.fillRect(x + zona, y + 2 * zona, zona, zona);
-    ctx.strokeRect(x + zona, y + 2 * zona, zona, zona);
-
-    // Este
-    ctx.fillStyle = obtenerColor(dato.este);
-    ctx.fillRect(x + 2 * zona, y + zona, zona, zona);
-    ctx.strokeRect(x + 2 * zona, y + zona, zona, zona);
-
-    // Oeste
+    // Zona OESTE (izquierda del centro)
     ctx.fillStyle = obtenerColor(dato.oeste);
-    ctx.fillRect(x, y + zona, zona, zona);
-    ctx.strokeRect(x, y + zona, zona, zona);
+    ctx.fillRect(x, y + TERCIO, TERCIO, TERCIO);
+    ctx.strokeRect(x, y + TERCIO, TERCIO, TERCIO);
 
-    // Número
+    // Zona NORTE (arriba del centro)
+    ctx.fillStyle = obtenerColor(dato.norte);
+    ctx.fillRect(x + TERCIO, y, TERCIO, TERCIO);
+    ctx.strokeRect(x + TERCIO, y, TERCIO, TERCIO);
+
+    // Zona CENTRO (el centro)
+    ctx.fillStyle = obtenerColor(dato.centro);
+    ctx.fillRect(x + TERCIO, y + TERCIO, TERCIO, TERCIO);
+    ctx.strokeRect(x + TERCIO, y + TERCIO, TERCIO, TERCIO);
+
+    // Zona SUR (abajo del centro)
+    ctx.fillStyle = obtenerColor(dato.sur);
+    ctx.fillRect(x + TERCIO, y + 2 * TERCIO, TERCIO, TERCIO);
+    ctx.strokeRect(x + TERCIO, y + 2 * TERCIO, TERCIO, TERCIO);
+
+    // Zona ESTE (derecha del centro)
+    ctx.fillStyle = obtenerColor(dato.este);
+    ctx.fillRect(x + 2 * TERCIO, y + TERCIO, TERCIO, TERCIO);
+    ctx.strokeRect(x + 2 * TERCIO, y + TERCIO, TERCIO, TERCIO);
+
+    // Número del diente
     ctx.font = 'bold 10px Arial';
     ctx.fillStyle = '#333';
     ctx.textAlign = 'center';
-    ctx.fillText(numero, x + zona + zona / 2, y + tamanio + 12);
+    ctx.fillText(numero, x + SIZE / 2, y + SIZE + 12);
 
-    // Guardar zonas
+    // REGISTRAR ZONAS PARA CLICKS - COORDENADAS EXACTAS
     if (!canvas.datosZonas) canvas.datosZonas = [];
+
+    // Cada zona se define con sus coordenadas exactas
     canvas.datosZonas.push(
-        { numero, parte: 'centro', x: x + zona, y: y + zona, ancho: zona, alto: zona },
-        { numero, parte: 'norte', x: x + zona, y: y, ancho: zona, alto: zona },
-        { numero, parte: 'sur', x: x + zona, y: y + 2 * zona, ancho: zona, alto: zona },
-        { numero, parte: 'este', x: x + 2 * zona, y: y + zona, ancho: zona, alto: zona },
-        { numero, parte: 'oeste', x: x, y: y + zona, ancho: zona, alto: zona }
+        { numero, parte: 'oeste', x: x, y: y + TERCIO, ancho: TERCIO, alto: TERCIO },
+        { numero, parte: 'norte', x: x + TERCIO, y: y, ancho: TERCIO, alto: TERCIO },
+        { numero, parte: 'centro', x: x + TERCIO, y: y + TERCIO, ancho: TERCIO, alto: TERCIO },
+        { numero, parte: 'sur', x: x + TERCIO, y: y + 2 * TERCIO, ancho: TERCIO, alto: TERCIO },
+        { numero, parte: 'este', x: x + 2 * TERCIO, y: y + TERCIO, ancho: TERCIO, alto: TERCIO }
     );
 }
 
@@ -160,10 +173,19 @@ function obtenerColor(valor) {
     return colorBlanco;
 }
 
+function establecerColorOdontograma(color) {
+    colorSeleccionado = color;
+    // Redibujar con el nuevo color seleccionado
+    const canvas = document.getElementById('odontograma-canvas');
+    if (canvas && canvas.datosOdontograma) {
+        canvas.datosZonas = [];
+        dibujarOdontograma(canvas, canvas.datosOdontograma);
+    }
+}
+
 function manejarClickOdontograma(event, canvas, datosOdontograma) {
     if (!canvas.datosZonas || canvas.datosZonas.length === 0) {
-        console.warn('datosZonas vacío, rediujando');
-        dibujarOdontograma(canvas, datosOdontograma);
+        console.warn('datosZonas vacío');
         return;
     }
 
@@ -171,25 +193,22 @@ function manejarClickOdontograma(event, canvas, datosOdontograma) {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    for (let zona of canvas.datosZonas || []) {
-        if (x >= zona.x && x <= zona.x + zona.ancho &&
-            y >= zona.y && y <= zona.y + zona.alto) {
+    // Buscar la zona exacta donde se hizo clic
+    for (let zona of canvas.datosZonas) {
+        if (x >= zona.x && x < zona.x + zona.ancho &&
+            y >= zona.y && y < zona.y + zona.alto) {
 
+            // Inicializar diente si no existe
             if (!datosOdontograma[zona.numero]) {
                 datosOdontograma[zona.numero] = {
                     centro: null, norte: null, sur: null, este: null, oeste: null
                 };
             }
 
-            const actual = datosOdontograma[zona.numero][zona.parte];
-            let nuevo = null;
-            if (actual === null) {
-                nuevo = 'rojo';
-            } else if (actual === 'rojo') {
-                nuevo = 'azul';
-            }
+            // Aplicar color seleccionado
+            datosOdontograma[zona.numero][zona.parte] = colorSeleccionado;
 
-            datosOdontograma[zona.numero][zona.parte] = nuevo;
+            // Redibujar
             canvas.datosZonas = [];
             dibujarOdontograma(canvas, datosOdontograma);
             return;

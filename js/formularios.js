@@ -88,10 +88,16 @@ function generarFormulario(tipo, dataPaciente = null) {
     html += `
         <div class="historia-section">
             <h3>Odontograma</h3>
-            <p style="color: #666; margin-bottom: 20px;">
-                Haz clic sobre las zonas de cada diente para marcar:
-                <span style="color: #FF6B6B;">● Rojo = Prácticas Existentes</span> |
-                <span style="color: #4A90E2;">● Azul = Prácticas Requeridas</span>
+            <div style="margin-bottom: 15px; display: flex; gap: 10px; justify-content: center;">
+                <button type="button" onclick="establecerColorOdontograma('rojo')" class="btn" style="background: #FF6B6B; color: white; border: 3px solid #333; padding: 10px 20px;">
+                    🔴 Rojo (Existentes)
+                </button>
+                <button type="button" onclick="establecerColorOdontograma('azul')" class="btn" style="background: #4A90E2; color: white; border: 3px solid #333; padding: 10px 20px;">
+                    🔵 Azul (Requeridas)
+                </button>
+            </div>
+            <p style="color: #666; margin-bottom: 20px; text-align: center;">
+                1️⃣ Elige el color arriba | 2️⃣ Haz clic en cada zona del diente
             </p>
             <canvas id="odontograma-canvas" class="odontograma-canvas" style="border: 1px solid #E0E0E0; border-radius: 5px; background: white;"></canvas>
             <div class="odontograma-legend" style="margin-top: 20px; padding: 15px; background: #F5F5F5; border-radius: 5px; text-align: center;">
