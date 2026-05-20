@@ -153,7 +153,7 @@ function mostrarHistoriaClinica() {
     html += `
         <div class="historia-section">
             <h3>Odontograma</h3>
-            <div id="odontograma-container-detalle"></div>
+            <canvas id="odontograma-canvas-detalle" class="odontograma-canvas"></canvas>
         </div>
     </div>
     `;
@@ -164,9 +164,16 @@ function mostrarHistoriaClinica() {
     setTimeout(() => {
         const canvas = document.getElementById('odontograma-canvas-detalle');
         if (canvas) {
+            // Asegurar dimensiones del canvas
+            if (canvas.width === 0 || canvas.width === undefined) {
+                canvas.width = Math.min(window.innerWidth - 60, 1000);
+            }
+            if (canvas.height === 0 || canvas.height === undefined) {
+                canvas.height = 700;
+            }
             dibujarOdontograma(canvas, pacienteActual.odontograma || {});
         }
-    }, 0);
+    }, 100);
 }
 
 function mostrarHistoriaNeurodiverente(data) {
@@ -274,38 +281,51 @@ function eliminarPaciente() {
 
 // ========== GUARDAR PACIENTE ==========
 function guardarPaciente() {
-    const tipoHistoria = document.querySelector('input[name="tipo-historia"]:checked').value;
+    try {
+        const nombre = document.getElementById('campo-nombre')?.value || '';
 
-    // Obtener datos del odontograma
-    const canvas = document.getElementById('odontograma-canvas');
-    const odontograma = canvas && canvas.datosOdontograma ? canvas.datosOdontograma : {};
+        if (!nombre) {
+            alert('El nombre del paciente es requerido');
+            return;
+        }
 
-    const datosPersonales = {
-        nombre: document.getElementById('campo-nombre')?.value || '',
-        alias: document.getElementById('campo-alias')?.value || '',
-        edad: document.getElementById('campo-edad')?.value || '',
-        fechaNacimiento: document.getElementById('campo-fechaNacimiento')?.value || '',
-        domicilio: document.getElementById('campo-domicilio')?.value || '',
-        nombrePadre: document.getElementById('campo-nombrePadre')?.value || '',
-        telefono: document.getElementById('campo-telefono')?.value || '',
-        obraSocial: document.getElementById('campo-obraSocial')?.value || '',
-        nAfiliado: document.getElementById('campo-nAfiliado')?.value || '',
-        dni: document.getElementById('campo-dni')?.value || ''
-    };
+        const tipoHistoria = document.querySelector('input[name="tipo-historia"]:checked')?.value || 'odontopediatrica';
 
-    let paciente;
+        // Obtener datos del odontograma del canvas
+        const canvas = document.getElementById('odontograma-canvas');
+        const datosOdontograma = canvas?.datosOdontograma || {};
 
-    if (tipoHistoria === 'neurodivergente') {
-        paciente = {
-            tipoHistoria: 'neurodivergente',
-            datosPersonales,
-            antecedentes: {
+        const paciente = {
+            tipoHistoria: tipoHistoria,
+            datosPersonales: {
+                nombre: nombre,
+                alias: document.getElementById('campo-alias')?.value || '',
+                edad: document.getElementById('campo-edad')?.value || '',
+                fechaNacimiento: document.getElementById('campo-fechaNacimiento')?.value || '',
+                domicilio: document.getElementById('campo-domicilio')?.value || '',
+                nombrePadre: document.getElementById('campo-nombrePadre')?.value || '',
+                telefono: document.getElementById('campo-telefono')?.value || '',
+                obraSocial: document.getElementById('campo-obraSocial')?.value || '',
+                nAfiliado: document.getElementById('campo-nAfiliado')?.value || '',
+                dni: document.getElementById('campo-dni')?.value || ''
+            },
+            tratamientos: {
+                realizados: document.getElementById('campo-tratamientos-realizados')?.value || '',
+                propuesta: document.getElementById('campo-propuesta-tratamiento')?.value || ''
+            },
+            odontograma: datosOdontograma,
+            fotos: [],
+            archivos: []
+        };
+
+        if (tipoHistoria === 'neurodivergente') {
+            paciente.antecedentes = {
                 diagnostico: document.getElementById('campo-diagnostico')?.value || '',
                 enfermedadesPreexistentes: document.getElementById('campo-enfermedades')?.value || '',
                 medicacion: document.getElementById('campo-medicacion')?.value || '',
                 cirugias: document.getElementById('campo-cirugias')?.value || ''
-            },
-            desafios: {
+            };
+            paciente.desafios = {
                 comunicacion: document.getElementById('campo-comunicacion')?.value || '',
                 conducta: document.getElementById('campo-conducta')?.value || '',
                 sensoriales: document.getElementById('campo-sensoriales')?.value || '',
@@ -313,44 +333,34 @@ function guardarPaciente() {
                 terapias: document.getElementById('campo-terapias')?.value || '',
                 frank: document.getElementById('campo-frank')?.value || '',
                 leGusta: document.getElementById('campo-leGusta')?.value || ''
-            }
-        };
-    } else {
-        paciente = {
-            tipoHistoria: 'odontopediatrica',
-            datosPersonales,
-            caracteristicas: {
+            };
+        } else {
+            paciente.caracteristicas = {
                 observaciones: document.getElementById('campo-observaciones')?.value || ''
+            };
+        }
+
+        if (pacienteEnEdicion) {
+            paciente.id = pacienteEnEdicion.id;
+            paciente.fotos = pacienteEnEdicion.fotos || [];
+            paciente.archivos = pacienteEnEdicion.archivos || [];
+            paciente.fechaCreacion = pacienteEnEdicion.fechaCreacion;
+            // Usar el odontograma del canvas si el usuario lo modificó, sino mantener el anterior
+            if (!datosOdontograma || Object.keys(datosOdontograma).length === 0) {
+                paciente.odontograma = pacienteEnEdicion.odontograma || {};
             }
-        };
+            actualizar(paciente);
+            alert('✅ Paciente actualizado correctamente');
+        } else {
+            guardar(paciente);
+            alert('✅ Paciente creado correctamente');
+        }
+
+        cambiarPagina('pacientes');
+    } catch (error) {
+        console.error('Error al guardar:', error);
+        alert('❌ Error al guardar el paciente: ' + error.message);
     }
-
-    // Agregar tratamientos a ambos tipos
-    paciente.tratamientos = {
-        realizados: document.getElementById('campo-tratamientos-realizados')?.value || '',
-        propuesta: document.getElementById('campo-propuesta-tratamiento')?.value || ''
-    };
-
-    if (!datosPersonales.nombre) {
-        alert('El nombre del paciente es requerido');
-        return;
-    }
-
-    if (pacienteEnEdicion) {
-        paciente.id = pacienteEnEdicion.id;
-        paciente.odontograma = odontograma || pacienteEnEdicion.odontograma || {};
-        paciente.fotos = pacienteEnEdicion.fotos || [];
-        paciente.archivos = pacienteEnEdicion.archivos || [];
-        paciente.fechaCreacion = pacienteEnEdicion.fechaCreacion;
-        actualizar(paciente);
-        alert('Paciente actualizado correctamente');
-    } else {
-        paciente.odontograma = odontograma;
-        guardar(paciente);
-        alert('Paciente creado correctamente');
-    }
-
-    cambiarPagina('pacientes');
 }
 
 // ========== LIMPIAR FORMULARIO ==========
