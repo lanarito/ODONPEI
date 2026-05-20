@@ -27,10 +27,15 @@ function cambiarPagina(pagina) {
             cargarPacientes();
             break;
         case 'nuevo-paciente':
-            limpiarFormulario();
-            pacienteEnEdicion = null;
-            document.getElementById('titulo-paciente').textContent = 'Nuevo Paciente';
-            generarFormulario('odontopediatrica');
+            try {
+                limpiarFormulario();
+                pacienteEnEdicion = null;
+                document.getElementById('titulo-paciente').textContent = 'Nuevo Paciente';
+                generarFormulario('odontopediatrica');
+            } catch (error) {
+                console.error('Error al generar formulario:', error);
+                alert('Error al cargar el formulario. Recarga la página.');
+            }
             break;
     }
 
