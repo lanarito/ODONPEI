@@ -1,331 +1,196 @@
 // ========== GENERACIÓN DE FORMULARIOS ==========
 
 function generarFormulario(tipo, dataPaciente = null) {
-    try {
-        const container = document.getElementById('formulario-container');
+    const container = document.getElementById('formulario-container');
+    if (!container) {
+        console.error('No hay contenedor para formulario');
+        return;
+    }
 
-        if (!container) {
-            console.error('No se encontró #formulario-container');
-            return;
-        }
+    const datos = dataPaciente || {};
+    const dp = datos.datosPersonales || {};
 
-        let html = '<form>';
-
-    // SECCIÓN: DATOS PERSONALES (Igual para ambos tipos)
-    html += `
+    let html = `
         <div class="historia-clinica">
+            <!-- DATOS PERSONALES -->
             <div class="historia-section">
                 <h3>Datos Personales</h3>
                 <div class="datos-personales">
                     <div class="form-group">
-                        <label for="campo-nombre">Nombre y Apellido *</label>
-                        <input type="text" id="campo-nombre" value="${dataPaciente?.datosPersonales?.nombre || ''}" required>
+                        <label>Nombre y Apellido *</label>
+                        <input type="text" id="campo-nombre" value="${dp.nombre || ''}" required>
                     </div>
                     <div class="form-group">
-                        <label for="campo-alias">¿Cómo le gusta que lo llamen?</label>
-                        <input type="text" id="campo-alias" value="${dataPaciente?.datosPersonales?.alias || ''}">
+                        <label>¿Cómo le gusta que lo llamen?</label>
+                        <input type="text" id="campo-alias" value="${dp.alias || ''}">
                     </div>
                     <div class="form-group">
-                        <label for="campo-edad">Edad *</label>
-                        <input type="number" id="campo-edad" value="${dataPaciente?.datosPersonales?.edad || ''}" required>
+                        <label>Edad *</label>
+                        <input type="number" id="campo-edad" value="${dp.edad || ''}" required>
                     </div>
                     <div class="form-group">
-                        <label for="campo-fechaNacimiento">Fecha de Nacimiento</label>
-                        <input type="date" id="campo-fechaNacimiento" value="${dataPaciente?.datosPersonales?.fechaNacimiento || ''}">
+                        <label>Fecha de Nacimiento</label>
+                        <input type="date" id="campo-fechaNacimiento" value="${dp.fechaNacimiento || ''}">
                     </div>
                     <div class="form-group">
-                        <label for="campo-domicilio">Domicilio</label>
-                        <input type="text" id="campo-domicilio" value="${dataPaciente?.datosPersonales?.domicilio || ''}">
+                        <label>Domicilio</label>
+                        <input type="text" id="campo-domicilio" value="${dp.domicilio || ''}">
                     </div>
                     <div class="form-group">
-                        <label for="campo-nombrePadre">Nombre de Madre/Padre</label>
-                        <input type="text" id="campo-nombrePadre" value="${dataPaciente?.datosPersonales?.nombrePadre || ''}">
+                        <label>Nombre de Madre/Padre</label>
+                        <input type="text" id="campo-nombrePadre" value="${dp.nombrePadre || ''}">
                     </div>
                     <div class="form-group">
-                        <label for="campo-telefono">Teléfono de Contacto</label>
-                        <input type="tel" id="campo-telefono" value="${dataPaciente?.datosPersonales?.telefono || ''}">
+                        <label>Teléfono de Contacto</label>
+                        <input type="tel" id="campo-telefono" value="${dp.telefono || ''}">
                     </div>
                     <div class="form-group">
-                        <label for="campo-obraSocial">Obra Social</label>
-                        <input type="text" id="campo-obraSocial" value="${dataPaciente?.datosPersonales?.obraSocial || ''}">
+                        <label>Obra Social</label>
+                        <input type="text" id="campo-obraSocial" value="${dp.obraSocial || ''}">
                     </div>
                     <div class="form-group">
-                        <label for="campo-nAfiliado">N° Afiliado</label>
-                        <input type="text" id="campo-nAfiliado" value="${dataPaciente?.datosPersonales?.nAfiliado || ''}">
+                        <label>N° Afiliado</label>
+                        <input type="text" id="campo-nAfiliado" value="${dp.nAfiliado || ''}">
                     </div>
                     ${tipo === 'odontopediatrica' ? `
                         <div class="form-group">
-                            <label for="campo-dni">DNI</label>
-                            <input type="text" id="campo-dni" value="${dataPaciente?.datosPersonales?.dni || ''}">
+                            <label>DNI</label>
+                            <input type="text" id="campo-dni" value="${dp.dni || ''}">
                         </div>
                     ` : ''}
                 </div>
             </div>
     `;
 
-    // SECCIÓN: TIPO ESPECÍFICO
+    // SECCIÓN ESPECÍFICA POR TIPO
     if (tipo === 'neurodivergente') {
-        html += generarFormularioNeurodiverente(dataPaciente);
+        html += generarSeccionNeuro(datos);
     } else {
-        html += generarFormularioOdontopediatrica(dataPaciente);
+        html += generarSeccionOdonto(datos);
     }
 
-    <!-- SECCIÓN: TRATAMIENTOS -->
-            <div class="historia-section">
-                <h3>Tratamientos</h3>
-                <div class="form-group">
-                    <label for="campo-tratamientos-realizados">Tratamientos Realizados</label>
-                    <textarea id="campo-tratamientos-realizados" placeholder="Describe los tratamientos que se han realizado..." style="min-height: 120px;">${dataPaciente?.tratamientos?.realizados || ''}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="campo-propuesta-tratamiento">Propuesta de Tratamiento</label>
-                    <textarea id="campo-propuesta-tratamiento" placeholder="Describe la propuesta de tratamiento para el paciente..." style="min-height: 120px;">${dataPaciente?.tratamientos?.propuesta || ''}</textarea>
-                </div>
+    // TRATAMIENTOS
+    html += `
+        <div class="historia-section">
+            <h3>Tratamientos</h3>
+            <div class="form-group">
+                <label>Tratamientos Realizados</label>
+                <textarea id="campo-tratamientos-realizados" style="min-height: 120px;">${datos.tratamientos?.realizados || ''}</textarea>
             </div>
+            <div class="form-group">
+                <label>Propuesta de Tratamiento</label>
+                <textarea id="campo-propuesta-tratamiento" style="min-height: 120px;">${datos.tratamientos?.propuesta || ''}</textarea>
+            </div>
+        </div>
+    `;
 
-            <!-- SECCIÓN: ODONTOGRAMA -->
-            <div class="historia-section">
-                <h3>Odontograma</h3>
-                <p style="color: #666; margin-bottom: 20px;">
-                    Haz clic sobre las zonas de cada diente para marcar:
-                    <span style="color: #FF6B6B;">● Rojo = Prácticas Existentes</span> |
-                    <span style="color: #4A90E2;">● Azul = Prácticas Requeridas</span>
-                </p>
-                <canvas id="odontograma-canvas" class="odontograma-canvas"></canvas>
-                <div class="odontograma-legend">
-                    <div class="legend-item">
-                        <div class="legend-color red"></div>
-                        <span>Prácticas Existentes</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color blue"></div>
-                        <span>Prácticas Requeridas</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: white;"></div>
-                        <span>Sin marcar</span>
-                    </div>
+    // ODONTOGRAMA
+    html += `
+        <div class="historia-section">
+            <h3>Odontograma</h3>
+            <p style="color: #666; margin-bottom: 20px;">
+                Haz clic sobre las zonas de cada diente para marcar:
+                <span style="color: #FF6B6B;">● Rojo = Prácticas Existentes</span> |
+                <span style="color: #4A90E2;">● Azul = Prácticas Requeridas</span>
+            </p>
+            <canvas id="odontograma-canvas" class="odontograma-canvas"></canvas>
+            <div class="odontograma-legend">
+                <div class="legend-item">
+                    <div class="legend-color red"></div>
+                    <span>Prácticas Existentes</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color blue"></div>
+                    <span>Prácticas Requeridas</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: white;"></div>
+                    <span>Sin marcar</span>
                 </div>
             </div>
         </div>
-        </form>
+        </div>
     `;
 
     container.innerHTML = html;
 
-    // Renderizar el odontograma
+    // Renderizar odontograma
     setTimeout(() => {
-        try {
-            const canvas = document.getElementById('odontograma-canvas');
-            if (canvas && typeof dibujarOdontograma === 'function') {
-                const dataOdontograma = dataPaciente?.odontograma || {};
-                dibujarOdontograma(canvas, dataOdontograma);
-
-                canvas.addEventListener('click', (e) => {
-                    manejarClickOdontograma(e, canvas, dataOdontograma);
-                });
-            }
-        } catch (e) {
-            console.error('Error en odontograma:', e);
+        const canvas = document.getElementById('odontograma-canvas');
+        if (canvas) {
+            dibujarOdontograma(canvas, datos.odontograma || {});
         }
     }, 100);
-    } catch (error) {
-        console.error('Error en generarFormulario:', error);
-        const container = document.getElementById('formulario-container');
-        if (container) {
-            container.innerHTML = '<p style="color: red; padding: 20px;">Error al generar el formulario. Por favor recarga la página.</p>';
-        }
-    }
 }
 
-function generarFormularioNeurodiverente(dataPaciente) {
-    const ant = dataPaciente?.antecedentes || {};
-    const desafios = dataPaciente?.desafios || {};
+function generarSeccionNeuro(datos) {
+    const ant = datos.antecedentes || {};
+    const desafios = datos.desafios || {};
 
     return `
         <div class="historia-section">
             <h3>Antecedentes Patológicos</h3>
             <div class="form-group">
-                <label for="campo-diagnostico">Diagnóstico</label>
+                <label>Diagnóstico</label>
                 <textarea id="campo-diagnostico">${ant.diagnostico || ''}</textarea>
             </div>
             <div class="form-group">
-                <label for="campo-enfermedades">Enfermedades Preexistentes</label>
+                <label>Enfermedades Preexistentes</label>
                 <textarea id="campo-enfermedades">${ant.enfermedadesPreexistentes || ''}</textarea>
             </div>
             <div class="form-group">
-                <label for="campo-medicacion">Medicación</label>
+                <label>Medicación</label>
                 <textarea id="campo-medicacion">${ant.medicacion || ''}</textarea>
             </div>
             <div class="form-group">
-                <label for="campo-cirugias">Cirugías</label>
+                <label>Cirugías</label>
                 <textarea id="campo-cirugias">${ant.cirugias || ''}</textarea>
             </div>
         </div>
 
         <div class="historia-section">
-            <h3>Desafíos de Comunicación y Lenguaje</h3>
-            <div class="checkbox-group">
-                <label class="checkbox">
-                    <input type="checkbox" value="no-verbal" ${desafios.comunicacion?.includes('no-verbal') ? 'checked' : ''}>
-                    No Verbal
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" value="preverbal" ${desafios.comunicacion?.includes('preverbal') ? 'checked' : ''}>
-                    Preverbal
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" value="extraverbal" ${desafios.comunicacion?.includes('extraverbal') ? 'checked' : ''}>
-                    Extraverbal
-                </label>
+            <h3>Desafíos y Características</h3>
+            <div class="form-group">
+                <label>Comunicación y Lenguaje</label>
+                <textarea id="campo-comunicacion">${desafios.comunicacion || ''}</textarea>
             </div>
-        </div>
-
-        <div class="historia-section">
-            <h3>Recursos que Usa</h3>
-            <div class="checkbox-group">
-                <label class="checkbox">
-                    <input type="checkbox" value="saacs" ${desafios.recursos?.includes('saacs') ? 'checked' : ''}>
-                    SAACS
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" value="pictogramas" ${desafios.recursos?.includes('pictogramas') ? 'checked' : ''}>
-                    Pictogramas
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" value="anticipacion" ${desafios.recursos?.includes('anticipacion') ? 'checked' : ''}>
-                    Anticipación
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" value="no-usan" ${desafios.recursos?.includes('no-usan') ? 'checked' : ''}>
-                    No usan
-                </label>
+            <div class="form-group">
+                <label>Conducta (Nivel de Apoyo)</label>
+                <textarea id="campo-conducta">${desafios.conducta || ''}</textarea>
             </div>
-        </div>
-
-        <div class="historia-section">
-            <h3>Desafío en la Conducta</h3>
-            <div class="radio-group">
-                <label class="radio">
-                    <input type="radio" name="conducta" value="leve" ${desafios.conducta === 'leve' ? 'checked' : ''}>
-                    Leve
-                </label>
-                <label class="radio">
-                    <input type="radio" name="conducta" value="considerable" ${desafios.conducta === 'considerable' ? 'checked' : ''}>
-                    Considerable
-                </label>
-                <label class="radio">
-                    <input type="radio" name="conducta" value="muy-considerable" ${desafios.conducta === 'muy-considerable' ? 'checked' : ''}>
-                    Muy Considerable
-                </label>
-            </div>
-
-            <div class="form-group" style="margin-top: 20px;">
-                <label for="campo-sensoriales">Desafíos Sensoriales (Olor, Sabor, Sonidos, Tacto, Visual)</label>
+            <div class="form-group">
+                <label>Desafíos Sensoriales</label>
                 <textarea id="campo-sensoriales">${desafios.sensoriales || ''}</textarea>
             </div>
-
             <div class="form-group">
-                <label for="campo-motricidad">Desafíos en la Motricidad</label>
+                <label>Desafíos en la Motricidad</label>
                 <textarea id="campo-motricidad">${desafios.motricidad || ''}</textarea>
             </div>
-
             <div class="form-group">
-                <label for="campo-terapias">Terapias que Realiza</label>
+                <label>Terapias que Realiza</label>
                 <textarea id="campo-terapias">${desafios.terapias || ''}</textarea>
             </div>
-        </div>
-
-        <div class="historia-section">
-            <h3>Escala de Frank</h3>
-            <div class="radio-group">
-                <label class="radio">
-                    <input type="radio" name="frank" value="definitivamente-negativo" ${desafios.frank === 'definitivamente-negativo' ? 'checked' : ''}>
-                    Definitivamente Negativo
-                </label>
-                <label class="radio">
-                    <input type="radio" name="frank" value="negativo" ${desafios.frank === 'negativo' ? 'checked' : ''}>
-                    Negativo
-                </label>
-                <label class="radio">
-                    <input type="radio" name="frank" value="cooperador-leve" ${desafios.frank === 'cooperador-leve' ? 'checked' : ''}>
-                    Cooperador Leve
-                </label>
-                <label class="radio">
-                    <input type="radio" name="frank" value="cooperador-positivo" ${desafios.frank === 'cooperador-positivo' ? 'checked' : ''}>
-                    Cooperador y Positivo
-                </label>
-            </div>
-        </div>
-
-        <div class="historia-section">
-            <h3>Preferencias</h3>
             <div class="form-group">
-                <label for="campo-leGusta">¿Qué le gusta?</label>
+                <label>Escala de Frank</label>
+                <textarea id="campo-frank">${desafios.frank || ''}</textarea>
+            </div>
+            <div class="form-group">
+                <label>¿Qué le gusta?</label>
                 <textarea id="campo-leGusta">${desafios.leGusta || ''}</textarea>
             </div>
         </div>
     `;
 }
 
-function generarFormularioOdontopediatrica(dataPaciente) {
-    const caracteristicas = dataPaciente?.caracteristicas || {};
-
+function generarSeccionOdonto(datos) {
+    const carac = datos.caracteristicas || {};
     return `
         <div class="historia-section">
             <h3>Características del Paciente</h3>
             <div class="form-group">
-                <label for="campo-observaciones">Observaciones</label>
-                <textarea id="campo-observaciones">${caracteristicas.observaciones || ''}</textarea>
+                <label>Observaciones</label>
+                <textarea id="campo-observaciones">${carac.observaciones || ''}</textarea>
             </div>
         </div>
     `;
-}
-
-// Obtener datos del formulario
-function obtenerDatosFormulario() {
-    const tipo = document.querySelector('input[name="tipo-historia"]:checked').value;
-    const datos = {
-        tipoHistoria: tipo,
-        datosPersonales: {
-            nombre: document.getElementById('campo-nombre')?.value || '',
-            alias: document.getElementById('campo-alias')?.value || '',
-            edad: document.getElementById('campo-edad')?.value || '',
-            fechaNacimiento: document.getElementById('campo-fechaNacimiento')?.value || '',
-            domicilio: document.getElementById('campo-domicilio')?.value || '',
-            nombrePadre: document.getElementById('campo-nombrePadre')?.value || '',
-            telefono: document.getElementById('campo-telefono')?.value || '',
-            obraSocial: document.getElementById('campo-obraSocial')?.value || '',
-            nAfiliado: document.getElementById('campo-nAfiliado')?.value || ''
-        }
-    };
-
-    if (tipo === 'neurodivergente') {
-        // Obtener checkboxes de comunicación
-        const comunicacionChecks = document.querySelectorAll('.historia-section:nth-of-type(2) .checkbox input[type="checkbox"]:checked');
-        const comunicacion = Array.from(comunicacionChecks).map(c => c.value);
-
-        datos.antecedentes = {
-            diagnostico: document.getElementById('campo-diagnostico')?.value || '',
-            enfermedadesPreexistentes: document.getElementById('campo-enfermedades')?.value || '',
-            medicacion: document.getElementById('campo-medicacion')?.value || '',
-            cirugias: document.getElementById('campo-cirugias')?.value || ''
-        };
-
-        datos.desafios = {
-            comunicacion: comunicacion,
-            conducta: document.querySelector('input[name="conducta"]:checked')?.value || '',
-            sensoriales: document.getElementById('campo-sensoriales')?.value || '',
-            motricidad: document.getElementById('campo-motricidad')?.value || '',
-            terapias: document.getElementById('campo-terapias')?.value || '',
-            frank: document.querySelector('input[name="frank"]:checked')?.value || '',
-            leGusta: document.getElementById('campo-leGusta')?.value || ''
-        };
-    } else {
-        datos.caracteristicas = {
-            observaciones: document.getElementById('campo-observaciones')?.value || ''
-        };
-    }
-
-    return datos;
 }
