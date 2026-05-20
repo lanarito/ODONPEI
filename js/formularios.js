@@ -1,14 +1,15 @@
 // ========== GENERACIÓN DE FORMULARIOS ==========
 
 function generarFormulario(tipo, dataPaciente = null) {
-    const container = document.getElementById('formulario-container');
+    try {
+        const container = document.getElementById('formulario-container');
 
-    if (!container) {
-        console.error('No se encontró #formulario-container');
-        return;
-    }
+        if (!container) {
+            console.error('No se encontró #formulario-container');
+            return;
+        }
 
-    let html = '<form>';
+        let html = '<form>';
 
     // SECCIÓN: DATOS PERSONALES (Igual para ambos tipos)
     html += `
@@ -124,6 +125,13 @@ function generarFormulario(tipo, dataPaciente = null) {
             });
         }
     }, 100);
+    } catch (error) {
+        console.error('Error en generarFormulario:', error);
+        const container = document.getElementById('formulario-container');
+        if (container) {
+            container.innerHTML = '<p style="color: red; padding: 20px;">Error al generar el formulario. Por favor recarga la página.</p>';
+        }
+    }
 }
 
 function generarFormularioNeurodiverente(dataPaciente) {
