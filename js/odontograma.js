@@ -224,14 +224,9 @@ function manejarClickOdontograma(event, canvas, datosOdontograma) {
 
             datosOdontograma[zona.numero][zona.parte] = nuevoEstado;
 
-            // Redibujar
+            // Redibujar (sin volver a agregar event listener)
             canvas.datosZonas = [];
             dibujarOdontograma(canvas, datosOdontograma);
-
-            // Re-agregar event listener
-            canvas.addEventListener('click', (e) => {
-                manejarClickOdontograma(e, canvas, datosOdontograma);
-            });
 
             return;
         }
