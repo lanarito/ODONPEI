@@ -1,0 +1,802 @@
+/* ========== VARIABLES DE COLOR ========== */
+:root {
+    --primary-pastel: #A8D8EA;      /* Azul pastel */
+    --secondary-pastel: #FFB6C1;    /* Rosa pastel */
+    --success-pastel: #B5E7A0;      /* Verde pastel */
+    --warning-pastel: #FFFACD;      /* Amarillo pastel */
+    --light-gray: #F5F5F5;
+    --dark-gray: #333333;
+    --border-color: #E0E0E0;
+    --red: #FF6B6B;                 /* Rojo para prácticas existentes */
+    --blue: #4A90E2;                /* Azul para prácticas requeridas */
+
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    --border-radius: 12px;
+    --box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    --box-shadow-hover: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+/* ========== RESET ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #FAFAFA;
+    color: var(--dark-gray);
+}
+
+body {
+    line-height: 1.6;
+}
+
+/* ========== NAVBAR ========== */
+.navbar {
+    background: linear-gradient(135deg, var(--primary-pastel) 0%, var(--secondary-pastel) 100%);
+    padding: var(--spacing-lg) 0;
+    box-shadow: var(--box-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--dark-gray);
+}
+
+.logo {
+    height: 50px;
+    width: auto;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: var(--spacing-xl);
+}
+
+.nav-menu a {
+    color: var(--dark-gray);
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.3s;
+}
+
+.nav-menu a:hover {
+    opacity: 0.7;
+}
+
+/* ========== CONTAINER ========== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+}
+
+/* ========== PAGES ========== */
+.page {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========== WELCOME CARD ========== */
+.welcome-card {
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    max-width: 600px;
+    margin: var(--spacing-xl) auto;
+}
+
+.welcome-card h1 {
+    font-size: 32px;
+    margin-bottom: var(--spacing-md);
+    color: var(--dark-gray);
+}
+
+.welcome-card p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: var(--spacing-lg);
+}
+
+.welcome-card .btn {
+    margin: var(--spacing-md);
+}
+
+/* ========== PAGE HEADER ========== */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.page-header h2 {
+    font-size: 28px;
+    color: var(--dark-gray);
+}
+
+.page-header > div {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+/* ========== BUTTONS ========== */
+.btn {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background: var(--primary-pastel);
+    color: var(--dark-gray);
+    border: 2px solid var(--primary-pastel);
+}
+
+.btn-primary:hover {
+    background: white;
+    box-shadow: var(--box-shadow-hover);
+}
+
+.btn-secondary {
+    background: var(--secondary-pastel);
+    color: var(--dark-gray);
+    border: 2px solid var(--secondary-pastel);
+}
+
+.btn-secondary:hover {
+    background: white;
+    box-shadow: var(--box-shadow-hover);
+}
+
+.btn-success {
+    background: var(--success-pastel);
+    color: var(--dark-gray);
+    border: 2px solid var(--success-pastel);
+}
+
+.btn-success:hover {
+    background: white;
+    box-shadow: var(--box-shadow-hover);
+}
+
+.btn-outline {
+    background: white;
+    color: var(--dark-gray);
+    border: 2px solid var(--border-color);
+}
+
+.btn-outline:hover {
+    background: var(--light-gray);
+    border-color: var(--dark-gray);
+}
+
+.btn-danger {
+    background: var(--red);
+    color: white;
+    border: 2px solid var(--red);
+}
+
+.btn-danger:hover {
+    opacity: 0.8;
+}
+
+/* ========== FORMULARIOS ========== */
+.form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+    color: var(--dark-gray);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="date"],
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-pastel);
+    box-shadow: 0 0 0 3px rgba(168, 216, 234, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* ========== RADIO BUTTONS ========== */
+.radio-group {
+    display: flex;
+    gap: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+.radio {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    cursor: pointer;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    transition: background 0.2s;
+}
+
+.radio input[type="radio"] {
+    cursor: pointer;
+    accent-color: var(--primary-pastel);
+}
+
+.radio:hover {
+    background: var(--light-gray);
+}
+
+/* ========== FORM ACTIONS ========== */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-xl);
+    border-top: 2px solid var(--border-color);
+}
+
+/* ========== GRID PACIENTES ========== */
+.pacientes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+}
+
+.paciente-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    box-shadow: var(--box-shadow);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.paciente-card:hover {
+    box-shadow: var(--box-shadow-hover);
+    border-color: var(--primary-pastel);
+    transform: translateY(-2px);
+}
+
+.paciente-card h3 {
+    color: var(--dark-gray);
+    margin-bottom: var(--spacing-sm);
+}
+
+.paciente-card p {
+    color: #999;
+    font-size: 14px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.paciente-card .meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #AAA;
+}
+
+/* ========== TABS ========== */
+.tabs {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.tab-btn {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: #999;
+}
+
+.tab-btn.active {
+    color: var(--dark-gray);
+    border-bottom-color: var(--primary-pastel);
+}
+
+.tab-btn:hover {
+    color: var(--dark-gray);
+}
+
+.tab-content {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* ========== ODONTOGRAMA ========== */
+.odontograma-container {
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: var(--spacing-lg);
+}
+
+.odontograma-header {
+    margin-bottom: var(--spacing-lg);
+}
+
+.odontograma-canvas {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: white;
+    cursor: crosshair;
+}
+
+.odontograma-legend {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-weight: 500;
+}
+
+.legend-color {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 2px solid var(--border-color);
+}
+
+.legend-color.red {
+    background: var(--red);
+}
+
+.legend-color.blue {
+    background: var(--blue);
+}
+
+/* ========== GALERÍAS ========== */
+.upload-area {
+    background: var(--warning-pastel);
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-xl);
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.upload-area button {
+    margin: 0;
+}
+
+.galeria-fotos {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.timeline-fotos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+}
+
+.foto-item {
+    position: relative;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s;
+}
+
+.foto-item:hover {
+    transform: scale(1.05);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.foto-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.foto-fecha {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.archivos-section {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.archivos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+}
+
+.archivo-item {
+    background: var(--light-gray);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.archivo-item:hover {
+    box-shadow: var(--box-shadow);
+    background: white;
+}
+
+.archivo-icon {
+    font-size: 32px;
+    margin-bottom: var(--spacing-md);
+}
+
+.archivo-nombre {
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    word-break: break-word;
+    color: var(--dark-gray);
+}
+
+.archivo-fecha {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: var(--spacing-md);
+}
+
+.archivo-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.archivo-actions button {
+    padding: 4px 12px;
+    font-size: 12px;
+}
+
+/* ========== MODAL / FORMULARIO HISTORIA CLÍNICA ========== */
+.historia-clinica {
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.historia-section {
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.historia-section:last-child {
+    border-bottom: none;
+}
+
+.historia-section h3 {
+    color: var(--primary-pastel);
+    margin-bottom: var(--spacing-lg);
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.datos-personales {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.checkbox input[type="checkbox"] {
+    cursor: pointer;
+    accent-color: var(--primary-pastel);
+}
+
+.checkbox:hover {
+    background: var(--light-gray);
+}
+
+/* ========== TRATAMIENTOS ========== */
+.tratamiento-card {
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.tratamiento-item {
+    padding: var(--spacing-lg);
+    background: var(--light-gray);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-lg);
+}
+
+.tratamiento-item h4 {
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.tratamiento-item p {
+    color: var(--dark-gray);
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.tratamiento-form {
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+/* ========== PRESUPUESTO ========== */
+.presupuesto-card {
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.presupuesto-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--spacing-lg) 0;
+    background: white;
+}
+
+.presupuesto-tabla thead {
+    background: linear-gradient(135deg, var(--primary-pastel) 0%, var(--secondary-pastel) 100%);
+    color: var(--dark-gray);
+    font-weight: 600;
+}
+
+.presupuesto-tabla th,
+.presupuesto-tabla td {
+    padding: var(--spacing-md);
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.presupuesto-tabla tbody tr:hover {
+    background: var(--light-gray);
+}
+
+.presupuesto-tabla tbody tr:last-child td {
+    border-bottom: 2px solid var(--primary-pastel);
+}
+
+.presupuesto-resumen {
+    background: var(--light-gray);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    margin: var(--spacing-lg) 0;
+    max-width: 400px;
+    margin-left: auto;
+}
+
+.resumen-item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-md) 0;
+    font-weight: 500;
+}
+
+.presupuesto-item-form {
+    display: grid;
+    grid-template-columns: 1fr 80px 100px 60px;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    align-items: center;
+}
+
+.presupuesto-item-form input {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 14px;
+}
+
+.presupuesto-item-form input:focus {
+    outline: none;
+    border-color: var(--primary-pastel);
+    box-shadow: 0 0 0 3px rgba(168, 216, 234, 0.1);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .navbar-container {
+        flex-direction: column;
+        gap: var(--spacing-lg);
+    }
+
+    .nav-menu {
+        gap: var(--spacing-lg);
+    }
+
+    .page-header {
+        flex-direction: column;
+        gap: var(--spacing-lg);
+    }
+
+    .page-header > div {
+        width: 100%;
+    }
+
+    .page-header > div .btn {
+        flex: 1;
+    }
+
+    .tabs {
+        flex-wrap: wrap;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+
+    .pacientes-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .timeline-fotos {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    .welcome-card .btn {
+        display: block;
+        width: 100%;
+        margin: var(--spacing-md) 0;
+    }
+
+    .presupuesto-item-form {
+        grid-template-columns: 1fr 60px 80px 50px;
+    }
+
+    .presupuesto-resumen {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: var(--spacing-lg);
+    }
+
+    .navbar-logo {
+        font-size: 18px;
+    }
+
+    .logo {
+        height: 40px;
+    }
+
+    .welcome-card h1 {
+        font-size: 24px;
+    }
+
+    .page-header h2 {
+        font-size: 20px;
+    }
+
+    .tabs {
+        overflow-x: auto;
+    }
+
+    .tab-btn {
+        padding: var(--spacing-md);
+    }
+}

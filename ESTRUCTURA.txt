@@ -1,0 +1,149 @@
+ESTRUCTURA DEL PROYECTO ODONPEI
+================================
+
+📁 ODONPEI/
+├── 📄 index.html                 # Página principal (ABRE ESTO EN EL NAVEGADOR)
+├── 📄 README.md                  # Documentación completa
+├── 📄 ESTRUCTURA.txt             # Este archivo
+│
+├── 🎨 css/
+│   └── styles.css                # Estilos (colores pasteles, responsive)
+│
+├── 🔧 js/
+│   ├── app.js                    # Lógica principal de la aplicación
+│   ├── storage.js                # Almacenamiento en localStorage
+│   ├── odontograma.js            # Componente interactivo del odontograma
+│   ├── formularios.js            # Generación de formularios dinámicos
+│   └── tratamientos.js           # Lógica de tratamientos y presupuestos
+│
+├── 🖼️ ODONPEI 2.png             # Logo (usado en presupuestos)
+│
+├── 🔌 Archivos opcionales:
+│   ├── start.bat                 # Script para abrir (Windows)
+│   ├── start-server.ps1          # Servidor PowerShell
+│   └── server.py                 # Servidor Python (requiere Python)
+│
+└── 📚 Documentos originales:
+    ├── HC NEURODIVERGENTE.docx
+    └── HC ODONTOPEDIATRICA.docx
+
+
+CÓMO EMPEZAR
+============
+
+1️⃣  OPCIÓN RÁPIDA:
+    - Abre el archivo: index.html
+    - Con cualquier navegador (Chrome, Firefox, Edge, Safari)
+
+2️⃣  OPCIÓN CON SERVIDOR (PowerShell):
+    - Abre PowerShell
+    - Navega a: cd "c:\Github repos\ODONPEI"
+    - Ejecuta: & ".\start-server.ps1"
+    - Abre navegador: http://localhost:8000
+
+
+CARACTERÍSTICAS
+===============
+
+✅ Dos tipos de historias clínicas:
+   - Neurodivergente (con antecedentes, desafíos, etc)
+   - Odontopediátrica (simplificado)
+
+✅ Odontograma interactivo:
+   - 32 dientes (permanentes y temporales)
+   - 5 zonas por diente
+   - Colorea en Rojo (existentes) o Azul (requeridas)
+
+✅ Tratamientos:
+   - Registro de tratamientos realizados
+   - Propuesta de tratamiento futuro
+
+✅ Presupuestos profesionales:
+   - Crear tabla de servicios
+   - Agregar cantidades y precios
+   - Aplicar descuentos
+   - Imprimir con logo y datos
+
+✅ Galería fotográfica:
+   - Línea de tiempo de fotos
+   - Ver evolución del paciente
+
+✅ Gestión de archivos:
+   - Subir informes, radiografías, documentos
+   - Descargar y eliminar archivos
+
+✅ Diseño:
+   - Colores pasteles minimalista
+   - Responsive (funciona en móvil)
+   - Profesional y amigable
+
+
+ALMACENAMIENTO
+==============
+
+Los datos se guardan en localStorage del navegador:
+✅ No requiere servidor
+✅ No requiere internet (después de carga inicial)
+✅ Privado en tu dispositivo
+
+⚠️  IMPORTANTE: Los datos se pierden si limpias el cache
+   → Haz backup regularmente exportando los datos
+
+
+NAVEGACIÓN
+==========
+
+Inicio
+  ↓
+Nuevo Paciente → Crear Historia Clínica
+  ↓
+Ver Paciente → Pestañas:
+  - Historia Clínica: Ver/editar datos
+  - Tratamientos: Registrar tratamientos realizados y propuestas
+  - Presupuesto: Crear y imprimir presupuestos
+  - Fotos: Galería de evolución fotográfica
+  - Archivos: Almacenar documentos
+
+
+ARCHIVOS GENERADOS
+==================
+
+Los datos se guardan automáticamente en:
+- localStorage del navegador (nombre: ODONPEI_PACIENTES)
+- Las fotos se almacenan como base64 en localStorage
+- Los archivos se almacenan como base64 en localStorage
+
+Para exportar (respaldo):
+- Abre DevTools (F12)
+- Console → exportarDatos()
+- Se descargará un archivo JSON
+
+
+NOTAS IMPORTANTES
+=================
+
+🔐 Privacidad:
+  - Todos los datos están en tu dispositivo
+  - No se envía nada a internet
+  - No hay servidor central
+
+📱 Responsivo:
+  - Funciona perfectamente en móviles
+  - Funciona en tablets
+  - Optimizado para cualquier tamaño de pantalla
+
+🎨 Colores:
+  - Azul Pastel: Principal
+  - Rosa Pastel: Secundario
+  - Verde Pastel: Éxito
+  - Rojo: Prácticas existentes
+  - Azul: Prácticas requeridas
+
+
+¡LISTO PARA USAR!
+=================
+
+La aplicación está completamente funcional.
+¡Abre index.html y comienza a registrar pacientes!
+
+Si necesitas agregar backend o cambios, avísale al desarrollador.

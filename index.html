@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ODONPEI - Historiales Clínicos</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="navbar-container">
+                <div class="navbar-logo">
+                    <img src="ODONPEI 2.png" alt="ODONPEI Logo" class="logo">
+                    <span>ODONPEI</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#" onclick="cambiarPagina('inicio')">Inicio</a></li>
+                    <li><a href="#" onclick="cambiarPagina('pacientes')">Pacientes</a></li>
+                    <li><a href="#" onclick="cambiarPagina('nuevo-paciente')">Nuevo Paciente</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Contenido principal -->
+        <div class="container">
+            <!-- Página de Inicio -->
+            <section id="pagina-inicio" class="page">
+                <div class="welcome-card">
+                    <h1>Bienvenido a ODONPEI</h1>
+                    <p>Sistema de gestión de historiales clínicos odontológicos</p>
+                    <button onclick="cambiarPagina('pacientes')" class="btn btn-primary">
+                        Ver Pacientes
+                    </button>
+                    <button onclick="cambiarPagina('nuevo-paciente')" class="btn btn-secondary">
+                        Crear Nuevo Paciente
+                    </button>
+                </div>
+            </section>
+
+            <!-- Página de Pacientes -->
+            <section id="pagina-pacientes" class="page" style="display: none;">
+                <div class="page-header">
+                    <h2>Mis Pacientes</h2>
+                    <button onclick="cambiarPagina('nuevo-paciente')" class="btn btn-primary">
+                        + Nuevo Paciente
+                    </button>
+                </div>
+                <div id="lista-pacientes" class="pacientes-grid">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </section>
+
+            <!-- Página Nuevo/Editar Paciente -->
+            <section id="pagina-nuevo-paciente" class="page" style="display: none;">
+                <div class="page-header">
+                    <h2 id="titulo-paciente">Nuevo Paciente</h2>
+                    <button onclick="cambiarPagina('pacientes')" class="btn btn-outline">
+                        Atrás
+                    </button>
+                </div>
+
+                <!-- Selector de tipo de historia clínica -->
+                <div class="form-group">
+                    <label>Tipo de Historia Clínica:</label>
+                    <div class="radio-group">
+                        <label class="radio">
+                            <input type="radio" name="tipo-historia" value="odontopediatrica" checked onchange="cambiarTipoHistoria(this.value)">
+                            Odontopediátrica
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="tipo-historia" value="neurodivergente" onchange="cambiarTipoHistoria(this.value)">
+                            Neurodivergente
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Formularios -->
+                <div id="formulario-container"></div>
+
+                <!-- Botones de acción -->
+                <div class="form-actions">
+                    <button onclick="cambiarPagina('pacientes')" class="btn btn-outline">Cancelar</button>
+                    <button onclick="guardarPaciente()" class="btn btn-primary">Guardar Paciente</button>
+                </div>
+            </section>
+
+            <!-- Página de Detalle del Paciente -->
+            <section id="pagina-detalle-paciente" class="page" style="display: none;">
+                <div class="page-header">
+                    <h2 id="nombre-paciente-detalle"></h2>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button onclick="cambiarPagina('pacientes')" class="btn btn-outline">
+                            ← Atrás
+                        </button>
+                        <button onclick="imprimirHistoriaCompleta()" class="btn btn-primary">
+                            🖨️ Imprimir Todo
+                        </button>
+                        <button onclick="editarPaciente()" class="btn btn-secondary">
+                            ✏️ Editar
+                        </button>
+                        <button onclick="eliminarPaciente()" class="btn btn-danger">
+                            🗑️ Eliminar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="cambiarTab('historia-clinica')">
+                        Historia Clínica
+                    </button>
+                    <button class="tab-btn" onclick="cambiarTab('tratamientos')">
+                        Tratamientos
+                    </button>
+                    <button class="tab-btn" onclick="cambiarTab('presupuesto')">
+                        Presupuesto
+                    </button>
+                    <button class="tab-btn" onclick="cambiarTab('fotos')">
+                        Fotos (Evolución)
+                    </button>
+                    <button class="tab-btn" onclick="cambiarTab('archivos')">
+                        Archivos
+                    </button>
+                </div>
+
+                <div id="tab-historia-clinica" class="tab-content">
+                    <div id="contenido-historia"></div>
+                </div>
+
+                <div id="tab-tratamientos" class="tab-content" style="display: none;">
+                    <div class="tratamientos-section">
+                        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                            <button onclick="mostrarFormTratamientos()" class="btn btn-primary">
+                                + Agregar Tratamiento
+                            </button>
+                        </div>
+                        <div id="contenido-tratamientos"></div>
+                    </div>
+                </div>
+
+                <div id="tab-presupuesto" class="tab-content" style="display: none;">
+                    <div class="presupuesto-section">
+                        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                            <button onclick="mostrarFormPresupuesto()" class="btn btn-primary">
+                                + Nuevo Presupuesto
+                            </button>
+                            <button onclick="imprimirPresupuesto()" class="btn btn-secondary">
+                                🖨️ Imprimir
+                            </button>
+                        </div>
+                        <div id="contenido-presupuesto"></div>
+                    </div>
+                </div>
+
+                <div id="tab-fotos" class="tab-content" style="display: none;">
+                    <div class="galeria-fotos">
+                        <div class="upload-area">
+                            <input type="file" id="input-foto" accept="image/*" multiple onchange="subirFoto(event)" style="display: none;">
+                            <button onclick="document.getElementById('input-foto').click()" class="btn btn-primary">
+                                + Agregar Foto
+                            </button>
+                        </div>
+                        <div id="timeline-fotos" class="timeline-fotos">
+                            <!-- Se llena dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-archivos" class="tab-content" style="display: none;">
+                    <div class="archivos-section">
+                        <div class="upload-area">
+                            <input type="file" id="input-archivo" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="subirArchivo(event)" style="display: none;">
+                            <button onclick="document.getElementById('input-archivo').click()" class="btn btn-primary">
+                                + Agregar Archivo
+                            </button>
+                        </div>
+                        <div id="lista-archivos" class="archivos-grid">
+                            <!-- Se llena dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/odontograma.js"></script>
+    <script src="js/formularios.js"></script>
+    <script src="js/tratamientos.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
