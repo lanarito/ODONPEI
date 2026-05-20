@@ -1,6 +1,7 @@
 // ========== GESTIÓN DE APLICACIÓN ==========
 let pacienteActual = null;
 let pacienteEnEdicion = null;
+let pacientesFiltrados = [];
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', () => {
@@ -45,7 +46,17 @@ function cambiarPagina(pagina) {
 
 // ========== CARGAR Y MOSTRAR PACIENTES ==========
 function cargarPacientes() {
-    const pacientes = obtenerTodos();
+    pacientesFiltrados = obtenerTodos();
+    mostrarPacientes(pacientesFiltrados);
+
+    // Limpiar búsqueda cuando se carga la página
+    const buscador = document.getElementById('buscador-pacientes');
+    if (buscador) {
+        buscador.value = '';
+    }
+}
+
+function mostrarPacientes(pacientes) {
     const container = document.getElementById('lista-pacientes');
 
     if (pacientes.length === 0) {
@@ -72,6 +83,25 @@ function cargarPacientes() {
             </div>
         </div>
     `).join('');
+}
+
+function filtrarPacientes() {
+    const busqueda = document.getElementById('buscador-pacientes')?.value.toLowerCase() || '';
+
+    if (!busqueda) {
+        mostrarPacientes(pacientesFiltrados);
+        return;
+    }
+
+    const resultados = pacientesFiltrados.filter(p => {
+        const nombre = p.datosPersonales.nombre.toLowerCase();
+        const alias = (p.datosPersonales.alias || '').toLowerCase();
+        const edad = String(p.datosPersonales.edad);
+
+        return nombre.includes(busqueda) || alias.includes(busqueda) || edad.includes(busqueda);
+    });
+
+    mostrarPacientes(resultados);
 }
 
 // ========== VER DETALLES DEL PACIENTE ==========

@@ -48,6 +48,11 @@
                         + Nuevo Paciente
                     </button>
                 </div>
+                <div style="margin-bottom: 20px;">
+                    <input type="text" id="buscador-pacientes" placeholder="🔍 Buscar por nombre, alias o edad..."
+                        style="width: 100%; max-width: 400px; padding: 10px; border: 1px solid #DDD; border-radius: 5px; font-size: 14px;"
+                        onkeyup="filtrarPacientes()">
+                </div>
                 <div id="lista-pacientes" class="pacientes-grid">
                     <!-- Se llena dinámicamente -->
                 </div>
