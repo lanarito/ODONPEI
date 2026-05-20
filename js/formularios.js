@@ -115,14 +115,18 @@ function generarFormulario(tipo, dataPaciente = null) {
 
     // Renderizar el odontograma
     setTimeout(() => {
-        const canvas = document.getElementById('odontograma-canvas');
-        if (canvas) {
-            const dataOdontograma = dataPaciente?.odontograma || {};
-            dibujarOdontograma(canvas, dataOdontograma);
+        try {
+            const canvas = document.getElementById('odontograma-canvas');
+            if (canvas && typeof dibujarOdontograma === 'function') {
+                const dataOdontograma = dataPaciente?.odontograma || {};
+                dibujarOdontograma(canvas, dataOdontograma);
 
-            canvas.addEventListener('click', (e) => {
-                manejarClickOdontograma(e, canvas, dataOdontograma);
-            });
+                canvas.addEventListener('click', (e) => {
+                    manejarClickOdontograma(e, canvas, dataOdontograma);
+                });
+            }
+        } catch (e) {
+            console.error('Error en odontograma:', e);
         }
     }, 100);
     } catch (error) {
