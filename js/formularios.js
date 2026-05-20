@@ -2,6 +2,12 @@
 
 function generarFormulario(tipo, dataPaciente = null) {
     const container = document.getElementById('formulario-container');
+
+    if (!container) {
+        console.error('No se encontró #formulario-container');
+        return;
+    }
+
     let html = '<form>';
 
     // SECCIÓN: DATOS PERSONALES (Igual para ambos tipos)
@@ -81,8 +87,8 @@ function generarFormulario(tipo, dataPaciente = null) {
                 <h3>Odontograma</h3>
                 <p style="color: #666; margin-bottom: 20px;">
                     Haz clic sobre las zonas de cada diente para marcar:
-                    <span style="color: ${colorRojo};">● Rojo = Prácticas Existentes</span> |
-                    <span style="color: ${colorAzul};">● Azul = Prácticas Requeridas</span>
+                    <span style="color: #FF6B6B;">● Rojo = Prácticas Existentes</span> |
+                    <span style="color: #4A90E2;">● Azul = Prácticas Requeridas</span>
                 </p>
                 <canvas id="odontograma-canvas" class="odontograma-canvas"></canvas>
                 <div class="odontograma-legend">
