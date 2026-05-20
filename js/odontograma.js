@@ -1,218 +1,157 @@
 // ========== ODONTOGRAMA INTERACTIVO ==========
 
-// Colores para el odontograma
-const colorRojo = '#FF6B6B';    // Prácticas existentes
-const colorAzul = '#4A90E2';    // Prácticas requeridas
+const colorRojo = '#FF6B6B';
+const colorAzul = '#4A90E2';
 const colorBlanco = '#FFFFFF';
 const colorBorde = '#333333';
 
-// Estructura del odontograma según sistema FDI
 const estructura = {
-    // Dientes permanentes superiores
     superior_derecha: [18, 17, 16, 15, 14, 13, 12, 11],
     superior_izquierda: [21, 22, 23, 24, 25, 26, 27, 28],
-    // Dientes permanentes inferiores
     inferior_derecha: [48, 47, 46, 45, 44, 43, 42, 41],
     inferior_izquierda: [31, 32, 33, 34, 35, 36, 37, 38],
-    // Dientes temporales superiores
     temporal_superior_derecha: [55, 54, 53, 52, 51],
     temporal_superior_izquierda: [61, 62, 63, 64, 65],
-    // Dientes temporales inferiores
     temporal_inferior_derecha: [85, 84, 83, 82, 81],
     temporal_inferior_izquierda: [71, 72, 73, 74, 75]
 };
 
 function dibujarOdontograma(canvas, datosOdontograma = {}) {
-    if (!canvas || !canvas.getContext) {
-        console.error('Canvas no válido');
-        return;
+    try {
+        if (!canvas) {
+            console.error('Canvas no existe');
+            return;
+        }
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+            console.error('No hay contexto 2D');
+            return;
+        }
+
+        canvas.datosOdontograma = datosOdontograma;
+        canvas.datosZonas = canvas.datosZonas || [];
+
+        const w = canvas.width || 1200;
+        const h = canvas.height || 900;
+
+        // Fondo blanco
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, w, h);
+
+        let y = 30;
+
+        // Título
+        ctx.font = 'bold 13px Arial';
+        ctx.fillStyle = '#333';
+        ctx.textAlign = 'center';
+        ctx.fillText('ODONTOGRAMA - Haz clic en cada zona para pintar (Rojo → Azul → Blanco)', w / 2, y);
+        y += 30;
+
+        // Temporales Superiores
+        ctx.font = 'bold 11px Arial';
+        ctx.fillStyle = '#555';
+        ctx.fillText('Dientes Temporales Superiores', w / 2, y);
+        y += 18;
+        dibujarFilaDientes(ctx, canvas, y, [...estructura.temporal_superior_derecha.reverse(), ...estructura.temporal_superior_izquierda], datosOdontograma);
+        y += 75;
+
+        // Permanentes Superiores
+        ctx.fillText('Dientes Permanentes Superiores', w / 2, y);
+        y += 18;
+        dibujarFilaDientes(ctx, canvas, y, [...estructura.superior_derecha.reverse(), ...estructura.superior_izquierda], datosOdontograma);
+        y += 75;
+
+        // Línea
+        ctx.strokeStyle = '#999';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(30, y);
+        ctx.lineTo(w - 30, y);
+        ctx.stroke();
+        y += 25;
+
+        // Permanentes Inferiores
+        ctx.fillText('Dientes Permanentes Inferiores', w / 2, y);
+        y += 18;
+        dibujarFilaDientes(ctx, canvas, y, [...estructura.inferior_izquierda.reverse(), ...estructura.inferior_derecha], datosOdontograma);
+        y += 75;
+
+        // Temporales Inferiores
+        ctx.fillText('Dientes Temporales Inferiores', w / 2, y);
+        y += 18;
+        dibujarFilaDientes(ctx, canvas, y, [...estructura.temporal_inferior_izquierda.reverse(), ...estructura.temporal_inferior_derecha], datosOdontograma);
+
+    } catch(e) {
+        console.error('Error dibujarOdontograma:', e);
     }
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) {
-        console.error('No se pudo obtener contexto 2D');
-        return;
-    }
-
-    // Guardar datos en el canvas
-    canvas.datosOdontograma = datosOdontograma;
-
-    // Establecer dimensiones si es necesario
-    if (canvas.width === 0 || !canvas.width) {
-        canvas.width = 1200;
-    }
-    if (canvas.height === 0 || !canvas.height) {
-        canvas.height = 900;
-    }
-
-    const padding = 50;
-    const anchoDisponible = canvas.width - 2 * padding;
-    const altoDisponible = canvas.height - 2 * padding;
-
-    // Limpiar canvas
-    ctx.fillStyle = '#F8F9FA';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Dibujar bordes con sombra
-    ctx.shadowColor = 'rgba(0,0,0,0.1)';
-    ctx.shadowBlur = 8;
-    ctx.strokeStyle = '#CCC';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(padding, padding, anchoDisponible, altoDisponible);
-    ctx.shadowColor = 'transparent';
-
-    // Parámetros de dientes - AUMENTADOS para mejor interacción
-    const dimensionesDiente = {
-        ancho: 70,
-        alto: 70,
-        espacioEntreGrupos: 50,
-        espacioEntreLineas: 15
-    };
-
-    let y = padding + 30;
-
-    // Título y instrucciones
-    ctx.font = 'bold 14px Arial';
-    ctx.fillStyle = '#333';
-    ctx.textAlign = 'center';
-    ctx.fillText('ODONTOGRAMA - Haz clic en cada zona para pintar (Rojo → Azul → Blanco)', canvas.width / 2, y - 10);
-    y += 20;
-
-    // Dibujar dientes temporales superiores
-    ctx.font = 'bold 11px Arial';
-    ctx.fillStyle = '#666';
-    ctx.textAlign = 'center';
-    ctx.fillText('Dientes Temporales Superiores', canvas.width / 2, y);
-
-    y += 15;
-    dibujarFilaDientes(
-        ctx, canvas, y,
-        [...estructura.temporal_superior_derecha.reverse(), ...estructura.temporal_superior_izquierda],
-        datosOdontograma,
-        dimensionesDiente
-    );
-    y += dimensionesDiente.alto + 25;
-
-    // Dibujar dientes permanentes superiores
-    ctx.fillText('Dientes Permanentes Superiores', canvas.width / 2, y);
-    y += 15;
-    dibujarFilaDientes(
-        ctx, canvas, y,
-        [...estructura.superior_derecha.reverse(), ...estructura.superior_izquierda],
-        datosOdontograma,
-        dimensionesDiente
-    );
-    y += dimensionesDiente.alto + 30;
-
-    // Línea divisoria
-    ctx.strokeStyle = '#AAA';
-    ctx.lineWidth = 2;
-    ctx.setLineDash([]);
-    ctx.beginPath();
-    ctx.moveTo(padding + 20, y);
-    ctx.lineTo(canvas.width - padding - 20, y);
-    ctx.stroke();
-
-    y += 25;
-
-    // Dibujar dientes permanentes inferiores
-    ctx.fillStyle = '#666';
-    ctx.fillText('Dientes Permanentes Inferiores', canvas.width / 2, y);
-    y += 15;
-    dibujarFilaDientes(
-        ctx, canvas, y,
-        [...estructura.inferior_izquierda.reverse(), ...estructura.inferior_derecha],
-        datosOdontograma,
-        dimensionesDiente
-    );
-    y += dimensionesDiente.alto + 25;
-
-    // Dibujar dientes temporales inferiores
-    ctx.fillStyle = '#666';
-    ctx.fillText('Dientes Temporales Inferiores', canvas.width / 2, y);
-    dibujarFilaDientes(
-        ctx, canvas, y,
-        [...estructura.temporal_inferior_izquierda.reverse(), ...estructura.temporal_inferior_derecha],
-        datosOdontograma,
-        dimensionesDiente
-    );
 }
 
-function dibujarFilaDientes(ctx, canvas, y, dientes, datosOdontograma, dim) {
-    const padding = 40;
-    const anchoTotal = canvas.width - 2 * padding;
-    const espacioTotal = dientes.length * dim.ancho + (dientes.length - 1) * 5;
-    let x = padding + (anchoTotal - espacioTotal) / 2;
+function dibujarFilaDientes(ctx, canvas, y, dientes, datosOdontograma) {
+    const w = canvas.width || 1200;
+    const tamDiente = 55;
+    const espaciado = 8;
 
-    dientes.forEach(numeroDiente => {
-        dibujarDiente(ctx, x, y, numeroDiente, datosOdontograma, dim);
-        x += dim.ancho + 5;
+    const totalAncho = dientes.length * tamDiente + (dientes.length - 1) * espaciado;
+    let x = (w - totalAncho) / 2;
 
-        // Espacio para indicar separación izq/der
-        if (numeroDiente === 11 || numeroDiente === 21 || numeroDiente === 41 || numeroDiente === 31 ||
-            numeroDiente === 51 || numeroDiente === 61 || numeroDiente === 81 || numeroDiente === 71) {
-            x += 15;
-        }
+    dientes.forEach(num => {
+        dibujarDiente(ctx, canvas, x, y, num, datosOdontograma);
+        x += tamDiente + espaciado;
     });
 }
 
-function dibujarDiente(ctx, x, y, numero, datosOdontograma, dim) {
-    const tamanio = 60;
-    const tamanioZona = tamanio / 3;
+function dibujarDiente(ctx, canvas, x, y, numero, datosOdontograma) {
+    const tamanio = 50;
+    const zona = tamanio / 3;
 
-    // Obtener datos del diente
-    const datoDiente = datosOdontograma[numero] || {
-        centro: null,
-        norte: null,
-        sur: null,
-        este: null,
-        oeste: null
+    const dato = datosOdontograma[numero] || {
+        centro: null, norte: null, sur: null, este: null, oeste: null
     };
 
     ctx.strokeStyle = colorBorde;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 1.5;
 
-    // Centro (cuadrado principal)
-    ctx.fillStyle = obtenerColor(datoDiente.centro);
-    ctx.fillRect(x + tamanioZona, y + tamanioZona, tamanioZona, tamanioZona);
-    ctx.strokeRect(x + tamanioZona, y + tamanioZona, tamanioZona, tamanioZona);
+    // Centro
+    ctx.fillStyle = obtenerColor(dato.centro);
+    ctx.fillRect(x + zona, y + zona, zona, zona);
+    ctx.strokeRect(x + zona, y + zona, zona, zona);
 
-    // Norte (arriba)
-    ctx.fillStyle = obtenerColor(datoDiente.norte);
-    ctx.fillRect(x + tamanioZona, y, tamanioZona, tamanioZona);
-    ctx.strokeRect(x + tamanioZona, y, tamanioZona, tamanioZona);
+    // Norte
+    ctx.fillStyle = obtenerColor(dato.norte);
+    ctx.fillRect(x + zona, y, zona, zona);
+    ctx.strokeRect(x + zona, y, zona, zona);
 
-    // Sur (abajo)
-    ctx.fillStyle = obtenerColor(datoDiente.sur);
-    ctx.fillRect(x + tamanioZona, y + 2 * tamanioZona, tamanioZona, tamanioZona);
-    ctx.strokeRect(x + tamanioZona, y + 2 * tamanioZona, tamanioZona, tamanioZona);
+    // Sur
+    ctx.fillStyle = obtenerColor(dato.sur);
+    ctx.fillRect(x + zona, y + 2 * zona, zona, zona);
+    ctx.strokeRect(x + zona, y + 2 * zona, zona, zona);
 
-    // Este (derecha)
-    ctx.fillStyle = obtenerColor(datoDiente.este);
-    ctx.fillRect(x + 2 * tamanioZona, y + tamanioZona, tamanioZona, tamanioZona);
-    ctx.strokeRect(x + 2 * tamanioZona, y + tamanioZona, tamanioZona, tamanioZona);
+    // Este
+    ctx.fillStyle = obtenerColor(dato.este);
+    ctx.fillRect(x + 2 * zona, y + zona, zona, zona);
+    ctx.strokeRect(x + 2 * zona, y + zona, zona, zona);
 
-    // Oeste (izquierda)
-    ctx.fillStyle = obtenerColor(datoDiente.oeste);
-    ctx.fillRect(x, y + tamanioZona, tamanioZona, tamanioZona);
-    ctx.strokeRect(x, y + tamanioZona, tamanioZona, tamanioZona);
+    // Oeste
+    ctx.fillStyle = obtenerColor(dato.oeste);
+    ctx.fillRect(x, y + zona, zona, zona);
+    ctx.strokeRect(x, y + zona, zona, zona);
 
-    // Número del diente (más grande y visible)
-    ctx.font = 'bold 12px Arial';
+    // Número
+    ctx.font = 'bold 10px Arial';
     ctx.fillStyle = '#333';
     ctx.textAlign = 'center';
-    ctx.fillText(numero, x + tamanioZona + tamanioZona / 2, y + tamanioZona * 2.8 + 18);
+    ctx.fillText(numero, x + zona + zona / 2, y + tamanio + 12);
 
-    // Guardar información de posición para clicks
+    // Guardar zonas
     if (!canvas.datosZonas) canvas.datosZonas = [];
-    const zonas = [
-        { numero, parte: 'centro', x: x + tamanioZona, y: y + tamanioZona, ancho: tamanioZona, alto: tamanioZona },
-        { numero, parte: 'norte', x: x + tamanioZona, y: y, ancho: tamanioZona, alto: tamanioZona },
-        { numero, parte: 'sur', x: x + tamanioZona, y: y + 2 * tamanioZona, ancho: tamanioZona, alto: tamanioZona },
-        { numero, parte: 'este', x: x + 2 * tamanioZona, y: y + tamanioZona, ancho: tamanioZona, alto: tamanioZona },
-        { numero, parte: 'oeste', x: x, y: y + tamanioZona, ancho: tamanioZona, alto: tamanioZona }
-    ];
-    canvas.datosZonas.push(...zonas);
+    canvas.datosZonas.push(
+        { numero, parte: 'centro', x: x + zona, y: y + zona, ancho: zona, alto: zona },
+        { numero, parte: 'norte', x: x + zona, y: y, ancho: zona, alto: zona },
+        { numero, parte: 'sur', x: x + zona, y: y + 2 * zona, ancho: zona, alto: zona },
+        { numero, parte: 'este', x: x + 2 * zona, y: y + zona, ancho: zona, alto: zona },
+        { numero, parte: 'oeste', x: x, y: y + zona, ancho: zona, alto: zona }
+    );
 }
 
 function obtenerColor(valor) {
@@ -226,33 +165,29 @@ function manejarClickOdontograma(event, canvas, datosOdontograma) {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    // Buscar la zona clickeada
     for (let zona of canvas.datosZonas) {
         if (x >= zona.x && x <= zona.x + zona.ancho &&
             y >= zona.y && y <= zona.y + zona.alto) {
 
-            // Obtener estado actual
             if (!datosOdontograma[zona.numero]) {
                 datosOdontograma[zona.numero] = {
                     centro: null, norte: null, sur: null, este: null, oeste: null
                 };
             }
 
-            const estadoActual = datosOdontograma[zona.numero][zona.parte];
-
-            // Ciclar: null -> rojo -> azul -> null
-            let nuevoEstado;
-            if (estadoActual === null) {
-                nuevoEstado = 'rojo';
-            } else if (estadoActual === 'rojo') {
-                nuevoEstado = 'azul';
+            const actual = datosOdontograma[zona.numero][zona.parte];
+            let nuevo;
+            if (actual === null) {
+                nuevo = 'rojo';
+            } else if (actual === 'rojo') {
+                nuevo = 'azul';
             } else {
-                nuevoEstado = null;
+                nuevo = null;
             }
 
-            datosOdontograma[zona.numero][zona.parte] = nuevoEstado;
+            datosOdontograma[zona.numero][zona.parte] = nuevo;
 
-            // Redibujar (sin volver a agregar event listener)
+            // Redibujar
             canvas.datosZonas = [];
             dibujarOdontograma(canvas, datosOdontograma);
 
@@ -261,7 +196,6 @@ function manejarClickOdontograma(event, canvas, datosOdontograma) {
     }
 }
 
-// Funciones para guardar/cargar datos del odontograma en formulario
 function obtenerDatosOdontogramaDelCanvas() {
     const canvas = document.getElementById('odontograma-canvas');
     if (canvas && canvas.datosOdontograma) {
@@ -270,7 +204,6 @@ function obtenerDatosOdontogramaDelCanvas() {
     return {};
 }
 
-// Guardar odontograma al paciente actual
 function guardarOdontogramaAlPaciente() {
     const canvas = document.getElementById('odontograma-canvas');
     if (canvas && canvas.datosOdontograma && pacienteActual) {
