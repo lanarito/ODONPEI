@@ -93,9 +93,63 @@ function sincronizarEnTiempoReal(callback) {
   return unsubscribe;
 }
 
+// Sincronizar en tiempo real
+function sincronizarTurnosEnTiempoReal(callback) {
+  const unsubscribe = onSnapshot(collection(db, "turnos"), (snapshot) => {
+    const turnos = [];
+    snapshot.forEach((d) => {
+      const data = d.data();
+      data.firebaseId = d.id;
+      turnos.push(data);
+    });
+    callback(turnos);
+  });
+  return unsubscribe;
+}
+
+// ========== FUNCIONES FIRESTORE - TURNOS ==========
+
+async function guardarTurnoEnFirestore(turno) {
+  try {
+    const docRef = await addDoc(collection(db, "turnos"), turno);
+    turno.firebaseId = docRef.id;
+    return turno;
+  } catch (e) { console.warn('Firebase turno guardar:', e); return null; }
+}
+
+async function obtenerTurnosDesdeFirestore() {
+  try {
+    const snap = await getDocs(collection(db, "turnos"));
+    const turnos = [];
+    snap.forEach((d) => { const t = d.data(); t.firebaseId = d.id; turnos.push(t); });
+    console.log(`✅ Cargados ${turnos.length} turnos desde Firestore`);
+    return turnos;
+  } catch (e) { console.warn('Firebase turnos obtener:', e); return []; }
+}
+
+async function actualizarTurnoEnFirestore(turno) {
+  try {
+    if (!turno.firebaseId) return guardarTurnoEnFirestore(turno);
+    await updateDoc(doc(db, "turnos", turno.firebaseId), turno);
+    return true;
+  } catch (e) { console.warn('Firebase turno actualizar:', e); return false; }
+}
+
+async function eliminarTurnoDeFirestore(firebaseId) {
+  try {
+    await deleteDoc(doc(db, "turnos", firebaseId));
+    return true;
+  } catch (e) { console.warn('Firebase turno eliminar:', e); return false; }
+}
+
 // Exponer funciones al scope global para que storage.js pueda usarlas
-window.guardarEnFirestore          = guardarEnFirestore;
+window.guardarEnFirestore             = guardarEnFirestore;
 window.obtenerDesdePacientesFirestore = obtenerDesdePacientesFirestore;
-window.actualizarEnFirestore       = actualizarEnFirestore;
-window.eliminarDeFirestore         = eliminarDeFirestore;
-window.sincronizarEnTiempoReal     = sincronizarEnTiempoReal;
+window.actualizarEnFirestore          = actualizarEnFirestore;
+window.eliminarDeFirestore            = eliminarDeFirestore;
+window.sincronizarEnTiempoReal        = sincronizarEnTiempoReal;
+window.guardarTurnoEnFirestore        = guardarTurnoEnFirestore;
+window.obtenerTurnosDesdeFirestore    = obtenerTurnosDesdeFirestore;
+window.actualizarTurnoEnFirestore     = actualizarTurnoEnFirestore;
+window.eliminarTurnoDeFirestore       = eliminarTurnoDeFirestore;
+window.sincronizarTurnosEnTiempoReal  = sincronizarTurnosEnTiempoReal;

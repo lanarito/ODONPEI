@@ -11,6 +11,22 @@ function guardarTurnosStorage(turnos) {
     localStorage.setItem(TURNOS_KEY, JSON.stringify(turnos));
 }
 
+async function sincronizarTurnosDesdeFirebase() {
+    if (typeof obtenerTurnosDesdeFirestore !== 'function') return;
+    try {
+        const remotos = await obtenerTurnosDesdeFirestore();
+        if (remotos.length > 0) {
+            localStorage.setItem(TURNOS_KEY, JSON.stringify(remotos));
+            renderizarSemana();
+        } else {
+            const locales = obtenerTurnos();
+            for (const t of locales) {
+                if (!t.firebaseId) await guardarTurnoEnFirestore(t);
+            }
+        }
+    } catch (e) { console.warn('Sync turnos:', e); }
+}
+
 function getLunesDeSemana(offset) {
     const hoy = new Date();
     const dia = hoy.getDay();
@@ -28,14 +44,7 @@ function fechaStr(date) {
 function cargarTurnos() {
     semanaOffset = 0;
     renderizarSemana();
-
-    // Si venimos de crear un paciente nuevo, reabrir el form de turno con los datos guardados
-    const pendiente = sessionStorage.getItem('ODONPEI_TURNO_PENDIENTE');
-    if (pendiente) {
-        sessionStorage.removeItem('ODONPEI_TURNO_PENDIENTE');
-        const { fecha, hora } = JSON.parse(pendiente);
-        setTimeout(() => mostrarFormTurno(fecha, hora), 200);
-    }
+    setTimeout(sincronizarTurnosDesdeFirebase, 1500);
 }
 
 function navegarSemana(dir) {
@@ -60,7 +69,7 @@ function renderizarSemana() {
 
     const turnos = obtenerTurnos();
     const horas = [];
-    for (let h = 8; h <= 19; h++) {
+    for (let h = 15; h <= 19; h++) {
         horas.push(`${String(h).padStart(2, '0')}:00`);
         horas.push(`${String(h).padStart(2, '0')}:30`);
     }
@@ -106,7 +115,7 @@ function renderizarSemana() {
 
 function mostrarFormTurno(fecha = '', hora = '') {
     const horas = [];
-    for (let h = 8; h <= 19; h++) {
+    for (let h = 15; h <= 19; h++) {
         horas.push(`${String(h).padStart(2, '0')}:00`);
         horas.push(`${String(h).padStart(2, '0')}:30`);
     }
@@ -180,6 +189,7 @@ function guardarTurno(event) {
     const turnos = obtenerTurnos();
     turnos.push(turno);
     guardarTurnosStorage(turnos);
+    if (typeof guardarTurnoEnFirestore === 'function') guardarTurnoEnFirestore(turno);
     cerrarFormTurno();
     renderizarSemana();
 }
@@ -200,7 +210,7 @@ function verTurno(id) {
                 ${turno.notas ? `<p style="margin-bottom:12px;">📝 ${turno.notas}</p>` : ''}
                 <div class="form-group" style="margin-top:16px;">
                     <label>Estado</label>
-                    <select onchange="cambiarEstadoTurno('${turno.id}', this.value)" style="padding:8px; border-radius:6px; border:1px solid #ddd; font-size:14px;">
+                    <select id="turno-estado-select" style="padding:8px; border-radius:6px; border:1px solid #ddd; font-size:14px; width:100%;">
                         <option value="pendiente"${turno.estado==='pendiente'?' selected':''}>🟡 P — Pendiente</option>
                         <option value="confirmado"${turno.estado==='confirmado'?' selected':''}>🔵 C — Confirmado</option>
                         <option value="cancelado"${turno.estado==='cancelado'?' selected':''}>🔴 X — Cancelado</option>
@@ -209,21 +219,33 @@ function verTurno(id) {
                 </div>
                 <div class="form-actions" style="margin-top:20px;">
                     <button onclick="eliminarTurno('${turno.id}')" class="btn btn-danger">Eliminar</button>
+                    <button onclick="guardarEstadoTurno('${turno.id}')" class="btn btn-primary">Guardar</button>
                     <button onclick="cerrarFormTurno()" class="btn btn-outline">Cerrar</button>
                 </div>
             </div>
         </div>`;
 }
 
-function cambiarEstadoTurno(id, estado) {
+function guardarEstadoTurno(id) {
+    const estado = document.getElementById('turno-estado-select')?.value;
+    if (!estado) return;
     const turnos = obtenerTurnos();
     const t = turnos.find(t => t.id === id);
-    if (t) { t.estado = estado; guardarTurnosStorage(turnos); renderizarSemana(); }
+    if (t) {
+        t.estado = estado;
+        guardarTurnosStorage(turnos);
+        if (typeof actualizarTurnoEnFirestore === 'function') actualizarTurnoEnFirestore(t);
+        cerrarFormTurno();
+        renderizarSemana();
+    }
 }
 
 function eliminarTurno(id) {
     if (!confirm('¿Eliminar este turno?')) return;
-    guardarTurnosStorage(obtenerTurnos().filter(t => t.id !== id));
+    const turnos = obtenerTurnos();
+    const t = turnos.find(t => t.id === id);
+    guardarTurnosStorage(turnos.filter(t => t.id !== id));
+    if (t?.firebaseId && typeof eliminarTurnoDeFirestore === 'function') eliminarTurnoDeFirestore(t.firebaseId);
     cerrarFormTurno();
     renderizarSemana();
 }
