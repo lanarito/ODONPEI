@@ -139,6 +139,9 @@ function cambiarPagina(pagina) {
         case 'inicio':
             renderizarContador();
             break;
+        case 'turnos':
+            cargarTurnos();
+            break;
         case 'pacientes':
             cargarPacientes();
             break;

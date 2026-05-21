@@ -997,3 +997,153 @@ body {
         padding: var(--spacing-md);
     }
 }
+
+/* ========== TURNERO ========== */
+.semana-titulo {
+    text-align: center;
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.cal-leyenda {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+}
+
+.cal-badge {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.cal-grid {
+    display: grid;
+    grid-template-columns: 56px repeat(6, 1fr);
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    background: white;
+    box-shadow: var(--box-shadow);
+}
+
+.cal-corner {
+    background: #f5f5f5;
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.cal-header-dia {
+    background: #f5f5f5;
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 2px solid #e0e0e0;
+    text-align: center;
+    padding: 8px 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.cal-header-dia.cal-hoy {
+    background: linear-gradient(135deg, #A8D8EA, #7EC8E3);
+    color: white;
+}
+
+.cal-dia-nombre {
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 600;
+    opacity: 0.7;
+}
+
+.cal-dia-num {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.cal-hora-label {
+    background: #fafafa;
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 11px;
+    color: #999;
+    padding: 4px 6px;
+    text-align: right;
+    font-weight: 600;
+}
+
+.cal-hora-label.cal-media-hora {
+    color: #ccc;
+    font-weight: 400;
+}
+
+.cal-celda {
+    border-right: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+    min-height: 32px;
+    padding: 2px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.cal-celda.cal-celda-media {
+    border-bottom-style: dashed;
+    opacity: 0.9;
+}
+
+.cal-celda:hover {
+    background: #f0faff;
+}
+
+.cal-turno {
+    border-radius: 5px;
+    padding: 3px 6px;
+    font-size: 11px;
+    cursor: pointer;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity 0.2s;
+}
+
+.cal-turno:hover { opacity: 0.85; }
+
+.estado-pendiente  { background: #FFF9C4; color: #F57F17; border-left: 3px solid #FFC107; }
+.estado-atendido   { background: #E8F5E9; color: #2E7D32; border-left: 3px solid #4CAF50; }
+.estado-cancelado  { background: #FFEBEE; color: #C62828; border-left: 3px solid #EF5350; }
+
+/* Modal turnos */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    width: 90%;
+    max-width: 460px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+    .cal-grid {
+        grid-template-columns: 44px repeat(6, 1fr);
+        font-size: 10px;
+    }
+    .cal-dia-num { font-size: 14px; }
+    .cal-hora-label { font-size: 9px; padding: 2px 3px; }
+}
