@@ -89,9 +89,11 @@ function renderizarSemana() {
             const fStr = fechaStr(d);
             const slot = turnos.filter(t => t.fecha === fStr && t.hora === hora);
             html += `<div class="cal-celda${esMediaHora ? ' cal-celda-media' : ''}" onclick="mostrarFormTurno('${fStr}','${hora}')">`;
+            const ESTADO_LETRA = { pendiente:'P', confirmado:'C', cancelado:'X', reprogramado:'R' };
             slot.forEach(t => {
+                const letra = ESTADO_LETRA[t.estado] || 'P';
                 html += `<div class="cal-turno estado-${t.estado}" onclick="event.stopPropagation();verTurno('${t.id}')">
-                    <strong>${t.hora}</strong> ${t.pacienteNombre}
+                    <span class="cal-turno-badge">${letra}</span> ${t.pacienteNombre}
                 </div>`;
             });
             html += '</div>';
@@ -198,10 +200,11 @@ function verTurno(id) {
                 ${turno.notas ? `<p style="margin-bottom:12px;">📝 ${turno.notas}</p>` : ''}
                 <div class="form-group" style="margin-top:16px;">
                     <label>Estado</label>
-                    <select onchange="cambiarEstadoTurno('${turno.id}', this.value)" style="padding:8px; border-radius:6px; border:1px solid #ddd;">
-                        <option value="pendiente"${turno.estado==='pendiente'?' selected':''}>🟡 Pendiente</option>
-                        <option value="atendido"${turno.estado==='atendido'?' selected':''}>🟢 Atendido</option>
-                        <option value="cancelado"${turno.estado==='cancelado'?' selected':''}>🔴 Cancelado</option>
+                    <select onchange="cambiarEstadoTurno('${turno.id}', this.value)" style="padding:8px; border-radius:6px; border:1px solid #ddd; font-size:14px;">
+                        <option value="pendiente"${turno.estado==='pendiente'?' selected':''}>🟡 P — Pendiente</option>
+                        <option value="confirmado"${turno.estado==='confirmado'?' selected':''}>🔵 C — Confirmado</option>
+                        <option value="cancelado"${turno.estado==='cancelado'?' selected':''}>🔴 X — Cancelado</option>
+                        <option value="reprogramado"${turno.estado==='reprogramado'?' selected':''}>🟠 R — Reprogramado</option>
                     </select>
                 </div>
                 <div class="form-actions" style="margin-top:20px;">
