@@ -88,78 +88,45 @@ function generarFormulario(tipo, dataPaciente = null) {
     html += `
         <div class="historia-section">
             <h3>Odontograma</h3>
-            <div style="margin-bottom: 15px; display: flex; gap: 10px; justify-content: center;">
-                <button type="button" onclick="establecerColorOdontograma('rojo')" class="btn" style="background: #FF6B6B; color: white; border: 3px solid #333; padding: 10px 20px;">
-                    🔴 Rojo (Existentes)
+
+            <!-- Herramientas -->
+            <div style="display:flex; gap:10px; justify-content:center; margin-bottom:15px; flex-wrap:wrap;">
+                <button type="button" id="btn-rojo" class="btn-herramienta activo"
+                    onclick="setHerramienta('rojo')"
+                    style="background:#E53935; color:white; border:3px solid transparent; padding:10px 22px; border-radius:8px; font-weight:bold; cursor:pointer;">
+                    🔴 Rojo
                 </button>
-                <button type="button" onclick="establecerColorOdontograma('azul')" class="btn" style="background: #4A90E2; color: white; border: 3px solid #333; padding: 10px 20px;">
-                    🔵 Azul (Requeridas)
+                <button type="button" id="btn-azul" class="btn-herramienta"
+                    onclick="setHerramienta('azul')"
+                    style="background:#1E88E5; color:white; border:3px solid transparent; padding:10px 22px; border-radius:8px; font-weight:bold; cursor:pointer;">
+                    🔵 Azul
+                </button>
+                <button type="button" id="btn-ausente" class="btn-herramienta"
+                    onclick="setHerramienta('ausente')"
+                    style="background:#555; color:white; border:3px solid transparent; padding:10px 22px; border-radius:8px; font-weight:bold; cursor:pointer;">
+                    ✕ Ausente
+                </button>
+                <button type="button" id="btn-borrador" class="btn-herramienta"
+                    onclick="setHerramienta('borrador')"
+                    style="background:#eee; color:#333; border:3px solid transparent; padding:10px 22px; border-radius:8px; font-weight:bold; cursor:pointer;">
+                    🧹 Borrador
+                </button>
+                <button type="button" onclick="limpiarOdontograma()"
+                    style="background:white; color:#E53935; border:2px solid #E53935; padding:10px 22px; border-radius:8px; font-weight:bold; cursor:pointer;">
+                    🗑 Limpiar todo
                 </button>
             </div>
-            <p style="color: #666; margin-bottom: 20px; text-align: center;">
-                1️⃣ Elige el color arriba | 2️⃣ Haz clic en cada zona del diente
-            </p>
-            <canvas id="odontograma-canvas" class="odontograma-canvas" style="border: 1px solid #E0E0E0; border-radius: 5px; background: white;"></canvas>
-            <div class="odontograma-legend" style="margin-top: 20px; padding: 15px; background: #F5F5F5; border-radius: 5px; text-align: center;">
-                <p style="margin: 0 0 15px; font-weight: bold; color: #333;">Leyenda de colores:</p>
-                <div style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap;">
-                    <div class="legend-item" style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 30px; height: 30px; background: #FF6B6B; border: 2px solid #333; border-radius: 3px;"></div>
-                        <span style="font-weight: 500;">🔴 Prácticas Existentes (Rojo)</span>
-                    </div>
-                    <div class="legend-item" style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 30px; height: 30px; background: #4A90E2; border: 2px solid #333; border-radius: 3px;"></div>
-                        <span style="font-weight: 500;">🔵 Prácticas Requeridas (Azul)</span>
-                    </div>
-                    <div class="legend-item" style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 30px; height: 30px; background: #FFFFFF; border: 2px solid #333; border-radius: 3px;"></div>
-                        <span style="font-weight: 500;">⚪ Sin marcar (Blanco)</span>
-                    </div>
-                </div>
-            </div>
+
+            <canvas id="odontograma-canvas" style="width:100%; max-width:900px; display:block; margin:0 auto; cursor:crosshair;"></canvas>
         </div>
         </div>
     `;
 
     container.innerHTML = html;
 
-    // Renderizar odontograma - Esperar a que el DOM esté completamente listo
+    // Iniciar odontograma modo Paint
     setTimeout(() => {
-        try {
-            const canvas = document.getElementById('odontograma-canvas');
-            if (!canvas) {
-                console.error('Canvas no encontrado');
-                return;
-            }
-
-            // Establecer dimensiones del canvas ANTES de dibujar
-            const ancho = Math.min(window.innerWidth - 60, 1200);
-            const alto = 900;
-            canvas.width = ancho;
-            canvas.height = alto;
-
-            // Forzar que el canvas se renderice con las dimensiones correctas
-            const ctx = canvas.getContext('2d');
-            if (!ctx) {
-                console.error('No se pudo obtener el contexto 2D del canvas');
-                return;
-            }
-
-            const datosOdontograma = datos.odontograma || {};
-            canvas.datosOdontograma = datosOdontograma;
-            canvas.datosZonas = [];
-
-            // Dibujar el odontograma
-            dibujarOdontograma(canvas, datosOdontograma);
-
-            // Agregar event listener para clicks
-            canvas.addEventListener('click', (event) => {
-                manejarClickOdontograma(event, canvas, datosOdontograma);
-            });
-
-        } catch (error) {
-            console.error('Error al renderizar odontograma:', error);
-        }
+        iniciarOdontograma('odontograma-canvas', datos.odontograma || null);
     }, 150);
 }
 
