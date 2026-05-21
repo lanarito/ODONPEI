@@ -9,7 +9,7 @@ function iniciarReloj() {
         const ahora = new Date();
         const h = document.getElementById('reloj-hora');
         const f = document.getElementById('reloj-fecha');
-        if (h) h.textContent = ahora.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        if (h) h.textContent = ahora.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
         if (f) {
             const txt = ahora.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
             f.textContent = txt.charAt(0).toUpperCase() + txt.slice(1);
