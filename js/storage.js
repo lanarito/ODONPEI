@@ -1,4 +1,4 @@
-// ========== GESTIÓN DE STORAGE (localStorage) ==========
+// ========== GESTIÓN DE STORAGE (localStorage + Firebase) ==========
 
 const STORAGE_KEY = 'ODONPEI_PACIENTES';
 
@@ -7,7 +7,7 @@ function guardar(paciente) {
     paciente.id = Date.now().toString();
     paciente.fechaCreacion = new Date().toISOString();
 
-    // No sobrescribir datos existentes
+    // Inicializar campos si no existen
     if (!paciente.odontograma) paciente.odontograma = {};
     if (!paciente.fotos) paciente.fotos = [];
     if (!paciente.archivos) paciente.archivos = [];
@@ -15,6 +15,15 @@ function guardar(paciente) {
     const pacientes = obtenerTodos();
     pacientes.push(paciente);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(pacientes));
+
+    // Guardar en Firebase si está disponible
+    if (typeof guardarEnFirestore === 'function') {
+        guardarEnFirestore(paciente).then(() => {
+            console.log('✅ Paciente guardado en Firebase');
+        }).catch(error => {
+            console.warn('Guardado en localStorage, Firebase error:', error);
+        });
+    }
 
     return paciente;
 }
@@ -39,6 +48,14 @@ function actualizar(paciente) {
     if (index !== -1) {
         pacientes[index] = paciente;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(pacientes));
+
+        // Actualizar en Firebase
+        if (typeof actualizarEnFirestore === 'function') {
+            actualizarEnFirestore(paciente).catch(error => {
+                console.warn('Actualizado en localStorage, Firebase error:', error);
+            });
+        }
+
         return true;
     }
     return false;
@@ -47,8 +64,16 @@ function actualizar(paciente) {
 // Eliminar paciente
 function eliminar(id) {
     const pacientes = obtenerTodos();
+    const paciente = pacientes.find(p => p.id === id);
     const filtered = pacientes.filter(p => p.id !== id);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+
+    // Eliminar de Firebase
+    if (paciente && paciente.firebaseId && typeof eliminarDeFirestore === 'function') {
+        eliminarDeFirestore(paciente.firebaseId).catch(error => {
+            console.warn('Eliminado en localStorage, Firebase error:', error);
+        });
+    }
 }
 
 // Exportar datos (backup)
@@ -71,14 +96,36 @@ function importarDatos(file) {
             const pacientes = JSON.parse(e.target.result);
             if (Array.isArray(pacientes)) {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(pacientes));
-                alert('Datos importados correctamente');
+                alert('✅ Datos importados correctamente');
                 location.reload();
             } else {
-                alert('Formato de archivo inválido');
+                alert('❌ Formato de archivo inválido');
             }
         } catch (error) {
-            alert('Error al importar: ' + error.message);
+            alert('❌ Error al importar: ' + error.message);
         }
     };
     reader.readAsText(file);
 }
+
+// Sincronizar desde Firebase al iniciar (si está disponible)
+async function sincronizarDesdeFirebase() {
+    if (typeof obtenerDesdePacientesFirestore === 'function') {
+        try {
+            const pacientesFirebase = await obtenerDesdePacientesFirestore();
+            if (pacientesFirebase.length > 0) {
+                console.log('✅ Sincronizando datos desde Firebase...');
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(pacientesFirebase));
+                return true;
+            }
+        } catch (error) {
+            console.warn('Error sincronizando desde Firebase:', error);
+        }
+    }
+    return false;
+}
+
+// Llamar sincronización al cargar
+window.addEventListener('load', () => {
+    setTimeout(sincronizarDesdeFirebase, 1000);
+});
