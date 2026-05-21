@@ -110,22 +110,36 @@ function importarDatos(file) {
 
 // Sincronizar desde Firebase al iniciar (si está disponible)
 async function sincronizarDesdeFirebase() {
-    if (typeof obtenerDesdePacientesFirestore === 'function') {
-        try {
-            const pacientesFirebase = await obtenerDesdePacientesFirestore();
-            if (pacientesFirebase.length > 0) {
-                console.log('✅ Sincronizando datos desde Firebase...');
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(pacientesFirebase));
-                return true;
+    if (typeof obtenerDesdePacientesFirestore !== 'function') return false;
+    try {
+        const pacientesFirebase = await obtenerDesdePacientesFirestore();
+        if (pacientesFirebase.length > 0) {
+            // Firebase tiene datos → usarlos como fuente de verdad
+            console.log('✅ Cargando datos desde Firebase...');
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(pacientesFirebase));
+            if (typeof cargarPacientes === 'function') cargarPacientes();
+            return true;
+        } else {
+            // Firebase vacío → subir datos locales si existen
+            const locales = obtenerTodos();
+            if (locales.length > 0) {
+                console.log('⬆️ Migrando datos locales a Firebase...');
+                for (const p of locales) {
+                    if (!p.firebaseId) {
+                        await guardarEnFirestore(p);
+                    }
+                }
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(locales));
+                console.log('✅ Migración completada');
             }
-        } catch (error) {
-            console.warn('Error sincronizando desde Firebase:', error);
         }
+    } catch (error) {
+        console.warn('Error sincronizando desde Firebase:', error);
     }
     return false;
 }
 
-// Llamar sincronización al cargar
+// Esperar a que firebase-config.js (módulo) termine de asignar window.xxx
 window.addEventListener('load', () => {
-    setTimeout(sincronizarDesdeFirebase, 1000);
+    setTimeout(sincronizarDesdeFirebase, 1500);
 });

@@ -92,3 +92,10 @@ function sincronizarEnTiempoReal(callback) {
   });
   return unsubscribe;
 }
+
+// Exponer funciones al scope global para que storage.js pueda usarlas
+window.guardarEnFirestore          = guardarEnFirestore;
+window.obtenerDesdePacientesFirestore = obtenerDesdePacientesFirestore;
+window.actualizarEnFirestore       = actualizarEnFirestore;
+window.eliminarDeFirestore         = eliminarDeFirestore;
+window.sincronizarEnTiempoReal     = sincronizarEnTiempoReal;
