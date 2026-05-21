@@ -52,12 +52,10 @@ function generarFormulario(tipo, dataPaciente = null) {
                         <label>N° Afiliado</label>
                         <input type="text" id="campo-nAfiliado" value="${dp.nAfiliado || ''}">
                     </div>
-                    ${tipo === 'odontopediatrica' ? `
-                        <div class="form-group">
-                            <label>DNI</label>
-                            <input type="text" id="campo-dni" value="${dp.dni || ''}">
-                        </div>
-                    ` : ''}
+                    <div class="form-group">
+                        <label>DNI</label>
+                        <input type="text" id="campo-dni" value="${dp.dni || ''}">
+                    </div>
                 </div>
             </div>
     `;
