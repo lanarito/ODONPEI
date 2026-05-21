@@ -3,6 +3,57 @@ let pacienteActual = null;
 let pacienteEnEdicion = null;
 let pacientesFiltrados = [];
 
+// ========== RELOJ ==========
+function iniciarReloj() {
+    function tick() {
+        const ahora = new Date();
+        const h = document.getElementById('reloj-hora');
+        const f = document.getElementById('reloj-fecha');
+        if (h) h.textContent = ahora.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        if (f) {
+            const txt = ahora.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            f.textContent = txt.charAt(0).toUpperCase() + txt.slice(1);
+        }
+    }
+    tick();
+    setInterval(tick, 1000);
+}
+
+// ========== CONTADOR DE ATENCIONES ==========
+const COUNTER_KEY = 'ODONPEI_ATENCIONES';
+
+function getMesKey(d = new Date()) {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+}
+
+function registrarAtencion() {
+    const key = getMesKey();
+    const data = JSON.parse(localStorage.getItem(COUNTER_KEY) || '{}');
+    data[key] = (data[key] || 0) + 1;
+    localStorage.setItem(COUNTER_KEY, JSON.stringify(data));
+    renderizarContador();
+}
+
+function renderizarContador() {
+    const ahora = new Date();
+    const key = getMesKey(ahora);
+    const data = JSON.parse(localStorage.getItem(COUNTER_KEY) || '{}');
+    const count = data[key] || 0;
+    const mesNombre = ahora.toLocaleDateString('es-AR', { month: 'long', year: 'numeric' });
+    const ultimoDia = new Date(ahora.getFullYear(), ahora.getMonth() + 1, 0).getDate();
+    const esUltimoDia = ahora.getDate() === ultimoDia;
+
+    const elMes = document.getElementById('contador-mes-nombre');
+    const elNum = document.getElementById('contador-numero');
+    const elMsg = document.getElementById('contador-mensaje-fin');
+    if (elMes) elMes.textContent = mesNombre;
+    if (elNum) elNum.textContent = count;
+    if (elMsg) {
+        elMsg.style.display = esUltimoDia ? 'block' : 'none';
+        if (esUltimoDia) elMsg.textContent = `Total de atenciones de ${mesNombre}: ${count}`;
+    }
+}
+
 // ========== USUARIOS (sin contraseña por ahora) ==========
 const USUARIOS_VALIDOS = ['odonpei'];
 
@@ -34,6 +85,8 @@ function mostrarApp(usuario) {
     document.getElementById('app').style.display = 'block';
     const navUsuario = document.getElementById('nav-usuario');
     if (navUsuario) navUsuario.textContent = '👤 ' + usuario.toUpperCase();
+    iniciarReloj();
+    renderizarContador();
     cargarPacientes();
 }
 
@@ -76,7 +129,7 @@ function cambiarPagina(pagina) {
     // Ejecutar acciones específicas por página
     switch (pagina) {
         case 'inicio':
-            // Nada especial
+            renderizarContador();
             break;
         case 'pacientes':
             cargarPacientes();
@@ -110,22 +163,24 @@ function cargarPacientes() {
     }
 }
 
-function mostrarPacientes(pacientes) {
+function mostrarPacientes(pacientes, esBusqueda = false) {
     const container = document.getElementById('lista-pacientes');
 
     if (pacientes.length === 0) {
         container.innerHTML = `
             <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
-                <p style="color: #999; font-size: 16px;">No hay pacientes registrados.</p>
-                <button onclick="cambiarPagina('nuevo-paciente')" class="btn btn-primary" style="margin-top: 20px;">
-                    Crear Primer Paciente
-                </button>
+                <p style="color: #999; font-size: 16px;">${esBusqueda ? 'No se encontraron resultados.' : 'No hay pacientes registrados.'}</p>
+                ${!esBusqueda ? `<button onclick="cambiarPagina('nuevo-paciente')" class="btn btn-primary" style="margin-top: 20px;">Crear Primer Paciente</button>` : ''}
             </div>
         `;
         return;
     }
 
-    container.innerHTML = pacientes.map(p => `
+    const ordenados = [...pacientes].sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion));
+    const visibles = esBusqueda ? ordenados : ordenados.slice(0, 5);
+    const ocultos = (!esBusqueda && ordenados.length > 5) ? ordenados.length - 5 : 0;
+
+    container.innerHTML = visibles.map(p => `
         <div class="paciente-card" onclick="verDetallesPaciente('${p.id}')">
             <h3>${p.datosPersonales.nombre}</h3>
             <p><strong>Alias:</strong> ${p.datosPersonales.alias || 'N/A'}</p>
@@ -137,13 +192,21 @@ function mostrarPacientes(pacientes) {
             </div>
         </div>
     `).join('');
+
+    if (ocultos > 0) {
+        container.innerHTML += `
+            <div style="grid-column:1/-1; text-align:center; padding:20px 0; color:#999; font-size:14px;">
+                Hay <strong>${ocultos}</strong> paciente(s) más. Buscá por nombre, alias o edad para encontrarlos.
+            </div>
+        `;
+    }
 }
 
 function filtrarPacientes() {
     const busqueda = document.getElementById('buscador-pacientes')?.value.toLowerCase() || '';
 
     if (!busqueda) {
-        mostrarPacientes(pacientesFiltrados);
+        mostrarPacientes(pacientesFiltrados, false);
         return;
     }
 
@@ -151,11 +214,10 @@ function filtrarPacientes() {
         const nombre = p.datosPersonales.nombre.toLowerCase();
         const alias = (p.datosPersonales.alias || '').toLowerCase();
         const edad = String(p.datosPersonales.edad);
-
         return nombre.includes(busqueda) || alias.includes(busqueda) || edad.includes(busqueda);
     });
 
-    mostrarPacientes(resultados);
+    mostrarPacientes(resultados, true);
 }
 
 // ========== VER DETALLES DEL PACIENTE ==========

@@ -112,6 +112,77 @@ body {
     }
 }
 
+/* ========== RELOJ Y CONTADOR ========== */
+.inicio-widgets {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto var(--spacing-lg);
+}
+
+.reloj-widget {
+    background: linear-gradient(135deg, #A8D8EA 0%, #7EC8E3 100%);
+    border-radius: var(--border-radius);
+    padding: 28px 20px;
+    text-align: center;
+    box-shadow: var(--box-shadow);
+}
+
+.reloj-hora {
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 3px;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.reloj-fecha {
+    color: rgba(255,255,255,0.9);
+    font-size: 13px;
+    margin-top: 8px;
+    text-transform: capitalize;
+}
+
+.contador-widget {
+    background: white;
+    border: 2px solid #A8D8EA;
+    border-radius: var(--border-radius);
+    padding: 24px 20px;
+    text-align: center;
+    box-shadow: var(--box-shadow);
+}
+
+.contador-titulo {
+    font-size: 12px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.contador-numero {
+    font-size: 64px;
+    font-weight: bold;
+    line-height: 1;
+    background: linear-gradient(135deg, #A8D8EA, #FFB6C1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 4px;
+}
+
+.contador-mensaje-fin {
+    font-size: 13px;
+    font-weight: bold;
+    color: #E53935;
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    background: #fff5f5;
+    border-radius: 6px;
+}
+
 /* ========== WELCOME CARD ========== */
 .welcome-card {
     background: white;
@@ -723,6 +794,12 @@ body {
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
+    .inicio-widgets {
+        grid-template-columns: 1fr;
+    }
+    .reloj-hora {
+        font-size: 36px;
+    }
     .navbar-container {
         flex-direction: column;
         gap: var(--spacing-lg);

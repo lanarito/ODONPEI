@@ -53,6 +53,25 @@
         <div class="container">
             <!-- Página de Inicio -->
             <section id="pagina-inicio" class="page">
+
+                <div class="inicio-widgets">
+                    <!-- Reloj -->
+                    <div class="reloj-widget">
+                        <div id="reloj-hora" class="reloj-hora">--:--:--</div>
+                        <div id="reloj-fecha" class="reloj-fecha"></div>
+                    </div>
+
+                    <!-- Contador de atenciones -->
+                    <div class="contador-widget">
+                        <div class="contador-titulo">Atenciones de <span id="contador-mes-nombre"></span></div>
+                        <div id="contador-numero" class="contador-numero">0</div>
+                        <div id="contador-mensaje-fin" class="contador-mensaje-fin" style="display:none;"></div>
+                        <button onclick="registrarAtencion()" class="btn btn-primary" style="margin-top:12px;">
+                            + Registrar Atención
+                        </button>
+                    </div>
+                </div>
+
                 <div class="welcome-card">
                     <img src="Muela.png" alt="Decoración" style="width: 120px; height: auto; margin: -30px auto 20px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));">
                     <h1>Bienvenido a ODONPEI</h1>
