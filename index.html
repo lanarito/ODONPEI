@@ -39,10 +39,13 @@
                     <img src="ODONPEI 2.png" alt="ODONPEI Logo" class="logo">
                     <span>ODONPEI</span>
                 </div>
-                <div class="nav-widgets">
+                <div class="nav-clock-box">
                     <div class="nav-clock" id="reloj-hora">--:--:--</div>
+                    <div class="nav-clock-label" id="reloj-fecha-nav"></div>
+                </div>
+                <div class="nav-counter-box">
+                    <div class="nav-counter-label">Atenciones <span id="contador-mes-nombre"></span></div>
                     <div class="nav-counter">
-                        <span class="nav-counter-label">Atenciones <span id="contador-mes-nombre"></span></span>
                         <button onclick="restarAtencion()" class="nav-counter-btn">−</button>
                         <span id="contador-numero" class="nav-counter-num">0</span>
                         <button onclick="registrarAtencion()" class="nav-counter-btn">+</button>

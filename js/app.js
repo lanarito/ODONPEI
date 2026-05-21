@@ -8,7 +8,12 @@ function iniciarReloj() {
     function tick() {
         const ahora = new Date();
         const h = document.getElementById('reloj-hora');
+        const f = document.getElementById('reloj-fecha-nav');
         if (h) h.textContent = ahora.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+        if (f) {
+            const txt = ahora.toLocaleDateString('es-AR', { weekday: 'short', day: 'numeric', month: 'short' });
+            f.textContent = txt.charAt(0).toUpperCase() + txt.slice(1);
+        }
     }
     tick();
     setInterval(tick, 1000);

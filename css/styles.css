@@ -72,56 +72,73 @@ body {
     width: auto;
 }
 
-.nav-widgets {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    background: rgba(255,255,255,0.35);
-    border-radius: 20px;
-    padding: 6px 14px;
+/* Reloj en navbar */
+.nav-clock-box {
+    background: rgba(255,255,255,0.45);
+    border-radius: 14px;
+    padding: 6px 16px;
+    text-align: center;
+    min-width: 100px;
 }
 
 .nav-clock {
     font-family: 'Courier New', monospace;
-    font-size: 17px;
+    font-size: 20px;
     font-weight: bold;
-    color: #333;
-    letter-spacing: 1px;
-    min-width: 70px;
+    color: #1a5276;
+    letter-spacing: 2px;
+    line-height: 1.2;
+}
+
+.nav-clock-label {
+    font-size: 10px;
+    color: #666;
+    text-transform: capitalize;
+    margin-top: 1px;
+}
+
+/* Contador en navbar */
+.nav-counter-box {
+    background: rgba(255,255,255,0.45);
+    border-radius: 14px;
+    padding: 6px 16px;
+    text-align: center;
+}
+
+.nav-counter-label {
+    font-size: 10px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
 }
 
 .nav-counter {
     display: flex;
     align-items: center;
-    gap: 6px;
-}
-
-.nav-counter-label {
-    font-size: 11px;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    gap: 8px;
+    justify-content: center;
 }
 
 .nav-counter-num {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
     color: #1565C0;
-    min-width: 24px;
+    min-width: 28px;
     text-align: center;
+    line-height: 1;
 }
 
 .nav-counter-btn {
     background: white;
     border: 2px solid #A8D8EA;
     border-radius: 50%;
-    width: 26px;
-    height: 26px;
-    font-size: 16px;
+    width: 24px;
+    height: 24px;
+    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
     color: #333;
-    line-height: 1;
     padding: 0;
     display: flex;
     align-items: center;
@@ -275,13 +292,16 @@ body {
 
 /* ========== WELCOME CARD ========== */
 .welcome-card {
-    background: white;
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     padding: var(--spacing-xl);
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     text-align: center;
     max-width: 600px;
     margin: var(--spacing-xl) auto;
+    border: 1px solid rgba(255,255,255,0.7);
 }
 
 .welcome-card h1 {
