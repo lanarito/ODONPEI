@@ -3,10 +3,64 @@ let pacienteActual = null;
 let pacienteEnEdicion = null;
 let pacientesFiltrados = [];
 
+// ========== USUARIOS (sin contraseña por ahora) ==========
+const USUARIOS_VALIDOS = ['odonpei'];
+
 // Inicialización
 document.addEventListener('DOMContentLoaded', () => {
-    cargarPacientes();
+    verificarSesion();
 });
+
+function verificarSesion() {
+    const usuario = sessionStorage.getItem('odonpei_usuario');
+    if (usuario) {
+        mostrarApp(usuario);
+    } else {
+        mostrarLogin();
+    }
+}
+
+function mostrarLogin() {
+    document.getElementById('pantalla-login').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+    setTimeout(() => {
+        const input = document.getElementById('login-usuario');
+        if (input) input.focus();
+    }, 100);
+}
+
+function mostrarApp(usuario) {
+    document.getElementById('pantalla-login').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    const navUsuario = document.getElementById('nav-usuario');
+    if (navUsuario) navUsuario.textContent = '👤 ' + usuario.toUpperCase();
+    cargarPacientes();
+}
+
+function hacerLogin() {
+    const usuario = document.getElementById('login-usuario')?.value?.trim().toLowerCase();
+    const errorEl = document.getElementById('login-error');
+
+    if (!usuario) {
+        errorEl.style.display = 'block';
+        errorEl.textContent = 'Ingresa tu usuario';
+        return;
+    }
+
+    if (USUARIOS_VALIDOS.includes(usuario)) {
+        errorEl.style.display = 'none';
+        sessionStorage.setItem('odonpei_usuario', usuario);
+        mostrarApp(usuario);
+    } else {
+        errorEl.style.display = 'block';
+        errorEl.textContent = 'Usuario no encontrado. Usuarios válidos: ' + USUARIOS_VALIDOS.join(', ');
+    }
+}
+
+function cerrarSesion() {
+    sessionStorage.removeItem('odonpei_usuario');
+    mostrarLogin();
+}
 
 // ========== NAVEGACIÓN ==========
 function cambiarPagina(pagina) {

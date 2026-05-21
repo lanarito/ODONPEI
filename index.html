@@ -7,7 +7,31 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div id="app">
+    <!-- PANTALLA DE LOGIN -->
+    <div id="pantalla-login" style="display:none; min-height:100vh; background: linear-gradient(135deg, #A8D8EA 0%, #FFB6C1 100%); display:flex; align-items:center; justify-content:center;">
+        <div style="background:white; padding:50px; border-radius:20px; box-shadow:0 8px 30px rgba(0,0,0,0.15); text-align:center; max-width:400px; width:90%;">
+            <img src="ODONPEI 2.png" alt="ODONPEI Logo" style="width:100px; margin-bottom:20px;">
+            <h1 style="color:#333; margin-bottom:5px;">ODONPEI</h1>
+            <p style="color:#999; margin-bottom:30px;">Sistema de Historiales Clínicos</p>
+
+            <div style="margin-bottom:20px; text-align:left;">
+                <label style="font-weight:600; color:#555; display:block; margin-bottom:8px;">Usuario</label>
+                <input type="text" id="login-usuario" placeholder="Ingresa tu usuario"
+                    style="width:100%; padding:12px; border:2px solid #E0E0E0; border-radius:8px; font-size:16px;"
+                    onkeydown="if(event.key==='Enter') hacerLogin()">
+            </div>
+
+            <div id="login-error" style="color:#FF6B6B; margin-bottom:15px; display:none;">
+                Usuario no encontrado
+            </div>
+
+            <button onclick="hacerLogin()" style="width:100%; padding:14px; background: linear-gradient(135deg, #A8D8EA, #4A90E2); color:white; border:none; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer;">
+                Entrar
+            </button>
+        </div>
+    </div>
+
+    <div id="app" style="display:none;">
         <!-- Navbar -->
         <nav class="navbar">
             <div class="navbar-container">
@@ -19,6 +43,8 @@
                     <li><a href="#" onclick="cambiarPagina('inicio')">Inicio</a></li>
                     <li><a href="#" onclick="cambiarPagina('pacientes')">Pacientes</a></li>
                     <li><a href="#" onclick="cambiarPagina('nuevo-paciente')">Nuevo Paciente</a></li>
+                    <li><a href="#" id="nav-usuario" style="color:#FFD700; font-weight:bold;"></a></li>
+                    <li><a href="#" onclick="cerrarSesion()" style="color:#FF6B6B;">Salir</a></li>
                 </ul>
             </div>
         </nav>
@@ -202,6 +228,7 @@
                 </div>
             </section>
         </div>
+    </div>
     </div>
 
     <!-- Firebase -->
