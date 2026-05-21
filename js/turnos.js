@@ -28,6 +28,14 @@ function fechaStr(date) {
 function cargarTurnos() {
     semanaOffset = 0;
     renderizarSemana();
+
+    // Si venimos de crear un paciente nuevo, reabrir el form de turno con los datos guardados
+    const pendiente = sessionStorage.getItem('ODONPEI_TURNO_PENDIENTE');
+    if (pendiente) {
+        sessionStorage.removeItem('ODONPEI_TURNO_PENDIENTE');
+        const { fecha, hora } = JSON.parse(pendiente);
+        setTimeout(() => mostrarFormTurno(fecha, hora), 200);
+    }
 }
 
 function navegarSemana(dir) {
@@ -124,6 +132,12 @@ function mostrarFormTurno(fecha = '', hora = '') {
                             <option value="">Seleccionar paciente...</option>
                             ${pacOpts}
                         </select>
+                        <div style="margin-top:6px;">
+                            <button type="button" onclick="irANuevoPacienteConTurno()"
+                                style="background:none; border:none; color:#1565C0; font-size:12px; cursor:pointer; padding:0; text-decoration:underline;">
+                                + El paciente no existe aún, crearlo primero
+                            </button>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Fecha *</label>
@@ -152,6 +166,15 @@ function mostrarFormTurno(fecha = '', hora = '') {
                 </form>
             </div>
         </div>`;
+}
+
+function irANuevoPacienteConTurno() {
+    // Guardar fecha y hora elegidas para retomar el turno después
+    const fecha = document.getElementById('turno-fecha')?.value || '';
+    const hora  = document.getElementById('turno-hora')?.value  || '';
+    sessionStorage.setItem('ODONPEI_TURNO_PENDIENTE', JSON.stringify({ fecha, hora }));
+    cerrarFormTurno();
+    cambiarPagina('nuevo-paciente');
 }
 
 function cerrarFormTurno() {
