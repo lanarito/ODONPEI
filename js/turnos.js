@@ -124,6 +124,10 @@ function mostrarFormTurno(fecha = '', hora = '') {
                         <input type="text" id="turno-nombre" placeholder="Ej: Pepe Robledo" required autocomplete="off">
                     </div>
                     <div class="form-group">
+                        <label>Celular</label>
+                        <input type="tel" id="turno-celular" placeholder="Ej: 11 1234-5678" autocomplete="off">
+                    </div>
+                    <div class="form-group">
                         <label>Fecha *</label>
                         <input type="date" id="turno-fecha" value="${fecha}" required>
                     </div>
@@ -163,6 +167,7 @@ function guardarTurno(event) {
     const turno = {
         id: Date.now().toString(),
         pacienteNombre: document.getElementById('turno-nombre').value.trim(),
+        celular: document.getElementById('turno-celular').value.trim(),
         fecha: document.getElementById('turno-fecha').value,
         hora: document.getElementById('turno-hora').value,
         duracion: parseInt(document.getElementById('turno-duracion').value),
@@ -189,6 +194,7 @@ function verTurno(id) {
                 <h3 style="margin-bottom:16px; color:#333;">${turno.pacienteNombre}</h3>
                 <p style="margin-bottom:8px;">📅 <strong>${fechaLegible}</strong></p>
                 <p style="margin-bottom:8px;">🕐 ${turno.hora} · ${turno.duracion} min</p>
+                ${turno.celular ? `<p style="margin-bottom:8px;">📱 ${turno.celular}</p>` : ''}
                 ${turno.notas ? `<p style="margin-bottom:12px;">📝 ${turno.notas}</p>` : ''}
                 <div class="form-group" style="margin-top:16px;">
                     <label>Estado</label>
