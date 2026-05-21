@@ -8,12 +8,7 @@ function iniciarReloj() {
     function tick() {
         const ahora = new Date();
         const h = document.getElementById('reloj-hora');
-        const f = document.getElementById('reloj-fecha');
         if (h) h.textContent = ahora.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-        if (f) {
-            const txt = ahora.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-            f.textContent = txt.charAt(0).toUpperCase() + txt.slice(1);
-        }
     }
     tick();
     setInterval(tick, 1000);
@@ -30,6 +25,14 @@ function registrarAtencion() {
     const key = getMesKey();
     const data = JSON.parse(localStorage.getItem(COUNTER_KEY) || '{}');
     data[key] = (data[key] || 0) + 1;
+    localStorage.setItem(COUNTER_KEY, JSON.stringify(data));
+    renderizarContador();
+}
+
+function restarAtencion() {
+    const key = getMesKey();
+    const data = JSON.parse(localStorage.getItem(COUNTER_KEY) || '{}');
+    data[key] = Math.max(0, (data[key] || 0) - 1);
     localStorage.setItem(COUNTER_KEY, JSON.stringify(data));
     renderizarContador();
 }

@@ -39,6 +39,16 @@
                     <img src="ODONPEI 2.png" alt="ODONPEI Logo" class="logo">
                     <span>ODONPEI</span>
                 </div>
+                <div class="nav-widgets">
+                    <div class="nav-clock" id="reloj-hora">--:--:--</div>
+                    <div class="nav-counter">
+                        <span class="nav-counter-label">Atenciones <span id="contador-mes-nombre"></span></span>
+                        <button onclick="restarAtencion()" class="nav-counter-btn">−</button>
+                        <span id="contador-numero" class="nav-counter-num">0</span>
+                        <button onclick="registrarAtencion()" class="nav-counter-btn">+</button>
+                    </div>
+                    <div id="contador-mensaje-fin" class="contador-mensaje-fin" style="display:none;"></div>
+                </div>
                 <ul class="nav-menu">
                     <li><a href="#" onclick="cambiarPagina('inicio')">Inicio</a></li>
                     <li><a href="#" onclick="cambiarPagina('pacientes')">Pacientes</a></li>
@@ -53,27 +63,6 @@
         <div class="container">
             <!-- Página de Inicio -->
             <section id="pagina-inicio" class="page">
-
-                <div class="inicio-widgets">
-                    <!-- Reloj -->
-                    <div class="reloj-widget">
-                        <div id="reloj-hora" class="reloj-hora">--:--:--</div>
-                        <div id="reloj-fecha" class="reloj-fecha"></div>
-                    </div>
-
-                    <!-- Contador de atenciones -->
-                    <div class="contador-widget">
-                        <div>
-                            <div class="contador-titulo">Atenciones de <span id="contador-mes-nombre"></span></div>
-                            <div id="contador-mensaje-fin" class="contador-mensaje-fin" style="display:none;"></div>
-                        </div>
-                        <div id="contador-numero" class="contador-numero">0</div>
-                        <button onclick="registrarAtencion()" class="btn btn-primary" style="padding:8px 14px; font-size:13px;">
-                            +1
-                        </button>
-                    </div>
-                </div>
-
                 <div class="welcome-card">
                     <img src="Muela.png" alt="Decoración" style="width: 120px; height: auto; margin: -30px auto 20px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));">
                     <h1>Bienvenido a ODONPEI</h1>
@@ -248,6 +237,93 @@
                     </div>
                 </div>
             </section>
+        </div>
+
+        <!-- Decoración niños coloridos - fondo fijo -->
+        <div class="kids-bg" aria-hidden="true">
+            <svg viewBox="0 0 900 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+                <!-- Niño 1 - violeta -->
+                <g transform="translate(60,20)" opacity="0.82">
+                    <circle cx="0" cy="0" r="13" fill="#9C27B0"/>
+                    <rect x="-10" y="14" width="20" height="28" rx="6" fill="#9C27B0"/>
+                    <line x1="-10" y1="22" x2="-26" y2="36" stroke="#9C27B0" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="10" y1="22" x2="26" y2="36" stroke="#9C27B0" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="-6" y1="42" x2="-9" y2="66" stroke="#9C27B0" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="6" y1="42" x2="9" y2="66" stroke="#9C27B0" stroke-width="6" stroke-linecap="round"/>
+                    <circle cx="-5" cy="-6" r="3" fill="#CE93D8"/>
+                </g>
+                <!-- Niño 2 - verde -->
+                <g transform="translate(170,10)" opacity="0.82">
+                    <circle cx="0" cy="0" r="14" fill="#4CAF50"/>
+                    <rect x="-11" y="15" width="22" height="30" rx="6" fill="#4CAF50"/>
+                    <line x1="-11" y1="23" x2="-28" y2="40" stroke="#4CAF50" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="11" y1="23" x2="28" y2="40" stroke="#4CAF50" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="-6" y1="45" x2="-10" y2="70" stroke="#4CAF50" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="6" y1="45" x2="10" y2="70" stroke="#4CAF50" stroke-width="6" stroke-linecap="round"/>
+                    <ellipse cx="6" cy="-8" rx="5" ry="7" fill="#A5D6A7"/>
+                </g>
+                <!-- Niño 3 - rojo -->
+                <g transform="translate(280,15)" opacity="0.82">
+                    <circle cx="0" cy="0" r="13" fill="#F44336"/>
+                    <rect x="-10" y="14" width="20" height="28" rx="6" fill="#F44336"/>
+                    <line x1="-10" y1="22" x2="-26" y2="38" stroke="#F44336" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="10" y1="22" x2="26" y2="38" stroke="#F44336" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="-5" y1="42" x2="-8" y2="66" stroke="#F44336" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="5" y1="42" x2="8" y2="66" stroke="#F44336" stroke-width="6" stroke-linecap="round"/>
+                    <circle cx="0" cy="-10" r="4" fill="#EF9A9A"/>
+                </g>
+                <!-- Niño 4 - amarillo -->
+                <g transform="translate(390,8)" opacity="0.82">
+                    <circle cx="0" cy="0" r="14" fill="#FFC107"/>
+                    <rect x="-11" y="15" width="22" height="30" rx="6" fill="#FFC107"/>
+                    <line x1="-11" y1="24" x2="-28" y2="42" stroke="#FFC107" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="11" y1="24" x2="28" y2="42" stroke="#FFC107" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="-6" y1="45" x2="-10" y2="70" stroke="#FFC107" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="6" y1="45" x2="10" y2="70" stroke="#FFC107" stroke-width="6" stroke-linecap="round"/>
+                    <ellipse cx="0" cy="-12" rx="8" ry="5" fill="#FFF59D"/>
+                </g>
+                <!-- Niño 5 - azul -->
+                <g transform="translate(510,12)" opacity="0.82">
+                    <circle cx="0" cy="0" r="13" fill="#1565C0"/>
+                    <rect x="-10" y="14" width="20" height="28" rx="6" fill="#1565C0"/>
+                    <line x1="-10" y1="22" x2="-26" y2="38" stroke="#1565C0" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="10" y1="22" x2="26" y2="38" stroke="#1565C0" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="-5" y1="42" x2="-8" y2="66" stroke="#1565C0" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="5" y1="42" x2="8" y2="66" stroke="#1565C0" stroke-width="6" stroke-linecap="round"/>
+                    <circle cx="-4" cy="-8" r="5" fill="#90CAF9"/>
+                    <circle cx="4" cy="-10" r="3" fill="#90CAF9"/>
+                </g>
+                <!-- Niño 6 - rosa -->
+                <g transform="translate(625,18)" opacity="0.82">
+                    <circle cx="0" cy="0" r="13" fill="#E91E8C"/>
+                    <rect x="-10" y="14" width="20" height="28" rx="6" fill="#E91E8C"/>
+                    <line x1="-10" y1="22" x2="-26" y2="36" stroke="#E91E8C" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="10" y1="22" x2="26" y2="36" stroke="#E91E8C" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="-5" y1="42" x2="-8" y2="66" stroke="#E91E8C" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="5" y1="42" x2="8" y2="66" stroke="#E91E8C" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M-8,-8 Q0,-18 8,-8" stroke="#F48FB1" stroke-width="3" fill="none"/>
+                </g>
+                <!-- Niño 7 - naranja -->
+                <g transform="translate(740,14)" opacity="0.82">
+                    <circle cx="0" cy="0" r="13" fill="#FF6F00"/>
+                    <rect x="-10" y="14" width="20" height="28" rx="6" fill="#FF6F00"/>
+                    <line x1="-10" y1="22" x2="-26" y2="40" stroke="#FF6F00" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="10" y1="22" x2="26" y2="40" stroke="#FF6F00" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="-5" y1="42" x2="-8" y2="66" stroke="#FF6F00" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="5" y1="42" x2="8" y2="66" stroke="#FF6F00" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M-7,-10 Q-3,-16 3,-14 Q8,-12 7,-7" stroke="#FFCC80" stroke-width="3" fill="none"/>
+                </g>
+                <!-- Línea de suelo suave -->
+                <line x1="20" y1="95" x2="880" y2="95" stroke="#E0E0E0" stroke-width="1.5" opacity="0.5"/>
+                <!-- Sombras reflejo -->
+                <ellipse cx="60" cy="100" rx="18" ry="5" fill="#9C27B0" opacity="0.15"/>
+                <ellipse cx="170" cy="100" rx="20" ry="5" fill="#4CAF50" opacity="0.15"/>
+                <ellipse cx="280" cy="100" rx="18" ry="5" fill="#F44336" opacity="0.15"/>
+                <ellipse cx="390" cy="100" rx="20" ry="5" fill="#FFC107" opacity="0.15"/>
+                <ellipse cx="510" cy="100" rx="18" ry="5" fill="#1565C0" opacity="0.15"/>
+                <ellipse cx="625" cy="100" rx="18" ry="5" fill="#E91E8C" opacity="0.15"/>
+                <ellipse cx="740" cy="100" rx="18" ry="5" fill="#FF6F00" opacity="0.15"/>
+            </svg>
         </div>
     </div>
     </div>
