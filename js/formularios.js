@@ -17,7 +17,7 @@ function generarFormulario(tipo, dataPaciente = null) {
                 <h3>Datos Personales</h3>
                 <div class="datos-personales">
                     <div class="form-group">
-                        <label>Nombre y Apellido *</label>
+                        <label>Apellido y Nombre *</label>
                         <input type="text" id="campo-nombre" value="${dp.nombre || ''}" required>
                     </div>
                     <div class="form-group">

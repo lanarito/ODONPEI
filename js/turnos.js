@@ -98,7 +98,7 @@ function renderizarSemana() {
             const fStr = fechaStr(d);
             const slot = turnos.filter(t => t.fecha === fStr && t.hora === hora);
             html += `<div class="cal-celda${esMediaHora ? ' cal-celda-media' : ''}" onclick="mostrarFormTurno('${fStr}','${hora}')">`;
-            const ESTADO_LETRA = { pendiente:'P', confirmado:'C', cancelado:'X', reprogramado:'R' };
+            const ESTADO_LETRA = { pendiente:'P', confirmado:'C', cancelado:'X', reprogramado:'R', asistio:'A', noasistio:'NA' };
             slot.forEach(t => {
                 const letra = ESTADO_LETRA[t.estado] || 'P';
                 html += `<div class="cal-turno estado-${t.estado}" onclick="event.stopPropagation();verTurno('${t.id}')">
@@ -215,6 +215,8 @@ function verTurno(id) {
                         <option value="confirmado"${turno.estado==='confirmado'?' selected':''}>🔵 C — Confirmado</option>
                         <option value="cancelado"${turno.estado==='cancelado'?' selected':''}>🔴 X — Cancelado</option>
                         <option value="reprogramado"${turno.estado==='reprogramado'?' selected':''}>🟠 R — Reprogramado</option>
+                        <option value="asistio"${turno.estado==='asistio'?' selected':''}>🟢 A — Asistió</option>
+                        <option value="noasistio"${turno.estado==='noasistio'?' selected':''}>⚫ NA — No Asistió</option>
                     </select>
                 </div>
                 <div class="form-actions" style="margin-top:20px;">
