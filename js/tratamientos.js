@@ -316,6 +316,7 @@ function imprimirPresupuesto() {
 function generarHTMLPresupuestoPrint() {
     const pres = pacienteActual.presupuesto;
     const pac = pacienteActual.datosPersonales;
+    const muelaUrl = new URL('Muela.png', window.location.href).href;
 
     let itemsHtml = '';
     let total = 0;
@@ -366,6 +367,27 @@ function generarHTMLPresupuestoPrint() {
                     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
                     max-width: 900px;
                     margin: 0 auto;
+                    position: relative;
+                    overflow: hidden;
+                }
+                .watermark {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 500px;
+                    height: 500px;
+                    background-image: url('${muelaUrl}');
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    opacity: 0.08;
+                    pointer-events: none;
+                    z-index: 0;
+                }
+                .presupuesto > *:not(.watermark) {
+                    position: relative;
+                    z-index: 1;
                 }
                 .header {
                     display: flex;
@@ -500,9 +522,10 @@ function generarHTMLPresupuestoPrint() {
         </head>
         <body>
             <div class="presupuesto">
+                <div class="watermark"></div>
                 <div class="header">
-                    <div style="width: 80px; height: 80px; background: #f0f0f0; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #999;">
-                        [Logo ODONPEI]
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <img src="${muelaUrl}" style="width:70px; height:auto;">
                     </div>
                     <div class="empresa-info">
                         <h2>ODONPEI</h2>
