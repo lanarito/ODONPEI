@@ -567,7 +567,10 @@ function cargarArchivos() {
 
     container.innerHTML = pacienteActual.archivos.map(archivo => `
         <div class="archivo-item">
-            <div class="archivo-icon">${getIconoArchivo(archivo.tipo)}</div>
+            ${archivo.tipo.includes('image')
+                ? `<img src="${archivo.data}" alt="${archivo.nombre}" style="width:100%;height:160px;object-fit:cover;display:block;border-radius:6px 6px 0 0;">`
+                : `<div class="archivo-icon">${getIconoArchivo(archivo.tipo)}</div>`
+            }
             <div class="archivo-nombre">${archivo.nombre}</div>
             <div class="archivo-fecha">${new Date(archivo.fecha).toLocaleDateString('es-AR')}</div>
             <div class="archivo-actions">

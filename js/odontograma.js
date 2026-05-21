@@ -63,7 +63,7 @@ function dibujarPunto(event, canvas) {
         ctx.globalCompositeOperation = 'source-over';
         ctx.fillStyle = '#FAFAFA';
         ctx.beginPath();
-        ctx.arc(x, y, 14, 0, Math.PI * 2);
+        ctx.arc(x, y, 7, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
         return;
@@ -83,7 +83,7 @@ function dibujarPunto(event, canvas) {
     ctx.fillStyle = COLORES_HERRAMIENTA[herramientaActual];
     ctx.globalAlpha = 0.9;
     ctx.beginPath();
-    ctx.arc(x, y, 7, 0, Math.PI * 2);
+    ctx.arc(x, y, 3.5, 0, Math.PI * 2);
     ctx.fill();
     ctx.globalAlpha = 1;
 }
