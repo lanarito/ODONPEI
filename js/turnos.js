@@ -103,7 +103,6 @@ function renderizarSemana() {
 }
 
 function mostrarFormTurno(fecha = '', hora = '') {
-    const pacientes = obtenerTodos();
     const horas = [];
     for (let h = 8; h <= 19; h++) {
         horas.push(`${String(h).padStart(2, '0')}:00`);
@@ -115,29 +114,14 @@ function mostrarFormTurno(fecha = '', hora = '') {
         `<option value="${h}"${h === hora ? ' selected' : ''}>${h}</option>`
     ).join('');
 
-    const pacOpts = pacientes.map(p =>
-        `<option value="${p.id}" data-nombre="${p.datosPersonales.nombre}">
-            ${p.datosPersonales.nombre}${p.datosPersonales.alias ? ' (' + p.datosPersonales.alias + ')' : ''}
-        </option>`
-    ).join('');
-
     document.getElementById('form-turno-container').innerHTML = `
         <div class="modal-overlay" onclick="cerrarFormTurno()">
             <div class="modal-content" onclick="event.stopPropagation()">
                 <h3 style="margin-bottom:20px; color:#333;">Nuevo Turno</h3>
                 <form onsubmit="guardarTurno(event)">
                     <div class="form-group">
-                        <label>Paciente *</label>
-                        <select id="turno-paciente" required>
-                            <option value="">Seleccionar paciente...</option>
-                            ${pacOpts}
-                        </select>
-                        <div style="margin-top:6px;">
-                            <button type="button" onclick="irANuevoPacienteConTurno()"
-                                style="background:none; border:none; color:#1565C0; font-size:12px; cursor:pointer; padding:0; text-decoration:underline;">
-                                + El paciente no existe aún, crearlo primero
-                            </button>
-                        </div>
+                        <label>Nombre *</label>
+                        <input type="text" id="turno-nombre" placeholder="Ej: Pepe Robledo" required autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label>Fecha *</label>
@@ -166,15 +150,8 @@ function mostrarFormTurno(fecha = '', hora = '') {
                 </form>
             </div>
         </div>`;
-}
 
-function irANuevoPacienteConTurno() {
-    // Guardar fecha y hora elegidas para retomar el turno después
-    const fecha = document.getElementById('turno-fecha')?.value || '';
-    const hora  = document.getElementById('turno-hora')?.value  || '';
-    sessionStorage.setItem('ODONPEI_TURNO_PENDIENTE', JSON.stringify({ fecha, hora }));
-    cerrarFormTurno();
-    cambiarPagina('nuevo-paciente');
+    setTimeout(() => document.getElementById('turno-nombre')?.focus(), 100);
 }
 
 function cerrarFormTurno() {
@@ -183,11 +160,9 @@ function cerrarFormTurno() {
 
 function guardarTurno(event) {
     event.preventDefault();
-    const sel = document.getElementById('turno-paciente');
     const turno = {
         id: Date.now().toString(),
-        pacienteId: sel.value,
-        pacienteNombre: sel.options[sel.selectedIndex].dataset.nombre,
+        pacienteNombre: document.getElementById('turno-nombre').value.trim(),
         fecha: document.getElementById('turno-fecha').value,
         hora: document.getElementById('turno-hora').value,
         duracion: parseInt(document.getElementById('turno-duracion').value),
@@ -225,7 +200,6 @@ function verTurno(id) {
                 </div>
                 <div class="form-actions" style="margin-top:20px;">
                     <button onclick="eliminarTurno('${turno.id}')" class="btn btn-danger">Eliminar</button>
-                    <button onclick="verDetallesPaciente('${turno.pacienteId}'); cerrarFormTurno();" class="btn btn-secondary">Ver Historia</button>
                     <button onclick="cerrarFormTurno()" class="btn btn-outline">Cerrar</button>
                 </div>
             </div>

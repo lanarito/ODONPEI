@@ -1086,8 +1086,8 @@ body {
 .cal-celda {
     border-right: 1px solid #f0f0f0;
     border-bottom: 1px solid #f0f0f0;
-    min-height: 32px;
-    padding: 2px;
+    min-height: 36px;
+    padding: 2px 3px;
     cursor: pointer;
     transition: background 0.15s;
 }
