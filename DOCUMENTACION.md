@@ -1,0 +1,347 @@
+# ODONPEI — Documentación Completa del Proyecto
+
+## ¿Qué es ODONPEI?
+
+Sistema web de gestión de historiales clínicos odontológicos pediátricos para pacientes con necesidades especiales. Diseñado para la odontopediatra del consultorio, reemplaza la papelería física y permite trabajar desde cualquier dispositivo con sincronización automática.
+
+**URL en producción:** https://lanarito.github.io/ODONPEI/  
+**Repositorio GitHub:** https://github.com/lanarito/ODONPEI  
+**Hosting:** GitHub Pages (gratuito, automático al hacer push a `main`)  
+**Base de datos:** Firebase Firestore (gratuito, sincronización en la nube)
+
+---
+
+## Stack Tecnológico
+
+- **Frontend:** HTML5 + CSS3 + JavaScript vanilla (sin frameworks)
+- **Base de datos local:** localStorage del navegador (cache rápido)
+- **Base de datos en la nube:** Firebase Firestore (proyecto: `odonpei`)
+- **Hosting:** GitHub Pages
+- **Gráficos:** Canvas API (odontograma modo Paint)
+
+> **Regla importante:** No usar frameworks ni npm. Todo debe funcionar directamente en el navegador sin build step, ya que el hosting es GitHub Pages estático.
+
+---
+
+## Estructura de Archivos
+
+```
+ODONPEI/
+├── index.html              # Estructura principal de la app
+├── css/
+│   └── styles.css          # Todos los estilos (colores pasteles, responsive)
+├── js/
+│   ├── firebase-config.js  # Configuración Firebase + funciones Firestore (ES Module)
+│   ├── storage.js          # Gestión localStorage + sync Firebase para PACIENTES
+│   ├── app.js              # Lógica principal: login, navegación, pacientes, reloj, contador
+│   ├── formularios.js      # Generación dinámica de formularios de historia clínica
+│   ├── odontograma.js      # Canvas modo Paint para dibujar el odontograma
+│   ├── tratamientos.js     # Tratamientos, presupuestos e impresión
+│   └── turnos.js           # Turnero digital con vista semanal + sync Firebase
+├── ODONPEI 2.png           # Logo principal (puzzle de dientes coloridos)
+├── Muela.png               # Imagen de muela (usada en bienvenida y marca de agua)
+└── DOCUMENTACION.md        # Este archivo
+```
+
+---
+
+## Login y Sesión
+
+- **Usuario único:** `odonpei` (pre-cargado en el input, no hay que escribirlo)
+- **Sin contraseña** por diseño (consultorio privado, acceso por URL)
+- La sesión se guarda en `sessionStorage` → se mantiene mientras el tab esté abierto
+- Al cerrar el tab o hacer "Salir", vuelve al login
+
+**Archivo:** `js/app.js` — funciones `hacerLogin()`, `verificarSesion()`, `cerrarSesion()`
+
+---
+
+## Navbar (barra superior)
+
+Estructura de izquierda a derecha:
+1. **Reloj digital** — hora en formato 24h (HH:MM:SS) + fecha corta. Actualiza cada segundo.
+2. **Logo ODONPEI** centrado — imagen + links de navegación debajo
+3. **Contador mensual de atenciones** — número del mes actual con botones `−` y `+`
+
+Los tres elementos son transparentes (sin fondo), integrados al degradado del navbar.
+
+**Navegación:** Inicio | Pacientes | Turnos | Nuevo Paciente | ODONPEI (usuario) | Salir
+
+---
+
+## Páginas / Secciones
+
+### 1. Inicio (`pagina-inicio`)
+- Bienvenida con logo de muela
+- Fondo decorativo: 7 niños coloridos en SVG (fijo en todas las páginas)
+- Welcome card semitransparente (efecto vidrio/blur)
+- Botones rápidos: Ver Pacientes / Crear Nuevo Paciente
+
+### 2. Pacientes (`pagina-pacientes`)
+- Muestra los **5 pacientes más recientes** ordenados por fecha
+- Si hay más, indica cuántos quedan y sugiere usar el buscador
+- **Buscador** en tiempo real por nombre, alias o edad
+- Cada tarjeta muestra: nombre, alias, edad, tipo de historia, fecha, cantidad de fotos
+
+### 3. Turnos (`pagina-turnos`)
+- Vista semanal Lunes a Sábado, franjas horarias de **15:00 a 20:00** cada 30 minutos
+- Navegación entre semanas: ← Anterior / Hoy / Siguiente →
+- Día actual resaltado en azul
+- **Sincroniza con Firebase** al abrir la sección
+
+#### Crear turno
+- Click en cualquier celda del calendario o botón "+ Nuevo Turno"
+- Campos: **Nombre** (libre, sin requerir paciente existente), **Celular**, Fecha, Hora, Duración, Notas
+- El nombre se ve directamente en la celda del calendario
+
+#### Estados de turno (selector al hacer click en el turno)
+| Letra | Estado | Color |
+|-------|--------|-------|
+| P | Pendiente | 🟡 Amarillo |
+| C | Confirmado | 🔵 Azul |
+| X | Cancelado | 🔴 Rojo |
+| R | Reprogramado | 🟠 Naranja |
+| A | Asistió | 🟢 Verde |
+| NA | No Asistió | ⚫ Gris |
+
+Cambiar estado → botón **Guardar** para confirmar.
+
+### 4. Nuevo Paciente / Editar Paciente (`pagina-nuevo-paciente`)
+Selector de tipo de historia clínica:
+- **Odontopediátrica** (default)
+- **Neurodivergente**
+
+#### Datos Personales (comunes a ambos tipos)
+- Apellido y Nombre *
+- ¿Cómo le gusta que lo llamen? (alias)
+- Edad *
+- Fecha de Nacimiento
+- Domicilio
+- Nombre de Madre/Padre
+- Teléfono de Contacto
+- Obra Social
+- N° Afiliado
+- DNI
+
+#### Historia Odontopediátrica
+- Observaciones del paciente
+
+#### Historia Neurodivergente
+- Diagnóstico
+- Enfermedades Preexistentes
+- Medicación
+- Cirugías
+- Comunicación y Lenguaje
+- Conducta (Nivel de Apoyo)
+- Desafíos Sensoriales
+- Desafíos en la Motricidad
+- Terapias que Realiza
+- Escala de Frank
+- ¿Qué le gusta?
+
+#### Tratamientos (sección común)
+- Tratamientos Realizados (textarea)
+- Propuesta de Tratamiento (textarea)
+
+#### Odontograma (modo Paint)
+Herramientas disponibles:
+- 🔴 **Rojo** — tratamientos existentes
+- 🔵 **Azul** — tratamientos requeridos
+- **✕ Ausente** — pieza dentaria ausente (dibuja una X)
+- **🧹 Borrador** — borra lo pintado
+- **🗑 Limpiar todo** — limpia el canvas completo (pide confirmación)
+
+Numeración FDI (internacional):
+- Permanentes superiores: 18–11 | 21–28
+- Permanentes inferiores: 48–41 | 31–38
+- Temporales superiores: 55–51 | 61–65
+- Temporales inferiores: 85–81 | 71–75
+
+El odontograma se guarda como imagen PNG (base64) junto con el paciente.
+
+### 5. Detalle del Paciente (`pagina-detalle-paciente`)
+Pestañas:
+- **Historia Clínica** — muestra todos los datos + odontograma
+- **Tratamientos** — lista de tratamientos con fecha, puede agregar nuevos
+- **Presupuesto** — presupuesto editable con ítems, valores, descuento e impresión
+- **Fotos (Evolución)** — galería con miniaturas reales, ordenadas por fecha
+- **Archivos** — PDFs y documentos; las imágenes muestran miniatura, los demás muestran ícono
+
+Botones: ← Atrás | 💰 Presupuesto | 🖨️ Imprimir Historia | ✏️ Editar | 🗑️ Eliminar
+
+---
+
+## Presupuesto e Impresión
+
+### Presupuesto
+- Número de presupuesto, fecha, vigencia
+- Ítems: descripción, cantidad, valor unitario → subtotal automático
+- Descuento porcentual opcional
+- Observaciones / términos
+
+### Impresión del presupuesto
+Genera una ventana de impresión con:
+- Logo ODONPEI (Muela.png) en el encabezado
+- **Muela como marca de agua** (50% del fondo, opacidad 8%)
+- Tabla de ítems, totales, datos del paciente
+
+### Impresión de historia clínica completa
+Incluye todos los datos del paciente, tratamientos, odontograma y presupuesto si existe.
+
+---
+
+## Sistema de Almacenamiento
+
+### Arquitectura dual (localStorage + Firebase)
+Todos los datos se guardan primero en `localStorage` (instantáneo) y luego se sincronizan con Firebase Firestore (en la nube).
+
+```
+Acción del usuario
+      ↓
+localStorage (inmediato, local)
+      ↓
+Firebase Firestore (async, nube compartida)
+```
+
+### Sincronización al iniciar
+Al cargar la app (1.5 segundos después del load):
+- Si **Firebase tiene datos** → los carga y sobreescribe localStorage
+- Si **Firebase está vacío** y localStorage tiene datos → los sube a Firebase (migración)
+
+Esto garantiza que ambas máquinas (Luis y su señora) vean los mismos datos.
+
+### Claves localStorage
+| Clave | Contenido |
+|-------|-----------|
+| `ODONPEI_PACIENTES` | Array de todos los pacientes con sus historias |
+| `ODONPEI_TURNOS` | Array de todos los turnos |
+| `ODONPEI_ATENCIONES` | Objeto `{ 'YYYY-MM': N }` con conteo mensual |
+| `odonpei_usuario` | Usuario logueado (sessionStorage) |
+
+### Colecciones Firebase
+| Colección | Contenido |
+|-----------|-----------|
+| `pacientes` | Misma estructura que localStorage |
+| `turnos` | Misma estructura que localStorage |
+
+### Estructura de un paciente
+```javascript
+{
+  id: "timestamp",           // ID local
+  firebaseId: "abc123",      // ID en Firestore
+  fechaCreacion: "ISO date",
+  tipoHistoria: "odontopediatrica" | "neurodivergente",
+  datosPersonales: {
+    nombre, alias, edad, fechaNacimiento, domicilio,
+    nombrePadre, telefono, obraSocial, nAfiliado, dni
+  },
+  // Solo neurodivergente:
+  antecedentes: { diagnostico, enfermedadesPreexistentes, medicacion, cirugias },
+  desafios: { comunicacion, conducta, sensoriales, motricidad, terapias, frank, leGusta },
+  // Solo odontopediatrica:
+  caracteristicas: { observaciones },
+  tratamientos: { realizados, propuesta },
+  odontograma: "data:image/png;base64,...",
+  fotos: [{ id, nombre, data, fecha }],
+  archivos: [{ id, nombre, tipo, data, fecha, tamaño }],
+  presupuesto: { numero, fecha, vigencia, items, descuento, observaciones }
+}
+```
+
+### Estructura de un turno
+```javascript
+{
+  id: "timestamp",
+  firebaseId: "abc123",
+  pacienteNombre: "Apellido Nombre",   // Texto libre
+  celular: "11 1234-5678",
+  fecha: "YYYY-MM-DD",
+  hora: "HH:MM",
+  duracion: 30 | 60 | 90,             // minutos
+  notas: "texto libre",
+  estado: "pendiente|confirmado|cancelado|reprogramado|asistio|noasistio",
+  fechaCreacion: "ISO date"
+}
+```
+
+---
+
+## Firebase — Configuración
+
+**Proyecto:** `odonpei`  
+**Archivo:** `js/firebase-config.js` (ES Module con `type="module"`)
+
+> **Importante:** Como es un ES Module, sus funciones NO son globales automáticamente. Por eso al final del archivo se asignan a `window.*` para que `storage.js` y `turnos.js` (scripts normales) puedan usarlas.
+
+```javascript
+window.guardarEnFirestore            // pacientes
+window.obtenerDesdePacientesFirestore
+window.actualizarEnFirestore
+window.eliminarDeFirestore
+window.guardarTurnoEnFirestore       // turnos
+window.obtenerTurnosDesdeFirestore
+window.actualizarTurnoEnFirestore
+window.eliminarTurnoDeFirestore
+```
+
+---
+
+## Contador Mensual de Atenciones
+
+- Se incrementa manualmente con el botón `+` en el navbar
+- Se decrementa con `−` (no baja de 0)
+- Se reinicia automáticamente cada mes (clave por mes: `YYYY-MM`)
+- El último día del mes muestra el mensaje: "Total de atenciones de [mes]: N"
+- Los datos se guardan solo en localStorage (no en Firebase)
+
+---
+
+## Fondo Decorativo (Niños Coloridos)
+
+SVG inline con 7 figuras de niños en posición fija en el fondo de todas las páginas:
+- Colores: violeta, verde, rojo, amarillo, azul, rosa, naranja
+- Opacidad 55%, `pointer-events: none` (no interfiere con clicks)
+- Con sombras/reflejo debajo de cada figura
+- `z-index: 0` — el contenido siempre queda encima
+
+---
+
+## Tags de Restauración (Git)
+
+| Tag | Descripción |
+|-----|-------------|
+| `v1.0-estable` | Diseño aprobado, sin turnero |
+| `v1.1-turnero` | Con turnero completo |
+
+Para volver a un punto: `git checkout v1.0-estable`
+
+### Backups locales
+- `c:\Github repos\ODONPEI_backup_2026-05-21.zip`
+- `c:\Github repos\ODONPEI_backup_2026-05-21_v1.1.zip`
+
+---
+
+## Cómo Hacer Deploy
+
+Cualquier `git push` a la rama `main` actualiza automáticamente el sitio en GitHub Pages.  
+El sitio tarda **2-3 minutos** en reflejar los cambios.  
+Para ver los cambios sin caché: **Ctrl+Shift+R** en el navegador.
+
+---
+
+## Responsive / Móvil
+
+El sitio funciona en celular y tablet. Breakpoints:
+- `max-width: 768px` — navbar en columna, grilla de fotos en 1 columna, calendar reducido
+- `max-width: 480px` — tipografía reducida, logo más chico
+
+El calendario de turnos en móvil muestra columnas más angostas con fuente de 10px.
+
+---
+
+## Ideas Pendientes / Futuras Mejoras
+
+- Integración con Google Calendar (Opción A del turnero)
+- Agregar más usuarios al sistema de login (actualmente solo "odonpei")
+- Notificaciones/recordatorios de turnos
+- Verificar sync Firebase en tiempo real entre dispositivos simultáneos
