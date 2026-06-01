@@ -306,18 +306,54 @@ SVG inline con 7 figuras de niños en posición fija en el fondo de todas las p�
 
 ---
 
+## Odontograma — Comportamiento Correcto
+
+### Al crear/editar un paciente
+1. El canvas se inicializa con `iniciarOdontograma('odontograma-canvas', datosGuardados)`
+2. Se dibuja la grilla de dientes con `dibujarFondo(canvas)`
+3. Si hay imagen guardada (base64), se superpone sobre la grilla
+4. El usuario pinta libremente con mouse o touch
+5. Al hacer **Guardar Paciente**, se llama a `obtenerDatosOdontogramaDelCanvas()` que ejecuta `canvas.toDataURL('image/png')` y guarda la imagen completa
+
+### Al ver la historia clínica (solo lectura)
+1. Se crea un canvas con id `odontograma-canvas-detalle`
+2. Se fijan dimensiones 900×380
+3. Se dibuja el fondo con `dibujarFondo(canvas)`
+4. Si el paciente tiene odontograma guardado (string base64), se dibuja encima con `drawImage`
+5. **No tiene eventos de mouse** — es solo visualización
+
+### Bug conocido y resuelto
+El guardado usaba `canvas.datosOdontograma` (propiedad inexistente) en lugar de `canvas.toDataURL()`. Corregido en commit `59cc58c`. Los pacientes guardados antes de esa corrección tienen el odontograma vacío — hay que entrar a Editar, pintar nuevamente y Guardar.
+
+---
+
 ## Tags de Restauración (Git)
 
 | Tag | Descripción |
 |-----|-------------|
 | `v1.0-estable` | Diseño aprobado, sin turnero |
-| `v1.1-turnero` | Con turnero completo |
+| `v1.1-turnero` | Turnero completo, antes del fix de odontograma |
 
 Para volver a un punto: `git checkout v1.0-estable`
 
 ### Backups locales
-- `c:\Github repos\ODONPEI_backup_2026-05-21.zip`
-- `c:\Github repos\ODONPEI_backup_2026-05-21_v1.1.zip`
+- `c:\Github repos\ODONPEI_backup_2026-05-21.zip` — v1.0
+- `c:\Github repos\ODONPEI_backup_2026-05-21_v1.1.zip` — v1.1
+
+---
+
+## Historial de Cambios Importantes
+
+| Commit | Cambio |
+|--------|--------|
+| `59cc58c` | **Fix crítico:** odontograma ahora se guarda correctamente como PNG |
+| `d239f6e` | Odontograma visible en vista de detalle del paciente |
+| `82c1b7a` | Turnos: estados Asistió/No Asistió; formulario: Apellido y Nombre |
+| `b1a0cf0` | Turnos: horario 15-20, sync Firebase, botón Guardar |
+| `e993342` | Turnos: estados P/C/X/R con colores e iniciales |
+| `2b4f9ff` | Turnero digital completo con vista semanal |
+| `952a957` | Navbar: reloj izq, logo centro, contador der, transparentes |
+| `a46d090` | Fix Firebase: funciones expuestas a window.* |
 
 ---
 
