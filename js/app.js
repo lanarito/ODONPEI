@@ -317,20 +317,20 @@ function mostrarHistoriaClinica() {
 
     container.innerHTML = html;
 
-    // Renderizar el odontograma
+    // Renderizar el odontograma (modo solo lectura)
     setTimeout(() => {
         const canvas = document.getElementById('odontograma-canvas-detalle');
-        if (canvas) {
-            // Asegurar dimensiones del canvas
-            if (canvas.width === 0 || canvas.width === undefined) {
-                canvas.width = Math.min(window.innerWidth - 60, 1200);
-            }
-            if (canvas.height === 0 || canvas.height === undefined) {
-                canvas.height = 900;
-            }
-            dibujarOdontograma(canvas, pacienteActual.odontograma || {});
+        if (!canvas) return;
+        canvas.width  = 900;
+        canvas.height = 380;
+        dibujarFondo(canvas);
+        const datos = pacienteActual.odontograma;
+        if (datos && typeof datos === 'string' && datos.startsWith('data:')) {
+            const img = new Image();
+            img.onload = () => canvas.getContext('2d').drawImage(img, 0, 0);
+            img.src = datos;
         }
-    }, 100);
+    }, 150);
 }
 
 function mostrarHistoriaNeurodiverente(data) {

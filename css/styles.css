@@ -575,7 +575,7 @@ body {
     height: auto;
     max-width: 900px;
     margin: 0 auto;
-    cursor: crosshair;
+    cursor: default;
 }
 
 .btn-herramienta {
