@@ -448,9 +448,8 @@ function guardarPaciente() {
 
         const tipoHistoria = document.querySelector('input[name="tipo-historia"]:checked')?.value || 'odontopediatrica';
 
-        // Obtener datos del odontograma del canvas
-        const canvas = document.getElementById('odontograma-canvas');
-        const datosOdontograma = canvas?.datosOdontograma || {};
+        // Obtener datos del odontograma del canvas como imagen PNG
+        const datosOdontograma = obtenerDatosOdontogramaDelCanvas() || null;
 
         const paciente = {
             tipoHistoria: tipoHistoria,
@@ -502,9 +501,9 @@ function guardarPaciente() {
             paciente.fotos = pacienteEnEdicion.fotos || [];
             paciente.archivos = pacienteEnEdicion.archivos || [];
             paciente.fechaCreacion = pacienteEnEdicion.fechaCreacion;
-            // Usar el odontograma del canvas si el usuario lo modificó, sino mantener el anterior
-            if (!datosOdontograma || Object.keys(datosOdontograma).length === 0) {
-                paciente.odontograma = pacienteEnEdicion.odontograma || {};
+            // Usar el odontograma del canvas si existe, sino mantener el anterior
+            if (!datosOdontograma) {
+                paciente.odontograma = pacienteEnEdicion.odontograma || null;
             }
             actualizar(paciente);
             alert('✅ Paciente actualizado correctamente');
