@@ -159,6 +159,14 @@ Numeración FDI (internacional):
 
 El odontograma se guarda como imagen PNG (base64) junto con el paciente.
 
+### 3b. Turnos — Funciones adicionales
+
+**Turnos de hoy** — al abrir la sección Turnos aparece automáticamente arriba una lista con todos los turnos del día actual: hora, nombre, celular y estado. Si no hay turnos dice "Sin turnos para hoy". Se actualiza cuando se cambia el estado de un turno.
+
+**Buscador de turnos** — campo de texto encima del calendario. Al escribir un nombre muestra todos los turnos de esa persona en cualquier fecha, ordenados cronológicamente. Útil para ver el historial de visitas de un paciente tentativo o existente.
+
+**Scroll horizontal** — el calendario semanal tiene scroll horizontal en mobile para que no se aplaste la grilla.
+
 ### 5. Detalle del Paciente (`pagina-detalle-paciente`)
 Pestañas:
 - **Historia Clínica** — muestra todos los datos + odontograma
@@ -346,8 +354,9 @@ Para volver a un punto: `git checkout v1.0-estable`
 
 | Commit | Cambio |
 |--------|--------|
-| `59cc58c` | **Fix crítico:** odontograma ahora se guarda correctamente como PNG |
-| `d239f6e` | Odontograma visible en vista de detalle del paciente |
+| `5bf6eba` | Turnos del día, buscador de turnos, responsive móvil completo |
+| `59cc58c` | **Fix crítico:** odontograma se guarda correctamente como PNG |
+| `d239f6e` | Odontograma visible en vista detalle del paciente |
 | `82c1b7a` | Turnos: estados Asistió/No Asistió; formulario: Apellido y Nombre |
 | `b1a0cf0` | Turnos: horario 15-20, sync Firebase, botón Guardar |
 | `e993342` | Turnos: estados P/C/X/R con colores e iniciales |
@@ -375,9 +384,30 @@ El calendario de turnos en móvil muestra columnas más angostas con fuente de 1
 
 ---
 
+## Responsive / Móvil
+
+El sitio está optimizado para celular y tablet. Breakpoints:
+
+### 768px (tablet / landscape móvil)
+- Navbar: reloj y contador se achican, logo y links se centran
+- Formularios: columna única
+- Pacientes: 2 columnas
+- Calendario: scroll horizontal, columnas mínimo 80px
+- Modal: ancho 96%, padding reducido
+
+### 480px (celular)
+- Navbar más compacto (reloj 14px, contador 18px)
+- Pacientes: 1 columna
+- Datos personales: 1 columna forzada
+- Calendario: columnas mínimo 60px, scroll horizontal
+- Container: padding 12px
+
+Para recargar cambios en mobile: Chrome → menú 3 puntos → Actualizar, o cerrar y reabrir el navegador.
+
+---
+
 ## Ideas Pendientes / Futuras Mejoras
 
 - Integración con Google Calendar (Opción A del turnero)
 - Agregar más usuarios al sistema de login (actualmente solo "odonpei")
 - Notificaciones/recordatorios de turnos
-- Verificar sync Firebase en tiempo real entre dispositivos simultáneos
