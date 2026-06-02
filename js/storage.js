@@ -19,6 +19,13 @@ function guardar(paciente) {
     // Guardar en Firebase si está disponible
     if (typeof guardarEnFirestore === 'function') {
         guardarEnFirestore(paciente).then(() => {
+            // Actualizar localStorage con el firebaseId que retornó Firestore
+            const todos = obtenerTodos();
+            const idx = todos.findIndex(p => p.id === paciente.id);
+            if (idx !== -1) {
+                todos[idx].firebaseId = paciente.firebaseId;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+            }
             console.log('✅ Paciente guardado en Firebase');
         }).catch(error => {
             console.warn('Guardado en localStorage, Firebase error:', error);

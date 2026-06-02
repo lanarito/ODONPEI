@@ -99,6 +99,17 @@
                         <button onclick="mostrarFormTurno()" class="btn btn-primary" style="background:#4CAF50;">+ Nuevo Turno</button>
                     </div>
                 </div>
+                <!-- Turnos de hoy -->
+                <div id="turnos-hoy-section" class="turnos-hoy-section"></div>
+
+                <!-- Buscador -->
+                <div class="cal-buscador">
+                    <input type="text" id="buscador-turnos" placeholder="🔍 Buscar por nombre..."
+                        oninput="buscarTurnos(this.value)"
+                        style="width:100%; max-width:360px; padding:9px 14px; border:1px solid #ddd; border-radius:20px; font-size:14px;">
+                    <div id="resultados-busqueda-turnos"></div>
+                </div>
+
                 <div id="semana-titulo" class="semana-titulo"></div>
                 <div class="cal-leyenda">
                     <span class="cal-badge estado-pendiente">P Pendiente</span>
@@ -108,7 +119,9 @@
                     <span class="cal-badge estado-asistio">A Asistió</span>
                     <span class="cal-badge estado-noasistio">NA No Asistió</span>
                 </div>
-                <div id="calendario-semana"></div>
+                <div class="cal-scroll-wrapper">
+                    <div id="calendario-semana"></div>
+                </div>
                 <div id="form-turno-container"></div>
             </section>
 

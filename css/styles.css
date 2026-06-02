@@ -904,29 +904,147 @@ body {
 }
 
 /* ========== RESPONSIVE ========== */
+/* ========== TURNOS HOY Y BUSCADOR ========== */
+.turnos-hoy-section {
+    margin-bottom: 16px;
+}
+
+.hoy-header {
+    font-size: 13px;
+    font-weight: bold;
+    color: #1565C0;
+    text-transform: capitalize;
+    margin-bottom: 8px;
+    padding: 6px 12px;
+    background: #E3F2FD;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.hoy-vacio {
+    font-size: 13px;
+    color: #999;
+    padding: 8px 12px;
+    background: #fafafa;
+    border-radius: 8px;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
+.hoy-lista, .busqueda-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.busqueda-titulo {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 4px;
+}
+
+.hoy-turno {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    flex-wrap: wrap;
+}
+
+.hoy-turno:hover { opacity: 0.8; }
+
+.hoy-hora {
+    font-weight: bold;
+    font-size: 13px;
+    min-width: 80px;
+}
+
+.hoy-nombre {
+    flex: 1;
+    font-size: 14px;
+}
+
+.hoy-cel {
+    font-size: 12px;
+    color: #666;
+}
+
+.busqueda-vacia {
+    font-size: 13px;
+    color: #999;
+    padding: 8px;
+}
+
+.cal-buscador {
+    margin-bottom: 14px;
+}
+
+.cal-scroll-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ========== RESPONSIVE 768px ========== */
 @media (max-width: 768px) {
-    .inicio-widgets {
-        grid-template-columns: 1fr;
-    }
-    .reloj-hora {
-        font-size: 36px;
-    }
+    /* Navbar */
     .navbar-container {
-        flex-direction: column;
-        gap: var(--spacing-lg);
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        padding: 8px 12px;
+    }
+
+    .navbar-center {
+        order: 1;
+        width: 100%;
+    }
+
+    .navbar-logo {
+        justify-content: center;
     }
 
     .nav-menu {
-        gap: var(--spacing-lg);
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        font-size: 13px;
     }
 
+    .nav-clock-box {
+        order: 2;
+        min-width: 80px;
+    }
+
+    .nav-clock {
+        font-size: 16px;
+    }
+
+    .nav-clock-label {
+        font-size: 9px;
+    }
+
+    .nav-counter-box {
+        order: 3;
+        min-width: 80px;
+    }
+
+    .logo {
+        height: 50px;
+    }
+
+    /* Páginas */
     .page-header {
         flex-direction: column;
-        gap: var(--spacing-lg);
+        gap: 10px;
     }
 
     .page-header > div {
         width: 100%;
+        flex-wrap: wrap;
     }
 
     .page-header > div .btn {
@@ -935,6 +1053,7 @@ body {
 
     .tabs {
         flex-wrap: wrap;
+        overflow-x: auto;
     }
 
     .form-actions {
@@ -945,20 +1064,24 @@ body {
         width: 100%;
     }
 
+    /* Pacientes */
     .pacientes-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
     }
 
+    /* Fotos */
     .timeline-fotos {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     }
 
+    /* Welcome */
     .welcome-card .btn {
         display: block;
         width: 100%;
         margin: var(--spacing-md) 0;
     }
 
+    /* Presupuesto */
     .presupuesto-item-form {
         grid-template-columns: 1fr 60px 80px 50px;
     }
@@ -966,35 +1089,63 @@ body {
     .presupuesto-resumen {
         max-width: 100%;
     }
+
+    /* Modal */
+    .modal-content {
+        width: 96%;
+        padding: 16px;
+    }
+
+    /* Calendario */
+    .cal-grid {
+        grid-template-columns: 44px repeat(6, minmax(80px, 1fr));
+        font-size: 10px;
+        min-width: 560px;
+    }
+
+    .cal-dia-num { font-size: 14px; }
+    .cal-hora-label { font-size: 9px; padding: 2px 3px; }
+    .cal-celda { min-height: 28px; }
 }
 
+/* ========== RESPONSIVE 480px ========== */
 @media (max-width: 480px) {
     .container {
-        padding: var(--spacing-lg);
+        padding: 12px;
+        padding-bottom: 140px;
     }
 
-    .navbar-logo {
-        font-size: 18px;
+    .logo { height: 40px; }
+
+    .welcome-card h1 { font-size: 22px; }
+
+    .page-header h2 { font-size: 18px; }
+
+    .tabs { overflow-x: auto; }
+    .tab-btn { padding: 10px 12px; font-size: 13px; }
+
+    .pacientes-grid {
+        grid-template-columns: 1fr;
     }
 
-    .logo {
-        height: 40px;
+    /* Navbar aún más compacto */
+    .nav-clock { font-size: 14px; letter-spacing: 1px; }
+    .nav-counter-num { font-size: 18px; }
+
+    /* Datos personales en columna única */
+    .datos-personales {
+        grid-template-columns: 1fr !important;
     }
 
-    .welcome-card h1 {
-        font-size: 24px;
+    /* Historia section sin tanto padding */
+    .historia-section {
+        padding: 12px;
     }
 
-    .page-header h2 {
-        font-size: 20px;
-    }
-
-    .tabs {
-        overflow-x: auto;
-    }
-
-    .tab-btn {
-        padding: var(--spacing-md);
+    /* Calendario mínimo */
+    .cal-grid {
+        grid-template-columns: 36px repeat(6, minmax(60px, 1fr));
+        min-width: 420px;
     }
 }
 

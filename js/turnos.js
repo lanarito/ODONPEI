@@ -43,8 +43,66 @@ function fechaStr(date) {
 
 function cargarTurnos() {
     semanaOffset = 0;
+    renderizarTurnosHoy();
     renderizarSemana();
     setTimeout(sincronizarTurnosDesdeFirebase, 1500);
+}
+
+function renderizarTurnosHoy() {
+    const section = document.getElementById('turnos-hoy-section');
+    if (!section) return;
+    const hoy = fechaStr(new Date());
+    const turnos = obtenerTurnos().filter(t => t.fecha === hoy)
+        .sort((a, b) => a.hora.localeCompare(b.hora));
+
+    if (turnos.length === 0) {
+        section.innerHTML = `<div class="hoy-vacio">Sin turnos para hoy</div>`;
+        return;
+    }
+
+    const ESTADO_LETRA = { pendiente:'P', confirmado:'C', cancelado:'X', reprogramado:'R', asistio:'A', noasistio:'NA' };
+    section.innerHTML = `
+        <div class="hoy-header">Hoy — ${new Date().toLocaleDateString('es-AR', { weekday:'long', day:'numeric', month:'long' })}</div>
+        <div class="hoy-lista">
+            ${turnos.map(t => `
+                <div class="hoy-turno estado-${t.estado}" onclick="verTurno('${t.id}')">
+                    <span class="hoy-hora">${t.hora}</span>
+                    <span class="hoy-nombre">${t.pacienteNombre}</span>
+                    ${t.celular ? `<span class="hoy-cel">📱 ${t.celular}</span>` : ''}
+                    <span class="cal-turno-badge">${ESTADO_LETRA[t.estado] || 'P'}</span>
+                </div>
+            `).join('')}
+        </div>`;
+}
+
+function buscarTurnos(query) {
+    const res = document.getElementById('resultados-busqueda-turnos');
+    if (!res) return;
+    if (!query.trim()) { res.innerHTML = ''; return; }
+
+    const q = query.toLowerCase();
+    const turnos = obtenerTurnos()
+        .filter(t => t.pacienteNombre.toLowerCase().includes(q))
+        .sort((a, b) => a.fecha.localeCompare(b.fecha) || a.hora.localeCompare(b.hora));
+
+    if (turnos.length === 0) {
+        res.innerHTML = `<div class="busqueda-vacia">No se encontraron turnos para "${query}"</div>`;
+        return;
+    }
+
+    const ESTADO_LETRA = { pendiente:'P', confirmado:'C', cancelado:'X', reprogramado:'R', asistio:'A', noasistio:'NA' };
+    res.innerHTML = `
+        <div class="busqueda-lista">
+            <div class="busqueda-titulo">${turnos.length} turno(s) encontrado(s)</div>
+            ${turnos.map(t => {
+                const fecha = new Date(t.fecha + 'T12:00:00').toLocaleDateString('es-AR', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
+                return `<div class="hoy-turno estado-${t.estado}" onclick="verTurno('${t.id}')">
+                    <span class="hoy-hora">${fecha} ${t.hora}</span>
+                    <span class="hoy-nombre">${t.pacienteNombre}</span>
+                    <span class="cal-turno-badge">${ESTADO_LETRA[t.estado] || 'P'}</span>
+                </div>`;
+            }).join('')}
+        </div>`;
 }
 
 function navegarSemana(dir) {
@@ -238,6 +296,7 @@ function guardarEstadoTurno(id) {
         guardarTurnosStorage(turnos);
         if (typeof actualizarTurnoEnFirestore === 'function') actualizarTurnoEnFirestore(t);
         cerrarFormTurno();
+        renderizarTurnosHoy();
         renderizarSemana();
     }
 }
