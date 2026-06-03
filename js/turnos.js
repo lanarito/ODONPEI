@@ -233,23 +233,103 @@ function cerrarFormTurno() {
 
 function guardarTurno(event) {
     event.preventDefault();
-    const turno = {
-        id: Date.now().toString(),
-        pacienteNombre: document.getElementById('turno-nombre').value.trim(),
-        celular: document.getElementById('turno-celular').value.trim(),
-        fecha: document.getElementById('turno-fecha').value,
-        hora: document.getElementById('turno-hora').value,
-        duracion: parseInt(document.getElementById('turno-duracion').value),
-        notas: document.getElementById('turno-notas').value.trim(),
-        estado: 'pendiente',
-        fechaCreacion: new Date().toISOString()
-    };
-    const turnos = obtenerTurnos();
-    turnos.push(turno);
-    guardarTurnosStorage(turnos);
-    if (typeof guardarTurnoEnFirestore === 'function') guardarTurnoEnFirestore(turno);
+    const idEdicion = document.getElementById('turno-id-edicion')?.value || '';
+
+    if (idEdicion) {
+        // Modo edición — actualizar existente
+        const turnos = obtenerTurnos();
+        const t = turnos.find(t => t.id === idEdicion);
+        if (t) {
+            t.pacienteNombre = document.getElementById('turno-nombre').value.trim();
+            t.celular        = document.getElementById('turno-celular').value.trim();
+            t.fecha          = document.getElementById('turno-fecha').value;
+            t.hora           = document.getElementById('turno-hora').value;
+            t.duracion       = parseInt(document.getElementById('turno-duracion').value);
+            t.notas          = document.getElementById('turno-notas').value.trim();
+            guardarTurnosStorage(turnos);
+            if (typeof actualizarTurnoEnFirestore === 'function') actualizarTurnoEnFirestore(t);
+        }
+    } else {
+        // Modo nuevo
+        const turno = {
+            id: Date.now().toString(),
+            pacienteNombre: document.getElementById('turno-nombre').value.trim(),
+            celular: document.getElementById('turno-celular').value.trim(),
+            fecha: document.getElementById('turno-fecha').value,
+            hora: document.getElementById('turno-hora').value,
+            duracion: parseInt(document.getElementById('turno-duracion').value),
+            notas: document.getElementById('turno-notas').value.trim(),
+            estado: 'pendiente',
+            fechaCreacion: new Date().toISOString()
+        };
+        const turnos = obtenerTurnos();
+        turnos.push(turno);
+        guardarTurnosStorage(turnos);
+        if (typeof guardarTurnoEnFirestore === 'function') guardarTurnoEnFirestore(turno);
+    }
+
     cerrarFormTurno();
+    renderizarTurnosHoy();
     renderizarSemana();
+}
+
+function editarTurno(id) {
+    const turno = obtenerTurnos().find(t => t.id === id);
+    if (!turno) return;
+
+    const horas = [];
+    for (let h = 15; h <= 19; h++) {
+        horas.push(`${String(h).padStart(2, '0')}:00`);
+        horas.push(`${String(h).padStart(2, '0')}:30`);
+    }
+    horas.push('20:00');
+
+    const horaOpts = horas.map(h =>
+        `<option value="${h}"${h === turno.hora ? ' selected' : ''}>${h}</option>`
+    ).join('');
+
+    document.getElementById('form-turno-container').innerHTML = `
+        <div class="modal-overlay" onclick="cerrarFormTurno()">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <h3 style="margin-bottom:16px; color:#333;">✏️ Modificar Turno</h3>
+                <form onsubmit="guardarTurno(event)">
+                    <input type="hidden" id="turno-id-edicion" value="${turno.id}">
+                    <div class="form-group">
+                        <label>Nombre *</label>
+                        <input type="text" id="turno-nombre" value="${turno.pacienteNombre}" required autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label>Celular</label>
+                        <input type="tel" id="turno-celular" value="${turno.celular || ''}" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha *</label>
+                        <input type="date" id="turno-fecha" value="${turno.fecha}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Hora *</label>
+                        <select id="turno-hora" required>${horaOpts}</select>
+                    </div>
+                    <div class="form-group">
+                        <label>Duración</label>
+                        <select id="turno-duracion">
+                            <option value="30"${turno.duracion===30?' selected':''}>30 minutos</option>
+                            <option value="60"${turno.duracion===60?' selected':''}>1 hora</option>
+                            <option value="90"${turno.duracion===90?' selected':''}>1 hora 30 min</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Notas</label>
+                        <textarea id="turno-notas" rows="2">${turno.notas || ''}</textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" onclick="cerrarFormTurno()" class="btn btn-outline">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>`;
+    setTimeout(() => document.getElementById('turno-nombre')?.focus(), 100);
 }
 
 function verTurno(id) {
@@ -279,6 +359,7 @@ function verTurno(id) {
                 </div>
                 <div class="form-actions" style="margin-top:20px;">
                     <button onclick="eliminarTurno('${turno.id}')" class="btn btn-danger">Eliminar</button>
+                    <button onclick="editarTurno('${turno.id}')" class="btn btn-secondary">✏️ Modificar</button>
                     <button onclick="guardarEstadoTurno('${turno.id}')" class="btn btn-primary">Guardar</button>
                     <button onclick="cerrarFormTurno()" class="btn btn-outline">Cerrar</button>
                 </div>
