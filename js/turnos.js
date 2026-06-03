@@ -357,11 +357,15 @@ function verTurno(id) {
                         <option value="noasistio"${turno.estado==='noasistio'?' selected':''}>⚫ NA — No Asistió</option>
                     </select>
                 </div>
-                <div class="form-actions" style="margin-top:20px;">
-                    <button onclick="eliminarTurno('${turno.id}')" class="btn btn-danger">Eliminar</button>
-                    <button onclick="editarTurno('${turno.id}')" class="btn btn-secondary">✏️ Modificar</button>
-                    <button onclick="guardarEstadoTurno('${turno.id}')" class="btn btn-primary">Guardar</button>
-                    <button onclick="cerrarFormTurno()" class="btn btn-outline">Cerrar</button>
+                <div style="margin-top:20px; display:flex; flex-direction:column; gap:8px;">
+                    <div style="display:flex; gap:8px;">
+                        <button onclick="editarTurno('${turno.id}')" class="btn btn-secondary" style="flex:1;">✏️ Modificar</button>
+                        <button onclick="guardarEstadoTurno('${turno.id}')" class="btn btn-primary" style="flex:1;">Guardar Estado</button>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <button onclick="eliminarTurno('${turno.id}')" class="btn btn-danger" style="flex:1;">Eliminar</button>
+                        <button onclick="cerrarFormTurno()" class="btn btn-outline" style="flex:1;">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </div>`;
