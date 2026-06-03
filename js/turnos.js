@@ -360,7 +360,7 @@ function verTurno(id) {
                 <div style="margin-top:20px; display:flex; flex-direction:column; gap:8px;">
                     <div style="display:flex; gap:8px;">
                         <button onclick="editarTurno('${turno.id}')" class="btn btn-secondary" style="flex:1;">✏️ Modificar</button>
-                        <button onclick="guardarEstadoTurno('${turno.id}')" class="btn btn-primary" style="flex:1;">Guardar Estado</button>
+                        <button onclick="guardarEstadoTurno('${turno.id}')" class="btn btn-primary" style="flex:1;">Guardar</button>
                     </div>
                     <div style="display:flex; gap:8px;">
                         <button onclick="eliminarTurno('${turno.id}')" class="btn btn-danger" style="flex:1;">Eliminar</button>
