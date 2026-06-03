@@ -26,26 +26,38 @@ function getMesKey(d = new Date()) {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
 }
 
+function getContadorData() {
+    return JSON.parse(localStorage.getItem(COUNTER_KEY) || '{}');
+}
+
+function saveContadorData(data) {
+    localStorage.setItem(COUNTER_KEY, JSON.stringify(data));
+    // Sync a Firebase
+    if (typeof guardarContadorEnFirestore === 'function') {
+        guardarContadorEnFirestore(data);
+    }
+}
+
 function registrarAtencion() {
     const key = getMesKey();
-    const data = JSON.parse(localStorage.getItem(COUNTER_KEY) || '{}');
+    const data = getContadorData();
     data[key] = (data[key] || 0) + 1;
-    localStorage.setItem(COUNTER_KEY, JSON.stringify(data));
+    saveContadorData(data);
     renderizarContador();
 }
 
 function restarAtencion() {
     const key = getMesKey();
-    const data = JSON.parse(localStorage.getItem(COUNTER_KEY) || '{}');
+    const data = getContadorData();
     data[key] = Math.max(0, (data[key] || 0) - 1);
-    localStorage.setItem(COUNTER_KEY, JSON.stringify(data));
+    saveContadorData(data);
     renderizarContador();
 }
 
 function renderizarContador() {
     const ahora = new Date();
     const key = getMesKey(ahora);
-    const data = JSON.parse(localStorage.getItem(COUNTER_KEY) || '{}');
+    const data = getContadorData();
     const count = data[key] || 0;
     const mesNombre = ahora.toLocaleDateString('es-AR', { month: 'long', year: 'numeric' });
     const ultimoDia = new Date(ahora.getFullYear(), ahora.getMonth() + 1, 0).getDate();
@@ -60,6 +72,23 @@ function renderizarContador() {
         elMsg.style.display = esUltimoDia ? 'block' : 'none';
         if (esUltimoDia) elMsg.textContent = `Total de atenciones de ${mesNombre}: ${count}`;
     }
+}
+
+async function sincronizarContadorDesdeFirebase() {
+    if (typeof obtenerContadorDesdeFirestore !== 'function') return;
+    try {
+        const remoto = await obtenerContadorDesdeFirestore();
+        if (remoto && Object.keys(remoto).length > 0) {
+            // Combinar: tomar el valor más alto entre local y remoto para cada mes
+            const local = getContadorData();
+            const merged = { ...local };
+            for (const [mes, val] of Object.entries(remoto)) {
+                merged[mes] = Math.max(merged[mes] || 0, val);
+            }
+            localStorage.setItem(COUNTER_KEY, JSON.stringify(merged));
+            renderizarContador();
+        }
+    } catch (e) { console.warn('Sync contador:', e); }
 }
 
 // ========== USUARIOS (sin contraseña por ahora) ==========
@@ -95,6 +124,7 @@ function mostrarApp(usuario) {
     if (navUsuario) navUsuario.textContent = '👤 ' + usuario.toUpperCase();
     iniciarReloj();
     renderizarContador();
+    setTimeout(sincronizarContadorDesdeFirebase, 2000);
     cargarPacientes();
 }
 

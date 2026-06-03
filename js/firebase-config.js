@@ -1,7 +1,7 @@
 // ========== CONFIGURACIÓN FIREBASE ==========
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB2tn3mNVocWkafcAH0KNG2sPaEFGyBZJs",
@@ -142,6 +142,21 @@ async function eliminarTurnoDeFirestore(firebaseId) {
   } catch (e) { console.warn('Firebase turno eliminar:', e); return false; }
 }
 
+// ========== CONTADOR DE ATENCIONES EN FIREBASE ==========
+
+async function guardarContadorEnFirestore(data) {
+  try {
+    await setDoc(doc(db, "config", "atenciones"), data);
+  } catch (e) { console.warn('Firebase contador guardar:', e); }
+}
+
+async function obtenerContadorDesdeFirestore() {
+  try {
+    const snap = await getDoc(doc(db, "config", "atenciones"));
+    return snap.exists() ? snap.data() : {};
+  } catch (e) { console.warn('Firebase contador obtener:', e); return {}; }
+}
+
 // Exponer funciones al scope global para que storage.js pueda usarlas
 window.guardarEnFirestore             = guardarEnFirestore;
 window.obtenerDesdePacientesFirestore = obtenerDesdePacientesFirestore;
@@ -153,3 +168,5 @@ window.obtenerTurnosDesdeFirestore    = obtenerTurnosDesdeFirestore;
 window.actualizarTurnoEnFirestore     = actualizarTurnoEnFirestore;
 window.eliminarTurnoDeFirestore       = eliminarTurnoDeFirestore;
 window.sincronizarTurnosEnTiempoReal  = sincronizarTurnosEnTiempoReal;
+window.guardarContadorEnFirestore     = guardarContadorEnFirestore;
+window.obtenerContadorDesdeFirestore  = obtenerContadorDesdeFirestore;
