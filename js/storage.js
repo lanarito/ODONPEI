@@ -151,13 +151,19 @@ window.addEventListener('load', () => {
     setTimeout(async () => {
         // Sync inicial: si Firebase tiene datos los usa, si no sube los locales
         await sincronizarDesdeFirebase();
-        // Escuchar cambios en tiempo real — cualquier dispositivo que modifique un paciente actualiza a todos
+        // Escuchar cambios en tiempo real con merge: nunca pierde datos locales que aún no llegaron a Firebase
         if (typeof sincronizarEnTiempoReal === 'function') {
             sincronizarEnTiempoReal((pacientesRemotos) => {
-                if (pacientesRemotos.length > 0) {
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(pacientesRemotos));
-                    if (typeof cargarPacientes === 'function') cargarPacientes();
-                }
+                const locales = obtenerTodos();
+                const idsRemotos = new Set(pacientesRemotos.map(p => p.id));
+                // Pacientes que están solo en local → subirlos a Firebase y conservarlos
+                const soloLocales = locales.filter(p => !idsRemotos.has(p.id));
+                soloLocales.forEach(p => {
+                    if (typeof guardarEnFirestore === 'function') guardarEnFirestore(p);
+                });
+                const merged = [...pacientesRemotos, ...soloLocales];
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+                if (typeof cargarPacientes === 'function') cargarPacientes();
             });
         }
     }, 1500);

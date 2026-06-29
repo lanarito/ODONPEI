@@ -51,14 +51,20 @@ function cargarTurnos() {
             const sinSubir = obtenerTurnos().filter(t => !t.firebaseId);
             sinSubir.forEach(t => guardarTurnoEnFirestore(t));
         }
-        // Escuchar cambios en tiempo real — se activa cada vez que cualquier dispositivo modifica un turno
+        // Escuchar cambios en tiempo real con merge: nunca pierde datos locales que aún no llegaron a Firebase
         if (typeof sincronizarTurnosEnTiempoReal === 'function') {
             sincronizarTurnosEnTiempoReal((turnosRemotos) => {
-                if (turnosRemotos.length > 0) {
-                    localStorage.setItem(TURNOS_KEY, JSON.stringify(turnosRemotos));
-                    renderizarTurnosHoy();
-                    renderizarSemana();
-                }
+                const locales = obtenerTurnos();
+                const idsRemotos = new Set(turnosRemotos.map(t => t.id));
+                // Turnos que están solo en local → subirlos a Firebase y conservarlos
+                const soloLocales = locales.filter(t => !idsRemotos.has(t.id));
+                soloLocales.forEach(t => {
+                    if (typeof guardarTurnoEnFirestore === 'function') guardarTurnoEnFirestore(t);
+                });
+                const merged = [...turnosRemotos, ...soloLocales];
+                localStorage.setItem(TURNOS_KEY, JSON.stringify(merged));
+                renderizarTurnosHoy();
+                renderizarSemana();
             });
         }
     }, 1500);
