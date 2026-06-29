@@ -124,7 +124,22 @@ function mostrarApp(usuario) {
     if (navUsuario) navUsuario.textContent = '👤 ' + usuario.toUpperCase();
     iniciarReloj();
     renderizarContador();
-    setTimeout(sincronizarContadorDesdeFirebase, 2000);
+    // Escuchar el contador en tiempo real — se actualiza en todos los dispositivos automáticamente
+    setTimeout(() => {
+        if (typeof escucharContadorEnFirestore === 'function') {
+            escucharContadorEnFirestore((remoto) => {
+                if (remoto && Object.keys(remoto).length > 0) {
+                    const local = getContadorData();
+                    const merged = { ...local };
+                    for (const [mes, val] of Object.entries(remoto)) {
+                        merged[mes] = Math.max(merged[mes] || 0, val);
+                    }
+                    localStorage.setItem(COUNTER_KEY, JSON.stringify(merged));
+                    renderizarContador();
+                }
+            });
+        }
+    }, 2000);
     cargarPacientes();
 }
 

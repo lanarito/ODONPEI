@@ -148,5 +148,17 @@ async function sincronizarDesdeFirebase() {
 
 // Esperar a que firebase-config.js (módulo) termine de asignar window.xxx
 window.addEventListener('load', () => {
-    setTimeout(sincronizarDesdeFirebase, 1500);
+    setTimeout(async () => {
+        // Sync inicial: si Firebase tiene datos los usa, si no sube los locales
+        await sincronizarDesdeFirebase();
+        // Escuchar cambios en tiempo real — cualquier dispositivo que modifique un paciente actualiza a todos
+        if (typeof sincronizarEnTiempoReal === 'function') {
+            sincronizarEnTiempoReal((pacientesRemotos) => {
+                if (pacientesRemotos.length > 0) {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(pacientesRemotos));
+                    if (typeof cargarPacientes === 'function') cargarPacientes();
+                }
+            });
+        }
+    }, 1500);
 });

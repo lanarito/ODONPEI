@@ -615,8 +615,10 @@ function generarHTMLHistoriaCompletaPrint() {
     const trat = pac.tratamientos || {};
     const pres = pac.presupuesto || {};
 
-    // Generar tabla del odontograma
-    let odontogramaHTML = generarTablaOdontogramaPrint(pac.odontograma || {});
+    // Mostrar odontograma como imagen PNG (se guarda como canvas.toDataURL)
+    const odontogramaHTML = (pac.odontograma && typeof pac.odontograma === 'string' && pac.odontograma.startsWith('data:'))
+        ? `<img src="${pac.odontograma}" style="width:100%; max-width:800px; display:block; margin:0 auto; border:1px solid #ddd; border-radius:4px;">`
+        : '<p style="text-align:center; color:#999; padding:20px;">Sin odontograma registrado</p>';
 
     // Generar sección de presupuesto si existe
     let presupuestoHTML = '';

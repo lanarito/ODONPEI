@@ -157,6 +157,12 @@ async function obtenerContadorDesdeFirestore() {
   } catch (e) { console.warn('Firebase contador obtener:', e); return {}; }
 }
 
+function escucharContadorEnFirestore(callback) {
+  return onSnapshot(doc(db, "config", "atenciones"), (snap) => {
+    callback(snap.exists() ? snap.data() : {});
+  });
+}
+
 // Exponer funciones al scope global para que storage.js pueda usarlas
 window.guardarEnFirestore             = guardarEnFirestore;
 window.obtenerDesdePacientesFirestore = obtenerDesdePacientesFirestore;
@@ -170,3 +176,4 @@ window.eliminarTurnoDeFirestore       = eliminarTurnoDeFirestore;
 window.sincronizarTurnosEnTiempoReal  = sincronizarTurnosEnTiempoReal;
 window.guardarContadorEnFirestore     = guardarContadorEnFirestore;
 window.obtenerContadorDesdeFirestore  = obtenerContadorDesdeFirestore;
+window.escucharContadorEnFirestore    = escucharContadorEnFirestore;
