@@ -195,6 +195,9 @@ Genera una ventana de impresión con:
 
 ### Impresión de historia clínica completa
 Incluye todos los datos del paciente, tratamientos, odontograma y presupuesto si existe.
+El odontograma en la impresión se muestra como imagen PNG (la misma que ve la doctora en pantalla).
+
+> **Fix aplicado:** antes la impresión intentaba leer el odontograma como objeto por diente y siempre salía en blanco. Corregido en commit `7217eac`.
 
 ---
 
@@ -211,12 +214,14 @@ localStorage (inmediato, local)
 Firebase Firestore (async, nube compartida)
 ```
 
-### Sincronización al iniciar
-Al cargar la app (1.5 segundos después del load):
-- Si **Firebase tiene datos** → los carga y sobreescribe localStorage
-- Si **Firebase está vacío** y localStorage tiene datos → los sube a Firebase (migración)
+### Sincronización al iniciar + en tiempo real
 
-Esto garantiza que ambas máquinas (Luis y su señora) vean los mismos datos.
+Al cargar la app (1.5 segundos después del load):
+1. Si **Firebase tiene datos** → los carga y sobreescribe localStorage
+2. Si **Firebase está vacío** y localStorage tiene datos → los sube a Firebase (migración)
+3. Se activa un **listener `onSnapshot`** que queda escuchando cambios en tiempo real
+
+Cualquier modificación desde cualquier dispositivo (agregar paciente, modificar turno, cambiar contador) se propaga automáticamente a todos los dispositivos que tengan la página abierta, sin necesidad de recargar.
 
 ### Claves localStorage
 | Clave | Contenido |
@@ -226,11 +231,12 @@ Esto garantiza que ambas máquinas (Luis y su señora) vean los mismos datos.
 | `ODONPEI_ATENCIONES` | Objeto `{ 'YYYY-MM': N }` con conteo mensual |
 | `odonpei_usuario` | Usuario logueado (sessionStorage) |
 
-### Colecciones Firebase
-| Colección | Contenido |
-|-----------|-----------|
-| `pacientes` | Misma estructura que localStorage |
-| `turnos` | Misma estructura que localStorage |
+### Colecciones y documentos Firebase
+| Colección / Documento | Contenido |
+|-----------------------|-----------|
+| `pacientes` (colección) | Misma estructura que localStorage, con `onSnapshot` activo |
+| `turnos` (colección) | Misma estructura que localStorage, con `onSnapshot` activo |
+| `config/atenciones` (documento) | Objeto `{ 'YYYY-MM': N }` con contador mensual, con `onSnapshot` activo |
 
 ### Estructura de un paciente
 ```javascript
@@ -282,14 +288,19 @@ Esto garantiza que ambas máquinas (Luis y su señora) vean los mismos datos.
 > **Importante:** Como es un ES Module, sus funciones NO son globales automáticamente. Por eso al final del archivo se asignan a `window.*` para que `storage.js` y `turnos.js` (scripts normales) puedan usarlas.
 
 ```javascript
-window.guardarEnFirestore            // pacientes
+window.guardarEnFirestore             // pacientes — CRUD
 window.obtenerDesdePacientesFirestore
 window.actualizarEnFirestore
 window.eliminarDeFirestore
-window.guardarTurnoEnFirestore       // turnos
+window.sincronizarEnTiempoReal        // pacientes — listener onSnapshot en tiempo real
+window.guardarTurnoEnFirestore        // turnos — CRUD
 window.obtenerTurnosDesdeFirestore
 window.actualizarTurnoEnFirestore
 window.eliminarTurnoDeFirestore
+window.sincronizarTurnosEnTiempoReal  // turnos — listener onSnapshot en tiempo real
+window.guardarContadorEnFirestore     // contador mensual
+window.obtenerContadorDesdeFirestore
+window.escucharContadorEnFirestore    // contador — listener onSnapshot en tiempo real
 ```
 
 ---
@@ -300,7 +311,8 @@ window.eliminarTurnoDeFirestore
 - Se decrementa con `−` (no baja de 0)
 - Se reinicia automáticamente cada mes (clave por mes: `YYYY-MM`)
 - El último día del mes muestra el mensaje: "Total de atenciones de [mes]: N"
-- Los datos se guardan solo en localStorage (no en Firebase)
+- Los datos se guardan en localStorage **y en Firebase** (documento `config/atenciones`)
+- **Sincronización en tiempo real** con `onSnapshot` — si la señora presiona `+` en la tablet, el número se actualiza automáticamente en la notebook sin recargar
 
 ---
 
@@ -354,6 +366,9 @@ Para volver a un punto: `git checkout v1.0-estable`
 
 | Commit | Cambio |
 |--------|--------|
+| `7217eac` | **Auditoría completa:** sync en tiempo real para pacientes, contador y odontograma en impresión |
+| `9452a47` | **Fix:** turnos sincronizan en tiempo real con `onSnapshot` (antes solo al abrir la página) |
+| `edad232` | Contador de atenciones sincronizado con Firebase — compartido entre dispositivos |
 | `5bf6eba` | Turnos del día, buscador de turnos, responsive móvil completo |
 | `59cc58c` | **Fix crítico:** odontograma se guarda correctamente como PNG |
 | `d239f6e` | Odontograma visible en vista detalle del paciente |
@@ -371,16 +386,6 @@ Para volver a un punto: `git checkout v1.0-estable`
 Cualquier `git push` a la rama `main` actualiza automáticamente el sitio en GitHub Pages.  
 El sitio tarda **2-3 minutos** en reflejar los cambios.  
 Para ver los cambios sin caché: **Ctrl+Shift+R** en el navegador.
-
----
-
-## Responsive / Móvil
-
-El sitio funciona en celular y tablet. Breakpoints:
-- `max-width: 768px` — navbar en columna, grilla de fotos en 1 columna, calendar reducido
-- `max-width: 480px` — tipografía reducida, logo más chico
-
-El calendario de turnos en móvil muestra columnas más angostas con fuente de 10px.
 
 ---
 
