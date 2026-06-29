@@ -424,6 +424,28 @@ function guardarEstadoTurno(id) {
     }
 }
 
+function recuperarTurnosEnFirebase() {
+    const turnos = obtenerTurnos();
+    if (turnos.length === 0) {
+        alert('No hay turnos en este dispositivo.');
+        return;
+    }
+    if (!confirm(`Se van a subir ${turnos.length} turno(s) a Firebase. ¿Continuar?`)) return;
+
+    let count = 0;
+    const promises = turnos.map(t => {
+        if (typeof guardarTurnoEnFirestore === 'function') {
+            return guardarTurnoEnFirestore(t).then(() => { count++; }).catch(() => {});
+        }
+        return Promise.resolve();
+    });
+
+    Promise.all(promises).then(() => {
+        guardarTurnosStorage(turnos);
+        alert(`✅ ${count} turno(s) subidos a Firebase.\n\nAhora recargá la página en los otros dispositivos y van a aparecer todos.`);
+    });
+}
+
 function eliminarTurno(id) {
     if (!confirm('¿Eliminar este turno?')) return;
     const turnos = obtenerTurnos();
