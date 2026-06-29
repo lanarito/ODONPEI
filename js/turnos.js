@@ -45,7 +45,23 @@ function cargarTurnos() {
     semanaOffset = 0;
     renderizarTurnosHoy();
     renderizarSemana();
-    setTimeout(sincronizarTurnosDesdeFirebase, 1500);
+    setTimeout(() => {
+        // Subir a Firebase los turnos locales que aún no tienen ID remoto
+        if (typeof guardarTurnoEnFirestore === 'function') {
+            const sinSubir = obtenerTurnos().filter(t => !t.firebaseId);
+            sinSubir.forEach(t => guardarTurnoEnFirestore(t));
+        }
+        // Escuchar cambios en tiempo real — se activa cada vez que cualquier dispositivo modifica un turno
+        if (typeof sincronizarTurnosEnTiempoReal === 'function') {
+            sincronizarTurnosEnTiempoReal((turnosRemotos) => {
+                if (turnosRemotos.length > 0) {
+                    localStorage.setItem(TURNOS_KEY, JSON.stringify(turnosRemotos));
+                    renderizarTurnosHoy();
+                    renderizarSemana();
+                }
+            });
+        }
+    }, 1500);
 }
 
 function renderizarTurnosHoy() {
