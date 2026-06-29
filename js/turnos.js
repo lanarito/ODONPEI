@@ -269,7 +269,16 @@ function guardarTurno(event) {
             t.duracion       = parseInt(document.getElementById('turno-duracion').value);
             t.notas          = document.getElementById('turno-notas').value.trim();
             guardarTurnosStorage(turnos);
-            if (typeof actualizarTurnoEnFirestore === 'function') actualizarTurnoEnFirestore(t);
+            if (typeof actualizarTurnoEnFirestore === 'function') actualizarTurnoEnFirestore(t).catch(() => {
+                // Si no existe en Firebase (no tiene firebaseId), lo crea
+                if (!t.firebaseId && typeof guardarTurnoEnFirestore === 'function') {
+                    guardarTurnoEnFirestore(t).then(() => {
+                        const todos = obtenerTurnos();
+                        const idx = todos.findIndex(x => x.id === t.id);
+                        if (idx !== -1) { todos[idx].firebaseId = t.firebaseId; guardarTurnosStorage(todos); }
+                    });
+                }
+            });
         }
     } else {
         // Modo nuevo
@@ -287,7 +296,14 @@ function guardarTurno(event) {
         const turnos = obtenerTurnos();
         turnos.push(turno);
         guardarTurnosStorage(turnos);
-        if (typeof guardarTurnoEnFirestore === 'function') guardarTurnoEnFirestore(turno);
+        if (typeof guardarTurnoEnFirestore === 'function') {
+            guardarTurnoEnFirestore(turno).then(() => {
+                // Guardar el firebaseId de vuelta en localStorage para que el sistema sepa que ya está en la nube
+                const todos = obtenerTurnos();
+                const idx = todos.findIndex(t => t.id === turno.id);
+                if (idx !== -1) { todos[idx].firebaseId = turno.firebaseId; guardarTurnosStorage(todos); }
+            });
+        }
     }
 
     cerrarFormTurno();
