@@ -51,16 +51,12 @@ function cargarTurnos() {
             const sinSubir = obtenerTurnos().filter(t => !t.firebaseId);
             sinSubir.forEach(t => guardarTurnoEnFirestore(t));
         }
-        // Escuchar cambios en tiempo real con merge: nunca pierde datos locales que aún no llegaron a Firebase
+        // Escuchar cambios en tiempo real — solo muestra, nunca sube (evita bucle infinito)
         if (typeof sincronizarTurnosEnTiempoReal === 'function') {
             sincronizarTurnosEnTiempoReal((turnosRemotos) => {
                 const locales = obtenerTurnos();
                 const idsRemotos = new Set(turnosRemotos.map(t => t.id));
-                // Turnos que están solo en local → subirlos a Firebase y conservarlos
                 const soloLocales = locales.filter(t => !idsRemotos.has(t.id));
-                soloLocales.forEach(t => {
-                    if (typeof guardarTurnoEnFirestore === 'function') guardarTurnoEnFirestore(t);
-                });
                 const merged = [...turnosRemotos, ...soloLocales];
                 localStorage.setItem(TURNOS_KEY, JSON.stringify(merged));
                 renderizarTurnosHoy();
