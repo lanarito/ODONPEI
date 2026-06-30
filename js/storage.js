@@ -149,18 +149,24 @@ async function sincronizarDesdeFirebase() {
 // Esperar a que firebase-config.js (módulo) termine de asignar window.xxx
 window.addEventListener('load', () => {
     setTimeout(async () => {
-        // Sync inicial: si Firebase tiene datos los usa, si no sube los locales
-        await sincronizarDesdeFirebase();
-        // Escuchar cambios en tiempo real con merge: nunca pierde datos locales que aún no llegaron a Firebase
+        // 1. Subir UNA SOLA VEZ los pacientes locales que aún no están en Firebase
+        //    (se comparan por el campo .id, así no se duplican los que ya están)
+        if (typeof obtenerDesdePacientesFirestore === 'function' && typeof guardarEnFirestore === 'function') {
+            try {
+                const remotos = await obtenerDesdePacientesFirestore();
+                const idsRemotos = new Set(remotos.map(p => p.id));
+                const locales = obtenerTodos();
+                for (const p of locales) {
+                    if (!idsRemotos.has(p.id)) await guardarEnFirestore(p);
+                }
+            } catch (e) { console.warn('Subida inicial pacientes:', e); }
+        }
+        // 2. Escuchar en tiempo real — SOLO muestra, nunca sube (evita bucle/duplicados)
         if (typeof sincronizarEnTiempoReal === 'function') {
             sincronizarEnTiempoReal((pacientesRemotos) => {
                 const locales = obtenerTodos();
                 const idsRemotos = new Set(pacientesRemotos.map(p => p.id));
-                // Pacientes que están solo en local → subirlos a Firebase y conservarlos
                 const soloLocales = locales.filter(p => !idsRemotos.has(p.id));
-                soloLocales.forEach(p => {
-                    if (typeof guardarEnFirestore === 'function') guardarEnFirestore(p);
-                });
                 const merged = [...pacientesRemotos, ...soloLocales];
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
                 if (typeof cargarPacientes === 'function') cargarPacientes();

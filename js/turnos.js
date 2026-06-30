@@ -45,7 +45,15 @@ function cargarTurnos() {
     semanaOffset = 0;
     renderizarTurnosHoy();
     renderizarSemana();
-    setTimeout(() => {
+    setTimeout(async () => {
+        // 1. Subir TODOS los turnos locales a Firebase (setDoc por id = no duplica nunca)
+        if (typeof guardarTurnoEnFirestore === 'function') {
+            const locales = obtenerTurnos();
+            for (const t of locales) {
+                await guardarTurnoEnFirestore(t);
+            }
+        }
+        // 2. Escuchar en tiempo real — ya subimos lo nuestro, Firebase es la fuente de verdad
         if (typeof sincronizarTurnosEnTiempoReal === 'function') {
             sincronizarTurnosEnTiempoReal((turnosRemotos) => {
                 guardarTurnosStorage(turnosRemotos);
