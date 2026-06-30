@@ -41,17 +41,38 @@ function fechaStr(date) {
     return date.toISOString().split('T')[0];
 }
 
+async function limpiarDuplicadosFirebase() {
+    if (typeof obtenerTurnosDesdeFirestore !== 'function') return;
+    try {
+        const todos = await obtenerTurnosDesdeFirestore();
+        const vistos = {};
+        for (const t of todos) {
+            if (vistos[t.id]) {
+                // Duplicado — eliminar de Firebase
+                if (typeof eliminarTurnoDeFirestore === 'function') {
+                    await eliminarTurnoDeFirestore(t.firebaseId);
+                    console.log('Duplicado eliminado:', t.pacienteNombre, t.fecha);
+                }
+            } else {
+                vistos[t.id] = true;
+            }
+        }
+    } catch (e) { console.warn('Limpieza duplicados:', e); }
+}
+
 function cargarTurnos() {
     semanaOffset = 0;
     renderizarTurnosHoy();
     renderizarSemana();
-    setTimeout(() => {
+    setTimeout(async () => {
+        // Limpiar duplicados que creó el bucle infinito
+        await limpiarDuplicadosFirebase();
         // Subir a Firebase los turnos locales que aún no tienen ID remoto
         if (typeof guardarTurnoEnFirestore === 'function') {
             const sinSubir = obtenerTurnos().filter(t => !t.firebaseId);
-            sinSubir.forEach(t => guardarTurnoEnFirestore(t));
+            for (const t of sinSubir) await guardarTurnoEnFirestore(t);
         }
-        // Escuchar cambios en tiempo real — solo muestra, nunca sube (evita bucle infinito)
+        // Escuchar cambios en tiempo real — solo muestra, nunca sube
         if (typeof sincronizarTurnosEnTiempoReal === 'function') {
             sincronizarTurnosEnTiempoReal((turnosRemotos) => {
                 const locales = obtenerTurnos();
