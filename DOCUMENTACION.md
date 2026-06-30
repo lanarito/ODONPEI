@@ -216,12 +216,20 @@ Firebase Firestore (async, nube compartida)
 
 ### Sincronización al iniciar + en tiempo real
 
-Al cargar la app (1.5 segundos después del load):
-1. Si **Firebase tiene datos** → los carga y sobreescribe localStorage
-2. Si **Firebase está vacío** y localStorage tiene datos → los sube a Firebase (migración)
-3. Se activa un **listener `onSnapshot`** que queda escuchando cambios en tiempo real
+Al cargar la app (1.5 segundos después del load), para pacientes y turnos:
+1. **Primero sube** los datos locales que todavía no están en Firebase (una sola vez)
+2. **Después activa** un listener `onSnapshot` que SOLO muestra los cambios (nunca sube)
 
-Cualquier modificación desde cualquier dispositivo (agregar paciente, modificar turno, cambiar contador) se propaga automáticamente a todos los dispositivos que tengan la página abierta, sin necesidad de recargar.
+Esta separación es clave: **el listener nunca sube datos**, porque si lo hiciera dispararía el propio listener de nuevo creando un **bucle infinito** que satura Firebase y genera duplicados (bug que ocurrió y se corrigió).
+
+Cualquier modificación desde cualquier dispositivo (agregar paciente, modificar turno, cambiar contador) se propaga automáticamente a todos los dispositivos que tengan la página abierta, sin recargar.
+
+### IDs idempotentes (anti-duplicados)
+Los turnos se guardan en Firebase con `setDoc` usando el **id local como id del documento** (`setDoc(doc(db,"turnos", turno.id), turno)`). Así, guardar el mismo turno muchas veces **sobreescribe el mismo documento** en lugar de crear copias. Esto elimina de raíz los duplicados.
+
+### Botones de mantenimiento (página Turnos)
+- **🔄 Recuperar** — sube a Firebase todos los turnos que estén en el dispositivo actual. Útil si un dispositivo tiene turnos locales que no llegaron a la nube.
+- **🧹 Limpiar duplicados** — deja un solo turno de cada uno y elimina los duplicados de Firebase. Hacerlo en UN solo dispositivo con los demás cerrados.
 
 ### Claves localStorage
 | Clave | Contenido |
@@ -277,6 +285,36 @@ Cualquier modificación desde cualquier dispositivo (agregar paciente, modificar
   fechaCreacion: "ISO date"
 }
 ```
+
+---
+
+## ⚠️ Reglas de Seguridad de Firebase (CRÍTICO — LEER)
+
+**El problema más grave que tuvo el sistema fue por acá.** Cuando se crea Firestore "en modo prueba", las reglas de seguridad traen un **candado con fecha de vencimiento de 30 días**:
+
+```
+allow read, write: if request.time < timestamp.date(2026, 6, 19);
+```
+
+Cuando llega esa fecha, **Firebase bloquea TODAS las lecturas y escrituras** con el error `permission-denied: Missing or insufficient permissions`. El síntoma: los datos dejan de sincronizar entre dispositivos y cada uno solo ve lo que tiene guardado localmente. Es silencioso y traicionero porque la app parece funcionar.
+
+### Regla correcta (sin vencimiento)
+En la consola de Firebase → Firestore Database → pestaña **Reglas**, debe decir:
+
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+```
+
+`if true;` **no tiene fecha → nunca se vence**. Después de editar hay que apretar **Publicar**.
+
+> **Cómo detectar este problema en el futuro:** abrir la consola del navegador (F12 → Console). Si aparecen errores rojos que dicen `permission-denied` o `Missing or insufficient permissions`, las reglas se vencieron → reemplazarlas por la regla de arriba.
 
 ---
 
@@ -366,6 +404,11 @@ Para volver a un punto: `git checkout v1.0-estable`
 
 | Commit | Cambio |
 |--------|--------|
+| `0d806a5` | Botón Limpiar duplicados + normalización de ids de turnos |
+| `aeb1e3c` | Sync robusto: subir local-only una vez al cargar, listener solo muestra |
+| `94712f0` | **Fix raíz duplicados:** `setDoc` por id (idempotente) en turnos |
+| `e597d94` | Fix bucle infinito en `onSnapshot` (separar subida de visualización) |
+| **REGLAS** | **Firebase: candado vencido el 19/06 reemplazado por `if true;` (sin vencimiento)** |
 | `7217eac` | **Auditoría completa:** sync en tiempo real para pacientes, contador y odontograma en impresión |
 | `9452a47` | **Fix:** turnos sincronizan en tiempo real con `onSnapshot` (antes solo al abrir la página) |
 | `edad232` | Contador de atenciones sincronizado con Firebase — compartido entre dispositivos |
@@ -408,6 +451,23 @@ El sitio está optimizado para celular y tablet. Breakpoints:
 - Container: padding 12px
 
 Para recargar cambios en mobile: Chrome → menú 3 puntos → Actualizar, o cerrar y reabrir el navegador.
+
+---
+
+## 🔧 Diagnóstico Rápido (si algo no sincroniza)
+
+Si los datos no aparecen en todos los dispositivos, seguir este orden:
+
+1. **Abrir consola del navegador** (F12 → pestaña Console) en el dispositivo que falla
+2. **Buscar errores rojos:**
+   - `permission-denied` / `Missing or insufficient permissions` → **las reglas de Firebase se vencieron**. Ir a la consola de Firebase → Firestore → Reglas → poner `if true;` → Publicar. (Ver sección "Reglas de Seguridad de Firebase")
+   - `Firebase conectado a odonpei` (verde) y `Cargados N pacientes` → la conexión está OK
+3. **Verificar en la consola de Firebase** (Firestore → Datos) que las colecciones `pacientes`, `turnos` y el documento `config/atenciones` tengan datos
+4. Si un dispositivo tiene turnos que no subieron: abrir Turnos → botón **🔄 Recuperar**
+5. Si hay turnos duplicados: abrir Turnos en UN dispositivo (los demás cerrados) → botón **🧹 Limpiar duplicados**
+
+### Lección aprendida (junio 2026)
+El sistema estuvo ~10 días sin sincronizar porque las reglas de Firebase se vencieron el 19/06 sin que nadie lo notara. Cada dispositivo siguió funcionando con su copia local, pero los datos no se compartían. Algunos turnos cargados en esos días, que solo vivían en un dispositivo, se perdieron al recargar. **Moraleja:** las reglas con fecha (`timestamp.date(...)`) son una bomba de tiempo — usar siempre `if true;` o reglas sin vencimiento.
 
 ---
 
