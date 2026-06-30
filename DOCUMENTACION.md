@@ -391,12 +391,14 @@ El guardado usaba `canvas.datosOdontograma` (propiedad inexistente) en lugar de 
 |-----|-------------|
 | `v1.0-estable` | Diseño aprobado, sin turnero |
 | `v1.1-turnero` | Turnero completo, antes del fix de odontograma |
+| `v1.2-firebase-estable` | Sync en tiempo real estable, reglas Firebase sin vencimiento, anti-duplicados |
 
-Para volver a un punto: `git checkout v1.0-estable`
+Para volver a un punto: `git checkout v1.2-firebase-estable`
 
 ### Backups locales
 - `c:\Github repos\ODONPEI_backup_2026-05-21.zip` — v1.0
 - `c:\Github repos\ODONPEI_backup_2026-05-21_v1.1.zip` — v1.1
+- `c:\Github repos\ODONPEI_backup_2026-06-29_v1.2.zip` — v1.2 (Firebase estable)
 
 ---
 
