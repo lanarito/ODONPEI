@@ -111,8 +111,9 @@ function sincronizarTurnosEnTiempoReal(callback) {
 
 async function guardarTurnoEnFirestore(turno) {
   try {
-    const docRef = await addDoc(collection(db, "turnos"), turno);
-    turno.firebaseId = docRef.id;
+    // Usar el id local como ID del documento en Firebase — evita duplicados
+    await setDoc(doc(db, "turnos", turno.id), turno);
+    turno.firebaseId = turno.id;
     return turno;
   } catch (e) { console.warn('Firebase turno guardar:', e); return null; }
 }
