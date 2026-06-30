@@ -418,6 +418,44 @@ function guardarEstadoTurno(id) {
     }
 }
 
+async function limpiarDuplicadosTurnos() {
+    if (typeof obtenerTurnosDesdeFirestore !== 'function') {
+        alert('Firebase no disponible.');
+        return;
+    }
+    if (!confirm('Esto deja UN solo turno de cada uno y elimina los duplicados.\n\nHacelo en UN solo dispositivo, con los demás cerrados.\n\n¿Continuar?')) return;
+
+    try {
+        const todos = await obtenerTurnosDesdeFirestore(); // cada uno: .firebaseId (doc) + .id (dato)
+        // Agrupar por id interno del turno
+        const grupos = {};
+        todos.forEach(t => { (grupos[t.id] = grupos[t.id] || []).push(t); });
+
+        let eliminados = 0;
+        for (const id in grupos) {
+            const docs = grupos[id];
+            // ¿Existe el documento "canónico" (cuyo id de Firebase == id del turno)?
+            const canonico = docs.find(d => d.firebaseId === d.id);
+            if (canonico) {
+                // Borrar todos los demás
+                for (const d of docs) {
+                    if (d.firebaseId !== d.id) { await eliminarTurnoDeFirestore(d.firebaseId); eliminados++; }
+                }
+            } else {
+                // Crear el canónico desde el primero y borrar todos los viejos
+                const base = { ...docs[0] };
+                delete base.firebaseId;
+                await guardarTurnoEnFirestore(base);
+                for (const d of docs) { await eliminarTurnoDeFirestore(d.firebaseId); eliminados++; }
+            }
+        }
+        alert(`✅ Limpieza completa.\n${eliminados} duplicado(s) eliminado(s).\n\nRecargá los otros dispositivos (Ctrl+Shift+R).`);
+    } catch (e) {
+        console.error('Limpieza duplicados:', e);
+        alert('Hubo un error en la limpieza. Revisá la consola.');
+    }
+}
+
 function recuperarTurnosEnFirebase() {
     const turnos = obtenerTurnos();
     if (turnos.length === 0) {
