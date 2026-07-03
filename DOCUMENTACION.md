@@ -299,7 +299,13 @@ Chat grupal en tiempo real entre las **estaciones** del consultorio (secretaría
 
 **Identidad de estación:** cada dispositivo elige su nombre la primera vez (Consultorio 1/2, Secretaría, Recepción, u otro libre). Se guarda en `localStorage` bajo `ODONPEI_ESTACION` y se puede cambiar con el botón ✎ del panel.
 
-**Sonido:** beep generado con WebAudio (sin archivos externos). Los navegadores no permiten reproducir audio hasta la primera interacción del usuario, por eso se "desbloquea" con el primer toque/click en la página.
+**Aviso al recibir (fuerte, pensado para escucharse sobre la turbina):**
+- **Sonido:** alerta fuerte y repetida estilo ICQ (onda cuadrada, patrón "uh-oh" dos veces), generada con WebAudio (sin archivos externos).
+- **Voz:** además, una voz dice *"Mensaje nuevo de [estación]"* usando `SpeechSynthesis` en `es-AR` (`hablar()`). Depende de que el dispositivo tenga voces instaladas; si no, igual suena la alerta.
+- Los navegadores no permiten audio/voz hasta la primera interacción del usuario, por eso se "desbloquea" con el primer toque/click en la página (`desbloquearAudio()`).
+- Todo junto se dispara en `chatNotificar(estacion)`.
+
+**Apertura automática:** cuando llega un mensaje de **otra** estación y el chat está cerrado, el panel **se abre solo** (`chatAbrir(false, false)`) para que se vea sin tocar nada. No roba el foco ni levanta el teclado en pantalla (importante en tablets/celulares); el teclado aparece recién al tocar el campo para responder.
 
 **No leídos:** globito rojo en el botón 💬 con la cantidad de mensajes ajenos llegados con el panel cerrado. Se resetea al abrir el chat.
 
@@ -426,13 +432,15 @@ El guardado usaba `canvas.datosOdontograma` (propiedad inexistente) en lugar de 
 | `v1.0-estable` | Diseño aprobado, sin turnero |
 | `v1.1-turnero` | Turnero completo, antes del fix de odontograma |
 | `v1.2-firebase-estable` | Sync en tiempo real estable, reglas Firebase sin vencimiento, anti-duplicados |
+| `v1.3-chat-estable` | Chat interno entre estaciones (sonido fuerte + voz, apertura automática) |
 
-Para volver a un punto: `git checkout v1.2-firebase-estable`
+Para volver a un punto: `git checkout v1.3-chat-estable`
 
 ### Backups locales
 - `c:\Github repos\ODONPEI_backup_2026-05-21.zip` — v1.0
 - `c:\Github repos\ODONPEI_backup_2026-05-21_v1.1.zip` — v1.1
 - `c:\Github repos\ODONPEI_backup_2026-06-29_v1.2.zip` — v1.2 (Firebase estable)
+- `c:\Github repos\ODONPEI_backup_2026-07-03_v1.3.zip` — v1.3 (Chat interno)
 
 ---
 
@@ -440,7 +448,9 @@ Para volver a un punto: `git checkout v1.2-firebase-estable`
 
 | Commit | Cambio |
 |--------|--------|
-| _(este)_ | **Chat interno:** chat grupal en tiempo real entre estaciones, con sonido, no leídos y borrar (`js/chat.js`) |
+| `42fdf3a` | **Chat:** al llegar un mensaje el panel se abre solo en las demás estaciones |
+| `19aaa3d` | **Chat:** aviso más fuerte — sonido tipo ICQ repetido + voz hablada |
+| `5541a90` | **Chat interno (nuevo):** mensajería grupal en tiempo real entre estaciones, con sonido, no leídos y borrar (`js/chat.js`) |
 | `0d806a5` | Botón Limpiar duplicados + normalización de ids de turnos |
 | `aeb1e3c` | Sync robusto: subir local-only una vez al cargar, listener solo muestra |
 | `94712f0` | **Fix raíz duplicados:** `setDoc` por id (idempotente) en turnos |
