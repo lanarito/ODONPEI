@@ -30,22 +30,55 @@ function desbloquearAudio() {
         if (chatAudioCtx.state === 'suspended') chatAudioCtx.resume();
     } catch (e) { /* navegador sin soporte */ }
 }
+// Un blip corto y fuerte a una frecuencia dada
+function chatBlip(t0, freq, dur) {
+    const osc = chatAudioCtx.createOscillator();
+    const gain = chatAudioCtx.createGain();
+    osc.connect(gain); gain.connect(chatAudioCtx.destination);
+    osc.type = 'square';                       // onda cuadrada = más penetrante
+    osc.frequency.setValueAtTime(freq, t0);
+    gain.gain.setValueAtTime(0.0001, t0);
+    gain.gain.exponentialRampToValueAtTime(0.9, t0 + 0.01);   // volumen alto
+    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.start(t0);
+    osc.stop(t0 + dur + 0.02);
+}
+
+// Sonido de alerta fuerte y repetido (estilo ICQ) — pensado para escucharse sobre la turbina
 function beep() {
     if (!chatAudioCtx) return;
     try {
+        if (chatAudioCtx.state === 'suspended') chatAudioCtx.resume();
         const t = chatAudioCtx.currentTime;
-        const osc = chatAudioCtx.createOscillator();
-        const gain = chatAudioCtx.createGain();
-        osc.connect(gain); gain.connect(chatAudioCtx.destination);
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, t);
-        osc.frequency.setValueAtTime(1180, t + 0.12);
-        gain.gain.setValueAtTime(0.0001, t);
-        gain.gain.exponentialRampToValueAtTime(0.25, t + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.3);
-        osc.start(t);
-        osc.stop(t + 0.32);
+        // Patrón "uh-oh" repetido dos veces: nota grave + aguda
+        const patron = [
+            [0.00, 700, 0.10],
+            [0.13, 1050, 0.14],
+            [0.40, 700, 0.10],
+            [0.53, 1050, 0.14]
+        ];
+        patron.forEach(([off, f, d]) => chatBlip(t + off, f, d));
     } catch (e) { /* ignorar */ }
+}
+
+// Aviso hablado (se escucha por encima del ruido) — dice quién mandó el mensaje
+function hablar(texto) {
+    try {
+        if (!('speechSynthesis' in window) || !texto) return;
+        const u = new SpeechSynthesisUtterance(texto);
+        u.lang = 'es-AR';
+        u.rate = 1;
+        u.pitch = 1;
+        u.volume = 1;
+        window.speechSynthesis.cancel();  // corta lo anterior si hay
+        window.speechSynthesis.speak(u);
+    } catch (e) { /* ignorar */ }
+}
+
+// Aviso completo: sonido fuerte + voz con el nombre de la estación
+function chatNotificar(estacion) {
+    beep();
+    setTimeout(() => hablar('Mensaje nuevo' + (estacion ? ' de ' + estacion : '')), 500);
 }
 
 // ---------- Utilidades ----------
@@ -325,7 +358,9 @@ function chatOnSnapshot(mensajes) {
     chatUltimoTs = mensajes.reduce((mx, m) => Math.max(mx, m.ts || 0), chatUltimoTs);
 
     if (!chatPrimeraCarga && nuevosAjenos.length > 0) {
-        beep();
+        // Avisar con sonido fuerte + voz, nombrando la estación del último mensaje nuevo
+        const ultimo = nuevosAjenos[nuevosAjenos.length - 1];
+        chatNotificar(ultimo ? ultimo.estacion : '');
         if (!chatPanelAbierto) {
             chatNoLeidos += nuevosAjenos.length;
             chatActualizarBadge();
