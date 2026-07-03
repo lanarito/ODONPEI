@@ -37,7 +37,8 @@ ODONPEI/
 │   ├── formularios.js      # Generación dinámica de formularios de historia clínica
 │   ├── odontograma.js      # Canvas modo Paint para dibujar el odontograma
 │   ├── tratamientos.js     # Tratamientos, presupuestos e impresión
-│   └── turnos.js           # Turnero digital con vista semanal + sync Firebase
+│   ├── turnos.js           # Turnero digital con vista semanal + sync Firebase
+│   └── chat.js             # Chat interno en tiempo real entre estaciones (Firebase)
 ├── ODONPEI 2.png           # Logo principal (puzzle de dientes coloridos)
 ├── Muela.png               # Imagen de muela (usada en bienvenida y marca de agua)
 └── DOCUMENTACION.md        # Este archivo
@@ -237,6 +238,7 @@ Los turnos se guardan en Firebase con `setDoc` usando el **id local como id del 
 | `ODONPEI_PACIENTES` | Array de todos los pacientes con sus historias |
 | `ODONPEI_TURNOS` | Array de todos los turnos |
 | `ODONPEI_ATENCIONES` | Objeto `{ 'YYYY-MM': N }` con conteo mensual |
+| `ODONPEI_ESTACION` | Nombre de la estación de este dispositivo (chat interno) |
 | `odonpei_usuario` | Usuario logueado (sessionStorage) |
 
 ### Colecciones y documentos Firebase
@@ -245,6 +247,7 @@ Los turnos se guardan en Firebase con `setDoc` usando el **id local como id del 
 | `pacientes` (colección) | Misma estructura que localStorage, con `onSnapshot` activo |
 | `turnos` (colección) | Misma estructura que localStorage, con `onSnapshot` activo |
 | `config/atenciones` (documento) | Objeto `{ 'YYYY-MM': N }` con contador mensual, con `onSnapshot` activo |
+| `chat` (colección) | Mensajes del chat interno `{ texto, estacion, ts, fecha }`, con `onSnapshot` activo |
 
 ### Estructura de un paciente
 ```javascript
@@ -285,6 +288,37 @@ Los turnos se guardan en Firebase con `setDoc` usando el **id local como id del 
   fechaCreacion: "ISO date"
 }
 ```
+
+---
+
+## Chat Interno (`js/chat.js`)
+
+Chat grupal en tiempo real entre las **estaciones** del consultorio (secretaría, consultorios, tablets, celulares). Todos escriben en el mismo chat y todos ven todo; cada mensaje va firmado con la estación que lo envió. Usa el mismo Firebase que turnos/pacientes (colección `chat`), sin dependencias nuevas.
+
+**UI:** botón flotante 💬 abajo a la derecha (visible en todas las pantallas tras el login). Abre un panel tipo WhatsApp. Se inicializa en `mostrarApp()` (`initChat()`) y se oculta en `cerrarSesion()` (`chatOcultar()`).
+
+**Identidad de estación:** cada dispositivo elige su nombre la primera vez (Consultorio 1/2, Secretaría, Recepción, u otro libre). Se guarda en `localStorage` bajo `ODONPEI_ESTACION` y se puede cambiar con el botón ✎ del panel.
+
+**Sonido:** beep generado con WebAudio (sin archivos externos). Los navegadores no permiten reproducir audio hasta la primera interacción del usuario, por eso se "desbloquea" con el primer toque/click en la página.
+
+**No leídos:** globito rojo en el botón 💬 con la cantidad de mensajes ajenos llegados con el panel cerrado. Se resetea al abrir el chat.
+
+**Borrar:** cada mensaje tiene 🗑 (borra ese mensaje para todos), y el panel tiene 🗑️ para vaciar todo el chat. Ambos piden confirmación. Como es compartido, borrar elimina en todas las pantallas.
+
+**Estructura de un mensaje (colección `chat`):**
+```javascript
+{
+  firebaseId: "abc123",     // ID en Firestore (para borrar)
+  texto: "ya llegó el de las 15",
+  estacion: "Secretaría",   // quién lo mandó
+  ts: 1720000000000,        // Date.now() — usado para ordenar y detectar nuevos
+  fecha: "ISO date"
+}
+```
+
+**Funciones Firebase (en `firebase-config.js`, expuestas en `window.*`):** `enviarMensajeFirestore`, `escucharChatEnTiempoReal`, `eliminarMensajeFirestore`, `vaciarChatFirestore`.
+
+**Clave localStorage:** `ODONPEI_ESTACION` (nombre de la estación de este dispositivo).
 
 ---
 
@@ -406,6 +440,7 @@ Para volver a un punto: `git checkout v1.2-firebase-estable`
 
 | Commit | Cambio |
 |--------|--------|
+| _(este)_ | **Chat interno:** chat grupal en tiempo real entre estaciones, con sonido, no leídos y borrar (`js/chat.js`) |
 | `0d806a5` | Botón Limpiar duplicados + normalización de ids de turnos |
 | `aeb1e3c` | Sync robusto: subir local-only una vez al cargar, listener solo muestra |
 | `94712f0` | **Fix raíz duplicados:** `setDoc` por id (idempotente) en turnos |

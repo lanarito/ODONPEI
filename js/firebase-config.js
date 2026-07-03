@@ -143,6 +143,50 @@ async function eliminarTurnoDeFirestore(firebaseId) {
   } catch (e) { console.warn('Firebase turno eliminar:', e); return false; }
 }
 
+// ========== CHAT INTERNO EN FIREBASE ==========
+
+// Enviar un mensaje al chat
+async function enviarMensajeFirestore(mensaje) {
+  try {
+    const docRef = await addDoc(collection(db, "chat"), mensaje);
+    mensaje.firebaseId = docRef.id;
+    return mensaje;
+  } catch (e) { console.warn('Firebase chat enviar:', e); return null; }
+}
+
+// Escuchar el chat en tiempo real (ordenado por fecha de creación)
+function escucharChatEnTiempoReal(callback) {
+  return onSnapshot(collection(db, "chat"), (snapshot) => {
+    const mensajes = [];
+    snapshot.forEach((d) => {
+      const data = d.data();
+      data.firebaseId = d.id;
+      mensajes.push(data);
+    });
+    mensajes.sort((a, b) => (a.ts || 0) - (b.ts || 0));
+    callback(mensajes);
+  });
+}
+
+// Eliminar un mensaje del chat
+async function eliminarMensajeFirestore(firebaseId) {
+  try {
+    await deleteDoc(doc(db, "chat", firebaseId));
+    return true;
+  } catch (e) { console.warn('Firebase chat eliminar:', e); return false; }
+}
+
+// Vaciar todo el chat
+async function vaciarChatFirestore() {
+  try {
+    const snap = await getDocs(collection(db, "chat"));
+    const borrados = [];
+    snap.forEach((d) => borrados.push(deleteDoc(doc(db, "chat", d.id))));
+    await Promise.all(borrados);
+    return true;
+  } catch (e) { console.warn('Firebase chat vaciar:', e); return false; }
+}
+
 // ========== CONTADOR DE ATENCIONES EN FIREBASE ==========
 
 async function guardarContadorEnFirestore(data) {
@@ -178,3 +222,7 @@ window.sincronizarTurnosEnTiempoReal  = sincronizarTurnosEnTiempoReal;
 window.guardarContadorEnFirestore     = guardarContadorEnFirestore;
 window.obtenerContadorDesdeFirestore  = obtenerContadorDesdeFirestore;
 window.escucharContadorEnFirestore    = escucharContadorEnFirestore;
+window.enviarMensajeFirestore         = enviarMensajeFirestore;
+window.escucharChatEnTiempoReal       = escucharChatEnTiempoReal;
+window.eliminarMensajeFirestore       = eliminarMensajeFirestore;
+window.vaciarChatFirestore            = vaciarChatFirestore;

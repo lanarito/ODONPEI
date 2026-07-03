@@ -141,6 +141,8 @@ function mostrarApp(usuario) {
         }
     }, 2000);
     cargarPacientes();
+    // Chat interno — botón flotante disponible en todas las pantallas
+    if (typeof initChat === 'function') initChat();
 }
 
 function hacerLogin() {
@@ -165,6 +167,7 @@ function hacerLogin() {
 
 function cerrarSesion() {
     sessionStorage.removeItem('odonpei_usuario');
+    if (typeof chatOcultar === 'function') chatOcultar();
     mostrarLogin();
 }
 
