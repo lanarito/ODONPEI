@@ -258,19 +258,29 @@ function chatActualizarEtiquetaEstacion() {
 }
 
 // ---------- Abrir / cerrar ----------
-function chatToggle() {
+// pedirEstacion: si no hay estación elegida, mostrar el modal (solo al abrir a mano)
+// foco: poner el cursor en el input (evitamos hacerlo al abrir automático para no
+//       levantar el teclado en pantalla en tablets/celulares)
+function chatAbrir(pedirEstacion = true, foco = true) {
     desbloquearAudio();
-    chatPanelAbierto = !chatPanelAbierto;
+    chatPanelAbierto = true;
     const panel = document.getElementById('chat-panel');
-    panel.classList.toggle('abierto', chatPanelAbierto);
-    if (chatPanelAbierto) {
-        if (!getEstacion()) chatPedirEstacion(false);
-        chatNoLeidos = 0;
-        chatActualizarBadge();
-        chatRenderizar();
-        chatScrollAbajo();
-        setTimeout(() => document.getElementById('chat-input')?.focus(), 120);
-    }
+    if (panel) panel.classList.add('abierto');
+    if (pedirEstacion && !getEstacion()) chatPedirEstacion(false);
+    chatNoLeidos = 0;
+    chatActualizarBadge();
+    chatRenderizar();
+    chatScrollAbajo();
+    if (foco) setTimeout(() => document.getElementById('chat-input')?.focus(), 120);
+}
+function chatCerrar() {
+    chatPanelAbierto = false;
+    const panel = document.getElementById('chat-panel');
+    if (panel) panel.classList.remove('abierto');
+}
+function chatToggle() {
+    if (chatPanelAbierto) chatCerrar();
+    else chatAbrir(true, true);
 }
 
 // ---------- Enviar ----------
@@ -361,10 +371,8 @@ function chatOnSnapshot(mensajes) {
         // Avisar con sonido fuerte + voz, nombrando la estación del último mensaje nuevo
         const ultimo = nuevosAjenos[nuevosAjenos.length - 1];
         chatNotificar(ultimo ? ultimo.estacion : '');
-        if (!chatPanelAbierto) {
-            chatNoLeidos += nuevosAjenos.length;
-            chatActualizarBadge();
-        }
+        // Abrir el chat solo en las estaciones donde esté cerrado (sin levantar el teclado)
+        if (!chatPanelAbierto) chatAbrir(false, false);
     }
     chatPrimeraCarga = false;
 
