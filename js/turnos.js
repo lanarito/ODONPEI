@@ -2,6 +2,7 @@
 
 const TURNOS_KEY = 'ODONPEI_TURNOS';
 let semanaOffset = 0;
+let turnosListenerActivo = false;
 
 function obtenerTurnos() {
     return JSON.parse(localStorage.getItem(TURNOS_KEY) || '[]');
@@ -46,22 +47,41 @@ function cargarTurnos() {
     renderizarTurnosHoy();
     renderizarSemana();
     setTimeout(async () => {
-        // 1. Subir TODOS los turnos locales a Firebase (setDoc por id = no duplica nunca)
-        if (typeof guardarTurnoEnFirestore === 'function') {
-            const locales = obtenerTurnos();
-            for (const t of locales) {
-                await guardarTurnoEnFirestore(t);
-            }
+        // Firebase es la FUENTE DE VERDAD.
+        // OJO: antes se re-subían TODOS los turnos locales al abrir la página, y eso
+        // "resucitaba" turnos borrados en otro dispositivo (la copia vieja los volvía
+        // a subir). Ahora NO hacemos eso: solo subimos los turnos realmente nuevos
+        // (creados acá y que nunca llegaron a la nube) y después pisamos lo local con
+        // lo que hay en la nube.
+        if (typeof obtenerTurnosDesdeFirestore === 'function') {
+            try {
+                const remotos = await obtenerTurnosDesdeFirestore();
+                const idsRemotos = new Set(remotos.map(t => t.id));
+                const locales = obtenerTurnos();
+                // "Nuevos de verdad": sin firebaseId (nunca subidos) y que no existan ya en la nube
+                const nuevos = locales.filter(t => !t.firebaseId && !idsRemotos.has(t.id));
+                if (nuevos.length && typeof guardarTurnoEnFirestore === 'function') {
+                    for (const t of nuevos) await guardarTurnoEnFirestore(t);
+                }
+                // La verdad final = lo que hay en la nube (ya con los nuevos incluidos)
+                const finales = nuevos.length ? await obtenerTurnosDesdeFirestore() : remotos;
+                guardarTurnosStorage(finales);
+                renderizarTurnosHoy();
+                renderizarSemana();
+            } catch (e) { console.warn('Carga turnos:', e); }
         }
-        // 2. Escuchar en tiempo real — ya subimos lo nuestro, Firebase es la fuente de verdad
-        if (typeof sincronizarTurnosEnTiempoReal === 'function') {
+
+        // Un ÚNICO listener en tiempo real (antes se apilaba uno nuevo por cada visita
+        // a la página de Turnos). Borrar/modificar en cualquier estación se refleja acá.
+        if (!turnosListenerActivo && typeof sincronizarTurnosEnTiempoReal === 'function') {
+            turnosListenerActivo = true;
             sincronizarTurnosEnTiempoReal((turnosRemotos) => {
                 guardarTurnosStorage(turnosRemotos);
                 renderizarTurnosHoy();
                 renderizarSemana();
             });
         }
-    }, 1500);
+    }, 800);
 }
 
 function renderizarTurnosHoy() {
@@ -483,7 +503,12 @@ function eliminarTurno(id) {
     const turnos = obtenerTurnos();
     const t = turnos.find(t => t.id === id);
     guardarTurnosStorage(turnos.filter(t => t.id !== id));
-    if (t?.firebaseId && typeof eliminarTurnoDeFirestore === 'function') eliminarTurnoDeFirestore(t.firebaseId);
+    // El documento en Firebase usa el id del turno como id (setDoc por id).
+    // Borramos por ese id SIEMPRE (tenga o no firebaseId guardado localmente),
+    // así el borrado se propaga a todos los dispositivos y no reaparece.
+    const docId = t?.firebaseId || t?.id || id;
+    if (docId && typeof eliminarTurnoDeFirestore === 'function') eliminarTurnoDeFirestore(docId);
     cerrarFormTurno();
+    renderizarTurnosHoy();
     renderizarSemana();
 }
