@@ -217,19 +217,22 @@ Firebase Firestore (async, nube compartida)
 
 ### Sincronización al iniciar + en tiempo real
 
-Al cargar la app (1.5 segundos después del load), para pacientes y turnos:
-1. **Primero sube** los datos locales que todavía no están en Firebase (una sola vez)
-2. **Después activa** un listener `onSnapshot` que SOLO muestra los cambios (nunca sube)
+Al cargar la app (poco después del load) se activa un listener `onSnapshot` que **solo muestra** los cambios (nunca sube). Esa separación es clave: si el listener subiera datos, se dispararía a sí mismo creando un **bucle infinito** que satura Firebase y genera duplicados (bug que ocurrió y se corrigió).
 
-Esta separación es clave: **el listener nunca sube datos**, porque si lo hiciera dispararía el propio listener de nuevo creando un **bucle infinito** que satura Firebase y genera duplicados (bug que ocurrió y se corrigió).
+Cualquier modificación desde cualquier dispositivo (agregar paciente, borrar/modificar turno, cambiar contador) se propaga automáticamente a todos los dispositivos que tengan la página abierta, sin recargar.
 
-Cualquier modificación desde cualquier dispositivo (agregar paciente, modificar turno, cambiar contador) se propaga automáticamente a todos los dispositivos que tengan la página abierta, sin recargar.
+**Turnos — Firebase es la fuente de verdad (fix jul-2026):**
+Al abrir la página de Turnos, el dispositivo **baja lo remoto y pisa lo local**. Solo sube los turnos **realmente nuevos** (sin `firebaseId` y que no existan ya en la nube).
+
+> ⚠️ **Por qué NO se re-suben todos los locales:** antes, al abrir Turnos, cada dispositivo re-subía TODOS sus turnos locales. Si otro dispositivo había borrado un turno, la copia vieja lo **volvía a subir ("resucitaba")**. Con el fix, un turno borrado tiene `firebaseId` y por lo tanto **nunca** se re-sube → el borrado queda firme en todas las estaciones.
+
+También se usa **un único listener** de turnos (antes se apilaba uno nuevo por cada visita a la página).
 
 ### IDs idempotentes (anti-duplicados)
-Los turnos se guardan en Firebase con `setDoc` usando el **id local como id del documento** (`setDoc(doc(db,"turnos", turno.id), turno)`). Así, guardar el mismo turno muchas veces **sobreescribe el mismo documento** en lugar de crear copias. Esto elimina de raíz los duplicados.
+Los turnos se guardan en Firebase con `setDoc` usando el **id local como id del documento** (`setDoc(doc(db,"turnos", turno.id), turno)`). Así, guardar el mismo turno muchas veces **sobreescribe el mismo documento** en lugar de crear copias. Por lo mismo, **borrar** usa ese id como id de documento, garantizando que el borrado se propague.
 
 ### Botones de mantenimiento (página Turnos)
-- **🔄 Recuperar** — sube a Firebase todos los turnos que estén en el dispositivo actual. Útil si un dispositivo tiene turnos locales que no llegaron a la nube.
+- **🔄 Recuperar** — sube a Firebase todos los turnos que estén en el dispositivo actual. Útil si un dispositivo tiene turnos locales que no llegaron a la nube. ⚠️ **Usar con cuidado:** al re-subir todo, puede revivir turnos borrados en otros dispositivos. Usar solo como recuperación manual e intencional.
 - **🧹 Limpiar duplicados** — deja un solo turno de cada uno y elimina los duplicados de Firebase. Hacerlo en UN solo dispositivo con los demás cerrados.
 
 ### Claves localStorage
@@ -433,14 +436,16 @@ El guardado usaba `canvas.datosOdontograma` (propiedad inexistente) en lugar de 
 | `v1.1-turnero` | Turnero completo, antes del fix de odontograma |
 | `v1.2-firebase-estable` | Sync en tiempo real estable, reglas Firebase sin vencimiento, anti-duplicados |
 | `v1.3-chat-estable` | Chat interno entre estaciones (sonido fuerte + voz, apertura automática) |
+| `v1.4-turnos-sync-estable` | Fix sync de turnos: borrar/modificar firme en todos lados, sin resucitar |
 
-Para volver a un punto: `git checkout v1.3-chat-estable`
+Para volver a un punto: `git checkout v1.4-turnos-sync-estable`
 
 ### Backups locales
 - `c:\Github repos\ODONPEI_backup_2026-05-21.zip` — v1.0
 - `c:\Github repos\ODONPEI_backup_2026-05-21_v1.1.zip` — v1.1
 - `c:\Github repos\ODONPEI_backup_2026-06-29_v1.2.zip` — v1.2 (Firebase estable)
 - `c:\Github repos\ODONPEI_backup_2026-07-03_v1.3.zip` — v1.3 (Chat interno)
+- `c:\Github repos\ODONPEI_backup_2026-07-07_v1.4.zip` — v1.4 (Fix sync turnos)
 
 ---
 
@@ -448,6 +453,7 @@ Para volver a un punto: `git checkout v1.3-chat-estable`
 
 | Commit | Cambio |
 |--------|--------|
+| `4309403` | **Fix turnos:** borrar/modificar se refleja en todos lados y no reaparece (Firebase = fuente de verdad; no re-subir todo lo local; listener único) |
 | `42fdf3a` | **Chat:** al llegar un mensaje el panel se abre solo en las demás estaciones |
 | `19aaa3d` | **Chat:** aviso más fuerte — sonido tipo ICQ repetido + voz hablada |
 | `5541a90` | **Chat interno (nuevo):** mensajería grupal en tiempo real entre estaciones, con sonido, no leídos y borrar (`js/chat.js`) |
