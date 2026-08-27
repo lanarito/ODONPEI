@@ -362,9 +362,24 @@ De acá en adelante el problema no vuelve: al guardar un turno o un paciente, el
 ### El mensaje
 Editable desde el panel (**✏️ Editar el mensaje**) y **compartido entre las dos máquinas** (se guarda en `config/recordatorio` de Firebase). Por defecto:
 
-> Hola {nombre}! 😊 Te recordamos tu turno en el consultorio el {dia} a las {hora} hs. Respondé CONFIRMO para confirmarlo. ¡Gracias!
+> Nos comunicamos de ODONPEI para recordar el turno de {nombre} este {diacorto} a las {hora}. Confirmar su asistencia.
+>
+> Cada turno es una oportunidad de salud. Si tienes una cita programada y surge un imprevisto, avísanos con tiempo. Tu cancelación anticipada le da la posibilidad a otra familia de ocupar ese lugar y recibir la atención que necesita.
+>
+> ¡Gracias por tu respeto y solidaridad!
 
-Reemplazos disponibles: `{nombre}` (primer nombre), `{completo}`, `{dia}` (ej: *viernes, 28 de agosto*), `{fecha}` (28/8/2026), `{hora}`.
+Reemplazos disponibles:
+
+| Reemplazo | Ejemplo |
+|-----------|---------|
+| `{nombre}` | Shiara (primera palabra del nombre cargado) |
+| `{completo}` | Shiara Robledo |
+| `{diacorto}` | Martes 26/5 |
+| `{dia}` | martes, 26 de mayo |
+| `{fecha}` | 26/5/2026 |
+| `{hora}` | 18:30 |
+
+> **Ojo con `{nombre}`:** toma la **primera palabra** del nombre del turno. Si el turno se carga como "Shiara Robledo" dice *"el turno de Shiara"*; si se carga como "Robledo Shiara" va a decir *"el turno de Robledo"*. Para turnos cargados con apellido primero conviene usar `{completo}`.
 
 ---
 

@@ -12,7 +12,12 @@
 // la notebook, en la máquina del consultorio ya aparece como hecho.
 
 const PLANTILLA_KEY = 'ODONPEI_PLANTILLA_RECORDATORIO';
-const PLANTILLA_DEFAULT = 'Hola {nombre}! 😊 Te recordamos tu turno en el consultorio el {dia} a las {hora} hs. Respondé CONFIRMO para confirmarlo. ¡Gracias!';
+const PLANTILLA_DEFAULT =
+    'Nos comunicamos de ODONPEI para recordar el turno de {nombre} este {diacorto} a las {hora}. Confirmar su asistencia.\n' +
+    '\n' +
+    'Cada turno es una oportunidad de salud. Si tienes una cita programada y surge un imprevisto, avísanos con tiempo. Tu cancelación anticipada le da la posibilidad a otra familia de ocupar ese lugar y recibir la atención que necesita.\n' +
+    '\n' +
+    '¡Gracias por tu respeto y solidaridad!';
 
 // Estados a los que tiene sentido mandarles un recordatorio
 const ESTADOS_RECORDABLES = ['pendiente', 'confirmado', 'reprogramado'];
@@ -171,9 +176,14 @@ function primerNombre(nombreCompleto) {
 function armarMensaje(turno) {
     const f = new Date(turno.fecha + 'T12:00:00');
     const dia = f.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' });
+    // {diacorto} = "Martes 26/5" — día de la semana con mayúscula + día/mes
+    const semana = f.toLocaleDateString('es-AR', { weekday: 'long' });
+    const diacorto = semana.charAt(0).toUpperCase() + semana.slice(1) +
+                     ' ' + f.getDate() + '/' + (f.getMonth() + 1);
     return obtenerPlantilla()
         .replace(/\{nombre\}/g, primerNombre(turno.pacienteNombre))
         .replace(/\{completo\}/g, turno.pacienteNombre || '')
+        .replace(/\{diacorto\}/g, diacorto)
         .replace(/\{dia\}/g, dia)
         .replace(/\{fecha\}/g, f.toLocaleDateString('es-AR'))
         .replace(/\{hora\}/g, turno.hora);
@@ -298,9 +308,15 @@ function renderPanelRecordatorios() {
     const plantillaBloque = recordEditandoPlantilla
         ? `<div class="rec-plantilla-editor">
                <label>Mensaje que se manda</label>
-               <textarea id="rec-plantilla-texto" rows="4">${obtenerPlantilla()}</textarea>
+               <textarea id="rec-plantilla-texto" rows="9">${obtenerPlantilla()}</textarea>
                <div class="rec-plantilla-ayuda">
-                   Podés usar: <code>{nombre}</code> <code>{completo}</code> <code>{dia}</code> <code>{fecha}</code> <code>{hora}</code>
+                   Podés usar:
+                   <code>{nombre}</code> Shiara ·
+                   <code>{completo}</code> Shiara Robledo ·
+                   <code>{diacorto}</code> Martes 26/5 ·
+                   <code>{dia}</code> martes, 26 de mayo ·
+                   <code>{fecha}</code> 26/5/2026 ·
+                   <code>{hora}</code> 18:30
                </div>
                <div class="rec-plantilla-btns">
                    <button class="btn btn-outline" onclick="restaurarPlantillaDefault()">Restaurar</button>
