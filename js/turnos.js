@@ -4,6 +4,7 @@ const TURNOS_KEY = 'ODONPEI_TURNOS';
 let semanaOffset = 0;
 let turnosListenerActivo = false;
 let turnosCelularesUnificados = false;
+let turnosYaDeduplicados = false;
 
 function obtenerTurnos() {
     return JSON.parse(localStorage.getItem(TURNOS_KEY) || '[]');
@@ -70,6 +71,13 @@ function cargarTurnos() {
                 renderizarTurnosHoy();
                 renderizarSemana();
             } catch (e) { console.warn('Carga turnos:', e); }
+        }
+
+        // Mantenimiento automático: si el mismo turno quedó guardado dos veces, se
+        // junta en uno solo. Es idempotente: si no hay nada repetido, no hace nada.
+        if (!turnosYaDeduplicados) {
+            turnosYaDeduplicados = true;
+            try { await deduplicarTurnosAuto(); } catch (e) { console.warn('Deduplicando turnos:', e); }
         }
 
         // Un ÚNICO listener en tiempo real (antes se apilaba uno nuevo por cada visita
@@ -484,42 +492,57 @@ function guardarEstadoTurno(id) {
     }
 }
 
-async function limpiarDuplicadosTurnos() {
-    if (typeof obtenerTurnosDesdeFirestore !== 'function') {
-        alert('Firebase no disponible.');
+// Corre sola al abrir Turnos, sin botón y sin preguntar nada.
+// OJO: acá "duplicado" es el MISMO turno guardado dos veces (mismo id).
+// Que un paciente tenga 5 turnos NO es un duplicado: por eso se agrupa por id
+// de turno y nunca por nombre.
+async function deduplicarTurnosAuto() {
+    if (typeof obtenerTurnosDesdeFirestore !== 'function') return;
+
+    let todos;
+    try {
+        todos = await obtenerTurnosDesdeFirestore();   // cada uno: .firebaseId (doc) + .id (dato)
+    } catch (e) {
+        console.warn('No se pudieron leer los turnos para deduplicar:', e);
         return;
     }
-    if (!confirm('Esto deja UN solo turno de cada uno y elimina los duplicados.\n\nHacelo en UN solo dispositivo, con los demás cerrados.\n\n¿Continuar?')) return;
 
-    try {
-        const todos = await obtenerTurnosDesdeFirestore(); // cada uno: .firebaseId (doc) + .id (dato)
-        // Agrupar por id interno del turno
-        const grupos = {};
-        todos.forEach(t => { (grupos[t.id] = grupos[t.id] || []).push(t); });
+    const grupos = {};
+    todos.forEach(t => { if (t.id) (grupos[t.id] = grupos[t.id] || []).push(t); });
 
-        let eliminados = 0;
-        for (const id in grupos) {
-            const docs = grupos[id];
-            // ¿Existe el documento "canónico" (cuyo id de Firebase == id del turno)?
-            const canonico = docs.find(d => d.firebaseId === d.id);
-            if (canonico) {
-                // Borrar todos los demás
-                for (const d of docs) {
-                    if (d.firebaseId !== d.id) { await eliminarTurnoDeFirestore(d.firebaseId); eliminados++; }
-                }
-            } else {
-                // Crear el canónico desde el primero y borrar todos los viejos
-                const base = { ...docs[0] };
-                delete base.firebaseId;
-                await guardarTurnoEnFirestore(base);
-                for (const d of docs) { await eliminarTurnoDeFirestore(d.firebaseId); eliminados++; }
+    const ids = Object.keys(grupos);
+    if (todos.length === ids.length) return;   // no hay nada repetido
+
+    console.log(`🧹 ${todos.length} documentos para ${ids.length} turnos. Limpiando duplicados...`);
+
+    let eliminados = 0, errores = 0;
+    for (const id of ids) {
+        const docs = grupos[id];
+        if (docs.length === 1) continue;
+
+        // El documento bueno es el que tiene el id del turno como id de documento
+        if (!docs.some(d => d.firebaseId === id)) {
+            const base = { ...docs[0] };
+            delete base.firebaseId;
+            const ok = await guardarTurnoEnFirestore(base);
+            if (!ok) { errores++; continue; }
+        }
+
+        // Antes de borrar, confirmar que el bueno quedó en la nube
+        if (typeof existeTurnoEnFirestore === 'function') {
+            const existe = await existeTurnoEnFirestore(id);
+            if (!existe) { errores++; continue; }
+        }
+
+        for (const d of docs) {
+            if (d.firebaseId && d.firebaseId !== id) {
+                const ok = await eliminarTurnoDeFirestore(d.firebaseId);
+                if (ok) eliminados++; else errores++;
             }
         }
-        alert(`✅ Limpieza completa.\n${eliminados} duplicado(s) eliminado(s).\n\nRecargá los otros dispositivos (Ctrl+Shift+R).`);
-    } catch (e) {
-        console.error('Limpieza duplicados:', e);
-        alert('Hubo un error en la limpieza. Revisá la consola.');
     }
+
+    console.log(`✅ Turnos duplicados limpiados: ${eliminados}` + (errores ? `, ${errores} error(es)` : ''));
 }
 
 function recuperarTurnosEnFirebase() {

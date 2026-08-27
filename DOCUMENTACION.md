@@ -234,14 +234,20 @@ También se usa **un único listener** de turnos (antes se apilaba uno nuevo por
 Los turnos se guardan en Firebase con `setDoc` usando el **id local como id del documento** (`setDoc(doc(db,"turnos", turno.id), turno)`). Así, guardar el mismo turno muchas veces **sobreescribe el mismo documento** en lugar de crear copias. Por lo mismo, **borrar** usa ese id como id de documento, garantizando que el borrado se propague.
 
 ### Mantenimiento automático (sin botones)
-Al abrir la app corren solas, en este orden y una vez por sesión:
-1. **Deduplicar pacientes** — un solo documento por paciente en Firebase
-2. **Unificar teléfonos** — todos al mismo formato, después de tener los datos frescos de la nube
+Al abrir la app corren solas, una vez por sesión. Ya no hay ningún botón de mantenimiento:
+
+| Rutina | Cuándo | Qué hace |
+|--------|--------|----------|
+| `deduplicarPacientesAuto()` | Al cargar la app | Un solo documento por paciente en Firebase |
+| `deduplicarTurnosAuto()` | Al entrar a Turnos | Junta el mismo turno guardado dos veces |
+| `unificarCelularesAuto()` | Después de que llegan los datos de la nube | Todos los teléfonos al mismo formato |
+
+> **Turnos repetidos ≠ turnos duplicados.** Un paciente puede tener 5, 10 o los turnos que sean, y está perfecto. Lo que se junta es el **mismo turno** guardado dos veces: se agrupa por id de turno, **nunca** por nombre del paciente.
 
 Son idempotentes: si no hay nada que hacer, no hacen nada. Van dejando el detalle en la consola (F12).
 
-### Botones de mantenimiento (página Turnos)
-- **📞 Unificar celulares** — deja todos los teléfonos en el mismo formato (ver sección de Recordatorios)
+### Botón que queda en Turnos
+- **🔄 Recuperar** — sube a Firebase los turnos que solo estén en este dispositivo. Es un salvavidas manual, no mantenimiento de rutina.
 - **🔄 Recuperar** — sube a Firebase todos los turnos que estén en el dispositivo actual. Útil si un dispositivo tiene turnos locales que no llegaron a la nube. ⚠️ **Usar con cuidado:** al re-subir todo, puede revivir turnos borrados en otros dispositivos. Usar solo como recuperación manual e intencional.
 - **🧹 Limpiar duplicados** — deja un solo turno de cada uno y elimina los duplicados de Firebase. Hacerlo en UN solo dispositivo con los demás cerrados.
 
@@ -570,9 +576,10 @@ El guardado usaba `canvas.datosOdontograma` (propiedad inexistente) en lugar de 
 | `v1.7-rio-gallegos` | Reglas de Río Gallegos (2966), prefijo precargado y dos teléfonos por paciente |
 | `v1.8-pacientes-sin-duplicados` | Pacientes idempotentes en Firebase + limpiador de duplicados |
 | `v1.9-mantenimiento-automatico` | Sin botones de mantenimiento: deduplicar y unificar corren solos al cargar |
-| `v2.0-recordatorios-whatsapp` | Cierre: recordatorios por WhatsApp, teléfonos unificados y base sin duplicados |
+| `v2.0-recordatorios-whatsapp` | Recordatorios por WhatsApp, teléfonos unificados y base sin duplicados |
+| `v2.1-sin-botones-de-mantenimiento` | Cierre: ningún botón de mantenimiento, todo corre solo |
 
-Para volver a un punto: `git checkout v2.0-recordatorios-whatsapp`
+Para volver a un punto: `git checkout v2.1-sin-botones-de-mantenimiento`
 
 ### Backups locales
 - `c:\Github repos\ODONPEI_backup_2026-05-21.zip` — v1.0
@@ -580,7 +587,7 @@ Para volver a un punto: `git checkout v2.0-recordatorios-whatsapp`
 - `c:\Github repos\ODONPEI_backup_2026-06-29_v1.2.zip` — v1.2 (Firebase estable)
 - `c:\Github repos\ODONPEI_backup_2026-07-03_v1.3.zip` — v1.3 (Chat interno)
 - `c:\Github repos\ODONPEI_backup_2026-07-07_v1.4.zip` — v1.4 (Fix sync turnos)
-- `c:\Github repos\ODONPEI_backup_2026-08-27_v2.0.zip` — v2.0 (Recordatorios WhatsApp + teléfonos unificados + fix duplicados)
+- `c:\Github repos\ODONPEI_backup_2026-08-27_v2.1.zip` — v2.1 (Recordatorios WhatsApp + teléfonos unificados + fix duplicados + mantenimiento automático)
 
 ### Backup de la base en la nube
 - `c:\Github repos\ODONPEI_backup_firebase_2026-08-27.json` (9,4 MB) — copia cruda de Firestore (303 documentos de `pacientes` + 248 de `turnos`) tomada **antes** de la deduplicación automática.

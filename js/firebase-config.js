@@ -171,6 +171,13 @@ async function actualizarTurnoEnFirestore(turno) {
   } catch (e) { console.warn('Firebase turno actualizar:', e); return false; }
 }
 
+async function existeTurnoEnFirestore(docId) {
+  try {
+    const snap = await getDoc(doc(db, "turnos", docId));
+    return snap.exists();
+  } catch (e) { console.warn('Verificando turno:', e); return false; }
+}
+
 async function eliminarTurnoDeFirestore(firebaseId) {
   try {
     await deleteDoc(doc(db, "turnos", firebaseId));
@@ -272,6 +279,7 @@ window.guardarTurnoEnFirestore        = guardarTurnoEnFirestore;
 window.obtenerTurnosDesdeFirestore    = obtenerTurnosDesdeFirestore;
 window.actualizarTurnoEnFirestore     = actualizarTurnoEnFirestore;
 window.eliminarTurnoDeFirestore       = eliminarTurnoDeFirestore;
+window.existeTurnoEnFirestore         = existeTurnoEnFirestore;
 window.sincronizarTurnosEnTiempoReal  = sincronizarTurnosEnTiempoReal;
 window.guardarContadorEnFirestore     = guardarContadorEnFirestore;
 window.obtenerContadorDesdeFirestore  = obtenerContadorDesdeFirestore;
