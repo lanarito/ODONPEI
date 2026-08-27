@@ -407,7 +407,7 @@ De acá en adelante el problema no vuelve: al guardar un turno o un paciente, el
 ### El mensaje
 Editable desde el panel (**✏️ Editar el mensaje**) y **compartido entre las dos máquinas** (se guarda en `config/recordatorio` de Firebase). Por defecto:
 
-> Nos comunicamos de ODONPEI para recordar el turno de {nombre} este {diacorto} a las {hora}. Confirmar su asistencia.
+> Nos comunicamos de ODONPEI para recordar el turno de {completo} este {diacorto} a las {hora}. Confirmar su asistencia.
 >
 > Cada turno es una oportunidad de salud. Si tienes una cita programada y surge un imprevisto, avísanos con tiempo. Tu cancelación anticipada le da la posibilidad a otra familia de ocupar ese lugar y recibir la atención que necesita.
 >
@@ -417,14 +417,18 @@ Reemplazos disponibles:
 
 | Reemplazo | Ejemplo |
 |-----------|---------|
-| `{nombre}` | Shiara (primera palabra del nombre cargado) |
-| `{completo}` | Shiara Robledo |
+| `{completo}` | Sarmiento Romina — apellido y nombre, como esté cargado el turno |
+| `{nombre}` | Sarmiento — solo la primera palabra |
 | `{diacorto}` | Martes 26/5 |
 | `{dia}` | martes, 26 de mayo |
 | `{fecha}` | 26/5/2026 |
 | `{hora}` | 18:30 |
 
-> **Ojo con `{nombre}`:** toma la **primera palabra** del nombre del turno. Si el turno se carga como "Shiara Robledo" dice *"el turno de Shiara"*; si se carga como "Robledo Shiara" va a decir *"el turno de Robledo"*. Para turnos cargados con apellido primero conviene usar `{completo}`.
+#### Mayúsculas y orden del nombre
+
+Los nombres se cargan casi siempre en mayúsculas (`SARMIENTO ROMINA`). Mandar eso por WhatsApp queda como si le gritaras al paciente, así que `formatearNombre()` lo pasa a **Sarmiento Romina** antes de armar el mensaje. Las partículas quedan en minúscula: `MARIA DE LOS ANGELES` → *Maria de los Angeles*.
+
+> **Lo que el sistema NO puede hacer:** darse cuenta de cuál es el apellido y cuál el nombre. En los turnos el nombre es texto libre y está cargado de las dos formas (`SARMIENTO ROMINA` y `Romina sarmiento`), y no hay manera de distinguirlos. Por eso `{completo}` respeta el orden tal como se escribió. Si se quisiera que siempre salga el nombre primero, habría que cargarlos siempre igual.
 
 ---
 

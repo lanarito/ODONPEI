@@ -13,7 +13,7 @@
 
 const PLANTILLA_KEY = 'ODONPEI_PLANTILLA_RECORDATORIO';
 const PLANTILLA_DEFAULT =
-    'Nos comunicamos de ODONPEI para recordar el turno de {nombre} este {diacorto} a las {hora}. Confirmar su asistencia.\n' +
+    'Nos comunicamos de ODONPEI para recordar el turno de {completo} este {diacorto} a las {hora}. Confirmar su asistencia.\n' +
     '\n' +
     'Cada turno es una oportunidad de salud. Si tienes una cita programada y surge un imprevisto, avísanos con tiempo. Tu cancelación anticipada le da la posibilidad a otra familia de ocupar ese lugar y recibir la atención que necesita.\n' +
     '\n' +
@@ -242,8 +242,23 @@ function turnosParaRecordar(off) {
 }
 
 // ---------- Mensaje ----------
+// Los nombres se cargan casi siempre en MAYÚSCULAS ("SARMIENTO ROMINA").
+// Mandarlo así al WhatsApp queda como si le estuvieras gritando al paciente,
+// así que para el mensaje se pasa a "Sarmiento Romina".
+// Las partículas van en minúscula: "MARIA DE LOS ANGELES" → "Maria de los Angeles".
+const PARTICULAS_NOMBRE = ['de', 'del', 'la', 'las', 'los', 'y', 'da', 'di', 'van', 'von'];
+
+function formatearNombre(texto) {
+    return String(texto || '').trim().toLowerCase()
+        .split(/\s+/)
+        .map((palabra, i) => (i > 0 && PARTICULAS_NOMBRE.includes(palabra))
+            ? palabra
+            : palabra.charAt(0).toUpperCase() + palabra.slice(1))
+        .join(' ');
+}
+
 function primerNombre(nombreCompleto) {
-    return String(nombreCompleto || '').trim().split(/\s+/)[0] || '';
+    return formatearNombre(String(nombreCompleto || '').trim().split(/\s+/)[0] || '');
 }
 
 function armarMensaje(turno) {
@@ -255,7 +270,7 @@ function armarMensaje(turno) {
                      ' ' + f.getDate() + '/' + (f.getMonth() + 1);
     return obtenerPlantilla()
         .replace(/\{nombre\}/g, primerNombre(turno.pacienteNombre))
-        .replace(/\{completo\}/g, turno.pacienteNombre || '')
+        .replace(/\{completo\}/g, formatearNombre(turno.pacienteNombre))
         .replace(/\{diacorto\}/g, diacorto)
         .replace(/\{dia\}/g, dia)
         .replace(/\{fecha\}/g, f.toLocaleDateString('es-AR'))
@@ -391,8 +406,8 @@ function renderPanelRecordatorios() {
                <textarea id="rec-plantilla-texto" rows="9">${obtenerPlantilla()}</textarea>
                <div class="rec-plantilla-ayuda">
                    Podés usar:
-                   <code>{nombre}</code> Shiara ·
-                   <code>{completo}</code> Shiara Robledo ·
+                   <code>{completo}</code> Sarmiento Romina ·
+                   <code>{nombre}</code> Sarmiento (la primera palabra) ·
                    <code>{diacorto}</code> Martes 26/5 ·
                    <code>{dia}</code> martes, 26 de mayo ·
                    <code>{fecha}</code> 26/5/2026 ·
