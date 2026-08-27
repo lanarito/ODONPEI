@@ -570,8 +570,9 @@ El guardado usaba `canvas.datosOdontograma` (propiedad inexistente) en lugar de 
 | `v1.7-rio-gallegos` | Reglas de Río Gallegos (2966), prefijo precargado y dos teléfonos por paciente |
 | `v1.8-pacientes-sin-duplicados` | Pacientes idempotentes en Firebase + limpiador de duplicados |
 | `v1.9-mantenimiento-automatico` | Sin botones de mantenimiento: deduplicar y unificar corren solos al cargar |
+| `v2.0-recordatorios-whatsapp` | Cierre: recordatorios por WhatsApp, teléfonos unificados y base sin duplicados |
 
-Para volver a un punto: `git checkout v1.9-mantenimiento-automatico`
+Para volver a un punto: `git checkout v2.0-recordatorios-whatsapp`
 
 ### Backups locales
 - `c:\Github repos\ODONPEI_backup_2026-05-21.zip` — v1.0
@@ -579,6 +580,12 @@ Para volver a un punto: `git checkout v1.9-mantenimiento-automatico`
 - `c:\Github repos\ODONPEI_backup_2026-06-29_v1.2.zip` — v1.2 (Firebase estable)
 - `c:\Github repos\ODONPEI_backup_2026-07-03_v1.3.zip` — v1.3 (Chat interno)
 - `c:\Github repos\ODONPEI_backup_2026-07-07_v1.4.zip` — v1.4 (Fix sync turnos)
+- `c:\Github repos\ODONPEI_backup_2026-08-27_v2.0.zip` — v2.0 (Recordatorios WhatsApp + teléfonos unificados + fix duplicados)
+
+### Backup de la base en la nube
+- `c:\Github repos\ODONPEI_backup_firebase_2026-08-27.json` (9,4 MB) — copia cruda de Firestore (303 documentos de `pacientes` + 248 de `turnos`) tomada **antes** de la deduplicación automática.
+
+> ⚠️ Los backups van **fuera de la carpeta del repositorio a propósito**. El repo es público en GitHub Pages y estos archivos tienen datos de pacientes. Nunca moverlos adentro ni commitearlos.
 
 ---
 
@@ -692,6 +699,27 @@ El sistema estuvo ~10 días sin sincronizar porque las reglas de Firebase se ven
 
 ## Ideas Pendientes / Futuras Mejoras
 
-- Integración con Google Calendar (Opción A del turnero)
+### Google Calendar (pendiente, analizado en agosto 2026)
+
+Se evaluó y quedó **pendiente a propósito**, no olvidado. Esto es lo que se concluyó, para no volver a analizarlo desde cero:
+
+**Lo único que agrega de verdad:** que le suene una alarma en el celular a la doctora antes de cada turno, con ODONPEI cerrado. Eso hoy no existe de ninguna forma. Los recordatorios de WhatsApp le avisan al *paciente*, no a ella. Lo secundario es poder mezclar los turnos con su agenda personal y tener vista de día/mes.
+
+**Lo que NO agrega:** ver la agenda desde el celular (ya se entra por la URL), compartir entre las dos máquinas (ya sincroniza en tiempo real) y avisarle al paciente (lo hace WhatsApp, y mejor: no requiere el email del paciente, que además no se carga en el sistema).
+
+**Lo que cuesta:** el sitio es estático, así que el OAuth de Google corre en el navegador. El permiso dura 1 hora y para que dure más hace falta un servidor. Para que no salga *"esta app no está verificada"* Google pide verificar la aplicación (formulario, política de privacidad, semanas de espera); mientras tanto funciona agregando las cuentas del consultorio como "usuarios de prueba". La sincronización en dos direcciones es complicada; lo sensato es una sola dirección, ODONPEI → Calendar.
+
+**Los tres caminos, de menor a mayor esfuerzo:**
+
+| | Qué hace | Esfuerzo |
+|---|---|---|
+| A | Botón "Agregar a Calendar" por turno (link `calendar.google.com/render`) | Un rato, sin permisos ni infraestructura |
+| B | Bajar la semana como archivo `.ics` e importarla | Medio día |
+| C | Sync automático real (API + OAuth) | Varios días + el trámite de Google |
+
+**Recomendación registrada:** empezar por A para averiguar si el Calendar se va a usar de verdad. Ir directo a C solo si lo que se busca puntualmente es la alarma en el celular.
+
+### Otros pendientes
+
 - Agregar más usuarios al sistema de login (actualmente solo "odonpei")
-- Notificaciones/recordatorios de turnos
+- Los teléfonos marcados como "revisar" (el que empieza con 15 sin característica, los que tienen dígitos de más) hay que corregirlos a mano desde la ficha del paciente o del turno
