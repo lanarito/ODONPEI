@@ -24,6 +24,16 @@ console.log('✅ Firebase conectado a odonpei');
 // Guardar paciente en Firestore
 async function guardarEnFirestore(paciente) {
   try {
+    // Usar el id del paciente como ID del documento (setDoc idempotente).
+    // ANTES esto era addDoc, que genera un id nuevo cada vez: cada vez que un
+    // dispositivo subía sus pacientes creaba OTRO documento del mismo paciente.
+    // Así se llegó a 303 documentos para 77 pacientes. Es el mismo arreglo que
+    // ya se le había hecho a los turnos.
+    if (paciente.id) {
+      await setDoc(doc(db, "pacientes", paciente.id), paciente);
+      paciente.firebaseId = paciente.id;
+      return paciente;
+    }
     const docRef = await addDoc(collection(db, "pacientes"), paciente);
     paciente.firebaseId = docRef.id;
     return paciente;
@@ -54,15 +64,31 @@ async function obtenerDesdePacientesFirestore() {
 // Actualizar paciente en Firestore
 async function actualizarEnFirestore(paciente) {
   try {
-    if (!paciente.firebaseId) {
-      console.warn('Paciente sin firebaseId, guardando como nuevo');
+    // Siempre al documento canónico (id del paciente = id del documento).
+    // setDoc en vez de updateDoc: si el documento canónico todavía no existe
+    // lo crea, en vez de fallar con "No document to update".
+    const docId = paciente.id || paciente.firebaseId;
+    if (!docId) {
+      console.warn('Paciente sin id, guardando como nuevo');
       return guardarEnFirestore(paciente);
     }
-    await updateDoc(doc(db, "pacientes", paciente.firebaseId), paciente);
+    await setDoc(doc(db, "pacientes", docId), paciente);
     console.log('✅ Paciente actualizado en Firestore');
     return true;
   } catch (error) {
     console.error('Error actualizando paciente:', error);
+    return false;
+  }
+}
+
+// Actualizar SOLO algunos campos de un paciente (sin mandar el documento entero,
+// que con fotos y odontograma puede pasarse del límite de 1 MB de Firestore)
+async function actualizarCamposPacienteEnFirestore(docId, campos) {
+  try {
+    await setDoc(doc(db, "pacientes", docId), campos, { merge: true });
+    return true;
+  } catch (error) {
+    console.error('Error actualizando campos del paciente:', error);
     return false;
   }
 }
@@ -229,6 +255,7 @@ async function obtenerPlantillaDesdeFirestore() {
 window.guardarEnFirestore             = guardarEnFirestore;
 window.obtenerDesdePacientesFirestore = obtenerDesdePacientesFirestore;
 window.actualizarEnFirestore          = actualizarEnFirestore;
+window.actualizarCamposPacienteEnFirestore = actualizarCamposPacienteEnFirestore;
 window.eliminarDeFirestore            = eliminarDeFirestore;
 window.sincronizarEnTiempoReal        = sincronizarEnTiempoReal;
 window.guardarTurnoEnFirestore        = guardarTurnoEnFirestore;

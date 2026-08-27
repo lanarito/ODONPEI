@@ -115,6 +115,118 @@ function importarDatos(file) {
     reader.readAsText(file);
 }
 
+// ========== LIMPIAR PACIENTES DUPLICADOS ==========
+// Durante meses los pacientes se guardaron con addDoc, que crea un documento
+// NUEVO cada vez. Cada dispositivo que subía su copia generaba otro documento
+// del mismo paciente: se llegó a 303 documentos para 77 pacientes.
+// Esto deja UN documento por paciente, con el id del paciente como id del
+// documento (igual que los turnos), y borra las copias.
+
+// Entre varias copias del mismo paciente, cuál tiene los datos más completos
+function puntajeCopiaPaciente(p) {
+    const dp = p.datosPersonales || {};
+    let s = 0;
+    if (String(dp.telefono || '').startsWith('+54')) s += 1000;   // teléfono ya unificado
+    if (dp.telefono2) s += 100;
+    s += Object.values(dp).filter(v => String(v || '').trim()).length * 10;
+    if (p.odontograma) s += 50;
+    s += (p.fotos?.length || 0) * 3 + (p.archivos?.length || 0) * 3;
+    if (p.tratamientos?.realizados) s += 5;
+    if (p.tratamientos?.propuesta) s += 5;
+    return s;
+}
+
+function descargarBackupPacientes(pacientes, etiqueta) {
+    const blob = new Blob([JSON.stringify(pacientes, null, 2)], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `ODONPEI_backup_${etiqueta}_${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+}
+
+async function limpiarDuplicadosPacientes() {
+    if (typeof obtenerDesdePacientesFirestore !== 'function') {
+        alert('Firebase no disponible.');
+        return;
+    }
+
+    let todos;
+    try {
+        todos = await obtenerDesdePacientesFirestore();
+    } catch (e) {
+        alert('No se pudieron leer los pacientes de Firebase. Revisá la consola.');
+        return;
+    }
+
+    // Agrupar por el id interno del paciente
+    const grupos = {};
+    todos.forEach(p => {
+        if (!p.id) return;
+        (grupos[p.id] = grupos[p.id] || []).push(p);
+    });
+
+    const ids = Object.keys(grupos);
+    const duplicados = todos.length - ids.length;
+
+    if (duplicados <= 0) {
+        alert(`✅ No hay duplicados.\n${ids.length} paciente(s), ${todos.length} documento(s).`);
+        return;
+    }
+
+    if (!confirm(
+        `Hay ${todos.length} documentos para ${ids.length} pacientes.\n` +
+        `Se van a borrar ${duplicados} copias repetidas y queda una sola de cada paciente ` +
+        `(la que tenga los datos más completos).\n\n` +
+        `Primero se descarga un backup de TODO en tu computadora.\n\n` +
+        `Hacelo en UN solo dispositivo, con los demás cerrados.\n\n¿Continuar?`
+    )) return;
+
+    // Backup antes de tocar nada
+    descargarBackupPacientes(todos, 'pacientes_antes_de_limpiar');
+    if (!confirm('Se descargó el backup.\n\nRevisá que el archivo esté en tu carpeta de Descargas y recién ahí aceptá para borrar los duplicados.')) return;
+
+    let borrados = 0, errores = 0;
+    const finales = [];
+
+    for (const id of ids) {
+        const copias = grupos[id];
+        // La copia con los datos más completos gana
+        const mejor = copias.reduce((a, b) => puntajeCopiaPaciente(b) > puntajeCopiaPaciente(a) ? b : a);
+
+        // El documento canónico lleva el id del paciente
+        const canonico = { ...mejor, firebaseId: id };
+        if (mejor.firebaseId !== id) {
+            const ok = await guardarEnFirestore(canonico);
+            if (!ok) { errores++; continue; }
+        }
+        finales.push(canonico);
+
+        // Borrar todas las copias que no sean el documento canónico
+        for (const c of copias) {
+            if (c.firebaseId && c.firebaseId !== id) {
+                const ok = await eliminarDeFirestore(c.firebaseId);
+                if (ok) borrados++; else errores++;
+            }
+        }
+    }
+
+    // Dejar el localStorage con una sola copia de cada uno
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(finales));
+    } catch (e) {
+        console.warn('localStorage lleno:', e);
+    }
+    if (typeof cargarPacientes === 'function') cargarPacientes();
+
+    alert(
+        `✅ Limpieza completa.\n\n` +
+        `${finales.length} paciente(s) quedaron con un solo documento.\n` +
+        `${borrados} copia(s) repetida(s) eliminada(s).` +
+        (errores ? `\n⚠️ ${errores} error(es), revisá la consola.` : '') +
+        `\n\nRecargá los otros dispositivos (Ctrl+Shift+R).`
+    );
+}
+
 // Sincronizar desde Firebase al iniciar (si está disponible)
 async function sincronizarDesdeFirebase() {
     if (typeof obtenerDesdePacientesFirestore !== 'function') return false;
@@ -167,8 +279,24 @@ window.addEventListener('load', () => {
                 const locales = obtenerTodos();
                 const idsRemotos = new Set(pacientesRemotos.map(p => p.id));
                 const soloLocales = locales.filter(p => !idsRemotos.has(p.id));
-                const merged = [...pacientesRemotos, ...soloLocales];
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+
+                // Mientras queden documentos duplicados en la nube, dejar UNA sola
+                // copia de cada paciente (la más completa). Si no, la lista muestra
+                // el mismo paciente 3 veces y el localStorage se llena al pedo.
+                const porId = new Map();
+                for (const p of [...pacientesRemotos, ...soloLocales]) {
+                    const previo = porId.get(p.id);
+                    if (!previo || puntajeCopiaPaciente(p) > puntajeCopiaPaciente(previo)) {
+                        porId.set(p.id, p);
+                    }
+                }
+
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([...porId.values()]));
+                } catch (e) {
+                    // Se llenó el localStorage (fotos y odontogramas en base64 ocupan mucho)
+                    console.warn('No se pudo guardar la copia local, se sigue con la de la nube:', e);
+                }
                 if (typeof cargarPacientes === 'function') cargarPacientes();
             });
         }

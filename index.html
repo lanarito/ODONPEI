@@ -137,9 +137,14 @@
             <section id="pagina-pacientes" class="page" style="display: none;">
                 <div class="page-header">
                     <h2>Mis Pacientes</h2>
-                    <button onclick="cambiarPagina('nuevo-paciente')" class="btn btn-primary">
-                        + Nuevo Paciente
-                    </button>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                        <button onclick="cambiarPagina('nuevo-paciente')" class="btn btn-primary">
+                            + Nuevo Paciente
+                        </button>
+                        <button onclick="limpiarDuplicadosPacientes()" class="btn btn-secondary" style="background:#9C27B0; color:white;">
+                            🧹 Limpiar duplicados
+                        </button>
+                    </div>
                 </div>
                 <div style="margin-bottom: 20px;">
                     <input type="text" id="buscador-pacientes" placeholder="🔍 Buscar por nombre, alias o edad..."

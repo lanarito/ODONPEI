@@ -122,16 +122,51 @@ function formatearCelular(digitos) {
     return '+54 9 ' + area + ' ' + abonado;
 }
 
+// Un campo puede traer los dos contactos juntos, como se venían cargando:
+//   "2966-272169 ///2966639384"
+//   "2966- 272169 ( HERMANA). 2966639384 mama"
+// Esto los separa y se queda también con la aclaración de quién es cada uno.
+function separarNumeros(texto) {
+    const partes = String(texto || '').split(/[\/;|]+|,\s*|\s+o\s+|\.\s+/i);
+    const salida = [];
+    for (const parte of partes) {
+        const digitos = parte.replace(/\D/g, '');
+        if (digitos.length < LARGO_ABONADO_LOCAL) continue;      // no llega a ser un número
+        const etiqueta = parte.replace(/[\d()\.\-\/]+/g, ' ').replace(/\s+/g, ' ').trim();
+        salida.push({ crudo: parte.trim(), digitos, etiqueta });
+    }
+    return salida;
+}
+
 // Revisa un número cargado a mano y dice qué hacer con él.
-// estado: 'vacio' | 'ok' | 'corregir' | 'revisar'
+// estado: 'vacio' | 'ok' | 'corregir' | 'separar' | 'revisar'
 function analizarCelular(raw) {
     const texto = String(raw || '').trim();
     if (!texto) return { estado: 'vacio', valor: '', motivo: '' };
 
-    // Más de un número en el mismo campo ("11 1234-5678 / 11 8765-4321")
-    if (/[\/;,]| o /i.test(texto) && (texto.replace(/\D/g, '').length > 12)) {
-        return { estado: 'revisar', valor: texto, motivo: 'parece tener más de un número' };
+    // Dos contactos metidos en el mismo campo → se reparten en los dos campos
+    const partes = separarNumeros(texto);
+    if (partes.length >= 2) {
+        const a1 = analizarUnCelular(partes[0].crudo);
+        const a2 = analizarUnCelular(partes[1].crudo);
+        if (a1.estado === 'revisar' || a2.estado === 'revisar') {
+            const cual = a1.estado === 'revisar' ? a1 : a2;
+            return { estado: 'revisar', valor: texto, motivo: 'son dos números y uno no se entiende: ' + cual.motivo };
+        }
+        return {
+            estado: 'separar',
+            valor: a1.valor,  etiqueta: partes[0].etiqueta,
+            valor2: a2.valor, etiqueta2: partes[1].etiqueta,
+            motivo: partes.length > 2 ? `hay ${partes.length} números, se toman los dos primeros` : ''
+        };
     }
+
+    return analizarUnCelular(texto);
+}
+
+function analizarUnCelular(raw) {
+    const texto = String(raw || '').trim();
+    if (!texto) return { estado: 'vacio', valor: '', motivo: '' };
 
     const digitos = normalizarCelular(texto);
     if (!digitos) return { estado: 'revisar', valor: texto, motivo: 'no tiene números' };
@@ -171,6 +206,16 @@ function unificarSiSePuede(raw) {
     const a = analizarCelular(raw);
     if (a.estado === 'vacio') return '';          // vacío o solo el prefijo: no se guarda nada
     return (a.estado === 'corregir' || a.estado === 'ok') ? a.valor : String(raw || '').trim();
+}
+
+// Reparte lo que se escribió en los dos campos de teléfono. Si en el primero
+// entraron los dos números juntos y el segundo está libre, el segundo se muda ahí.
+function repartirNumeros(valor1, valor2) {
+    const a = analizarCelular(valor1);
+    if (a.estado === 'separar' && !String(valor2 || '').trim()) {
+        return { uno: a.valor, dos: a.valor2, etiqueta: a.etiqueta, etiqueta2: a.etiqueta2 };
+    }
+    return { uno: unificarSiSePuede(valor1), dos: unificarSiSePuede(valor2), etiqueta: '', etiqueta2: '' };
 }
 
 // ---------- Fechas ----------
@@ -407,12 +452,18 @@ function relevarCelulares() {
         ['celular', 'celular2'].forEach(campo => {
             const a = analizarCelular(t[campo]);
             if (a.estado === 'vacio') return;
+            // Solo se puede separar si el segundo campo está libre
+            const estado = (a.estado === 'separar' && (campo === 'celular2' || String(t.celular2 || '').trim()))
+                ? 'revisar' : a.estado;
             filas.push({
-                tipo: 'Turno', id: t.id, campo,
+                tipo: 'Turno', id: t.id, campo, campo2: 'celular2',
                 nombre: t.pacienteNombre,
                 detalle: fecha + (campo === 'celular2' ? ' · 2º número' : ''),
                 actual: String(t[campo] || '').trim(),
-                nuevo: a.valor, estado: a.estado, motivo: a.motivo
+                nuevo: a.valor, nuevo2: a.valor2,
+                estado,
+                motivo: estado === 'revisar' && a.estado === 'separar'
+                    ? 'son dos números y el 2º campo ya está ocupado' : a.motivo
             });
         });
     });
@@ -425,14 +476,20 @@ function relevarCelulares() {
                 const a = analizarCelular(dp[campo]);
                 if (a.estado === 'vacio') return;
                 const ref = campo === 'telefono' ? dp.telefonoRef : dp.telefono2Ref;
+                const estado = (a.estado === 'separar' && (campo === 'telefono2' || String(dp.telefono2 || '').trim()))
+                    ? 'revisar' : a.estado;
                 filas.push({
-                    tipo: 'Paciente', id: p.id, campo,
+                    tipo: 'Paciente', id: p.id, campo, campo2: 'telefono2',
                     nombre: dp.nombre || '(sin nombre)',
                     detalle: [ref, campo === 'telefono2' ? '2º número' : '',
                               p.firebaseId ? '' : 'solo en este dispositivo']
                              .filter(Boolean).join(' · '),
                     actual: String(dp[campo] || '').trim(),
-                    nuevo: a.valor, estado: a.estado, motivo: a.motivo,
+                    nuevo: a.valor, nuevo2: a.valor2,
+                    etiqueta: a.etiqueta, etiqueta2: a.etiqueta2,
+                    estado,
+                    motivo: estado === 'revisar' && a.estado === 'separar'
+                        ? 'son dos números y el 2º campo ya está ocupado' : a.motivo,
                     sinFirebase: !p.firebaseId
                 });
             });
@@ -444,7 +501,7 @@ function relevarCelulares() {
 
 function abrirUnificarCelulares() {
     const filas = relevarCelulares();
-    unificarPendientes = filas.filter(f => f.estado === 'corregir');
+    unificarPendientes = filas.filter(f => f.estado === 'corregir' || f.estado === 'separar');
     const ok      = filas.filter(f => f.estado === 'ok');
     const revisar = filas.filter(f => f.estado === 'revisar');
 
@@ -461,14 +518,25 @@ function abrirUnificarCelulares() {
             <div class="uni-numeros">
                 <span class="uni-antes">${f.actual}</span>
                 ${f.estado === 'corregir' ? `<span class="uni-flecha">→</span><span class="uni-despues">${f.nuevo}</span>` : ''}
+                ${f.estado === 'separar' ? `<span class="uni-flecha">→</span>
+                    <span class="uni-despues">${f.nuevo}${f.etiqueta ? ` <small>(${f.etiqueta})</small>` : ''}</span>
+                    <span class="uni-mas">+ 2º</span>
+                    <span class="uni-despues">${f.nuevo2}${f.etiqueta2 ? ` <small>(${f.etiqueta2})</small>` : ''}</span>` : ''}
                 ${f.estado === 'revisar' ? `<span class="uni-motivo">⚠️ ${f.motivo}</span>` : ''}
             </div>
         </div>`;
 
+    const aCorregir = unificarPendientes.filter(f => f.estado === 'corregir');
+    const aSeparar  = unificarPendientes.filter(f => f.estado === 'separar');
+
     let cuerpo = '';
-    if (unificarPendientes.length) {
-        cuerpo += `<div class="uni-titulo">Se van a corregir (${unificarPendientes.length})</div>
-                   <div class="uni-lista">${unificarPendientes.map(filaHTML).join('')}</div>`;
+    if (aCorregir.length) {
+        cuerpo += `<div class="uni-titulo">Se van a corregir (${aCorregir.length})</div>
+                   <div class="uni-lista">${aCorregir.map(filaHTML).join('')}</div>`;
+    }
+    if (aSeparar.length) {
+        cuerpo += `<div class="uni-titulo">Tienen dos números juntos: se separan en los dos campos (${aSeparar.length})</div>
+                   <div class="uni-lista">${aSeparar.map(filaHTML).join('')}</div>`;
     }
     if (revisar.length) {
         cuerpo += `<div class="uni-titulo uni-titulo-warn">Hay que revisarlos a mano (${revisar.length})</div>
@@ -510,6 +578,8 @@ async function aplicarUnificacionCelulares() {
     const pacientesACambiar = unificarPendientes.filter(f => f.tipo === 'Paciente');
     let soloLocales = 0;
 
+    let fallados = 0;
+
     // --- Turnos ---
     if (turnosACambiar.length) {
         const turnos = obtenerTurnos();
@@ -519,33 +589,55 @@ async function aplicarUnificacionCelulares() {
             if (!t) return;
             t[f.campo + 'Original'] = t[f.campo];   // por las dudas, se guarda lo que estaba
             t[f.campo] = f.nuevo;
+            if (f.estado === 'separar') t[f.campo2] = f.nuevo2;
             if (!tocados.includes(t)) tocados.push(t);
         });
         guardarTurnosStorage(turnos);
         if (typeof actualizarTurnoEnFirestore === 'function') {
-            for (const t of tocados) await actualizarTurnoEnFirestore(t);
+            for (const t of tocados) {
+                const ok = await actualizarTurnoEnFirestore(t);
+                if (ok === false) fallados++;
+            }
         }
     }
 
     // --- Pacientes ---
     if (pacientesACambiar.length && typeof obtenerTodos === 'function') {
         const pacientes = obtenerTodos();
-        const tocados = [];
+        const cambios = new Map();   // id del paciente → campos a mandar a Firebase
+
         pacientesACambiar.forEach(f => {
             const p = pacientes.find(x => x.id === f.id);
             if (!p || !p.datosPersonales) return;
-            p.datosPersonales[f.campo + 'Original'] = p.datosPersonales[f.campo];
-            p.datosPersonales[f.campo] = f.nuevo;
-            if (p.firebaseId) {
-                if (!tocados.includes(p)) tocados.push(p);
-            } else soloLocales++;
+            const dp = p.datosPersonales;
+
+            dp[f.campo + 'Original'] = dp[f.campo];
+            dp[f.campo] = f.nuevo;
+            if (f.estado === 'separar') {
+                dp[f.campo2] = f.nuevo2;
+                if (f.etiqueta  && !dp.telefonoRef)  dp.telefonoRef  = f.etiqueta;
+                if (f.etiqueta2 && !dp.telefono2Ref) dp.telefono2Ref = f.etiqueta2;
+            }
+            if (!p.firebaseId && !p.id) { soloLocales++; return; }
+            cambios.set(p.id || p.firebaseId, { datosPersonales: dp });
         });
-        localStorage.setItem('ODONPEI_PACIENTES', JSON.stringify(pacientes));
-        if (typeof actualizarEnFirestore === 'function') {
-            // Solo los que ya existen en la nube: los que no tienen firebaseId
-            // se duplicarían si los mandáramos como nuevos.
-            for (const p of tocados) await actualizarEnFirestore(p);
+
+        try {
+            localStorage.setItem('ODONPEI_PACIENTES', JSON.stringify(pacientes));
+        } catch (e) {
+            console.warn('localStorage lleno al unificar:', e);
         }
+
+        // Se manda SOLO datosPersonales, no la ficha entera: con fotos y
+        // odontograma en base64 el documento puede pasarse del límite de Firestore
+        // y la escritura falla en silencio.
+        if (typeof actualizarCamposPacienteEnFirestore === 'function') {
+            for (const [docId, campos] of cambios) {
+                const ok = await actualizarCamposPacienteEnFirestore(docId, campos);
+                if (!ok) fallados++;
+            }
+        }
+        if (typeof cargarPacientes === 'function') cargarPacientes();
     }
 
     cerrarPanelRecordatorios();
@@ -555,7 +647,8 @@ async function aplicarUnificacionCelulares() {
     alert(
         `✅ ${unificarPendientes.length} número(s) unificado(s).\n` +
         `${turnosACambiar.length} en turnos · ${pacientesACambiar.length} en pacientes.` +
-        (soloLocales ? `\n\n⚠️ ${soloLocales} paciente(s) se corrigieron solo en este dispositivo (todavía no están en la nube).` : '')
+        (soloLocales ? `\n\n⚠️ ${soloLocales} paciente(s) se corrigieron solo en este dispositivo (todavía no están en la nube).` : '') +
+        (fallados ? `\n\n❌ ${fallados} no se pudieron guardar en la nube. Revisá la consola (F12).` : '')
     );
     unificarPendientes = [];
 }

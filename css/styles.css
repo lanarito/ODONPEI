@@ -1688,3 +1688,13 @@ body {
 }
 
 .btn-rec-2:hover { background: #26A69A; }
+
+.uni-mas {
+    font-size: 11px;
+    color: #999;
+    background: #eee;
+    border-radius: 8px;
+    padding: 1px 6px;
+}
+
+.uni-despues small { font-weight: normal; color: #777; }

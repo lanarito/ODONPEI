@@ -292,8 +292,10 @@ function guardarTurno(event) {
             if (t.recordadoEn && (nuevaFecha !== t.fecha || nuevaHora !== t.hora)) t.recordadoEn = '';
 
             t.pacienteNombre = document.getElementById('turno-nombre').value.trim();
-            t.celular        = unificarSiSePuede(document.getElementById('turno-celular').value);
-            t.celular2       = unificarSiSePuede(document.getElementById('turno-celular2')?.value || '');
+            const nums       = repartirNumeros(document.getElementById('turno-celular').value,
+                                               document.getElementById('turno-celular2')?.value || '');
+            t.celular        = nums.uno;
+            t.celular2       = nums.dos;
             t.fecha          = nuevaFecha;
             t.hora           = nuevaHora;
             t.duracion       = parseInt(document.getElementById('turno-duracion').value);
@@ -312,11 +314,13 @@ function guardarTurno(event) {
         }
     } else {
         // Modo nuevo
+        const numsTurno = repartirNumeros(document.getElementById('turno-celular').value,
+                                          document.getElementById('turno-celular2')?.value || '');
         const turno = {
             id: Date.now().toString(),
             pacienteNombre: document.getElementById('turno-nombre').value.trim(),
-            celular: unificarSiSePuede(document.getElementById('turno-celular').value),
-            celular2: unificarSiSePuede(document.getElementById('turno-celular2')?.value || ''),
+            celular: numsTurno.uno,
+            celular2: numsTurno.dos,
             fecha: document.getElementById('turno-fecha').value,
             hora: document.getElementById('turno-hora').value,
             duracion: parseInt(document.getElementById('turno-duracion').value),

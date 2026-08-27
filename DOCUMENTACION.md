@@ -233,6 +233,9 @@ También se usa **un único listener** de turnos (antes se apilaba uno nuevo por
 ### IDs idempotentes (anti-duplicados)
 Los turnos se guardan en Firebase con `setDoc` usando el **id local como id del documento** (`setDoc(doc(db,"turnos", turno.id), turno)`). Así, guardar el mismo turno muchas veces **sobreescribe el mismo documento** en lugar de crear copias. Por lo mismo, **borrar** usa ese id como id de documento, garantizando que el borrado se propague.
 
+### Botones de mantenimiento (página Pacientes)
+- **🧹 Limpiar duplicados** — deja un solo documento por paciente en Firebase (ver la sección de pacientes duplicados)
+
 ### Botones de mantenimiento (página Turnos)
 - **📞 Unificar celulares** — deja todos los teléfonos en el mismo formato (ver sección de Recordatorios)
 - **🔄 Recuperar** — sube a Firebase todos los turnos que estén en el dispositivo actual. Útil si un dispositivo tiene turnos locales que no llegaron a la nube. ⚠️ **Usar con cuidado:** al re-subir todo, puede revivir turnos borrados en otros dispositivos. Usar solo como recuperación manual e intencional.
@@ -382,6 +385,8 @@ Deja **todos** los teléfonos guardados en el mismo formato: `+54 9 2966 42-1234
 3. Recién con el botón **✅ Unificar** escribe en localStorage y Firebase
 
 Guarda el número viejo en `celularOriginal` / `celular2Original` / `telefonoOriginal` / `telefono2Original` por las dudas.
+
+**Dos números en un mismo campo** (como se venían cargando: `2966-272169 ///2966639384` o `2966- 272169 (HERMANA). 2966639384 mama`) **ya no son un error**: se separan solos en los dos campos, y la aclaración de quién es cada uno va a los campos `Ref`. Si el segundo campo ya está ocupado, queda para revisar a mano. Lo mismo pasa al guardar un turno o un paciente: si en el primer campo entran los dos teléfonos juntos, el segundo se muda solo al campo de al lado.
 
 **Casos que NO toca:** los de la tabla de arriba (los marca en naranja para revisar a mano).
 
@@ -559,8 +564,9 @@ El guardado usaba `canvas.datosOdontograma` (propiedad inexistente) en lugar de 
 | `v1.5-recordatorios` | Recordatorios de turnos por WhatsApp de un clic |
 | `v1.6-celulares-unificados` | Todos los teléfonos en un formato único + unificador de los ya cargados |
 | `v1.7-rio-gallegos` | Reglas de Río Gallegos (2966), prefijo precargado y dos teléfonos por paciente |
+| `v1.8-pacientes-sin-duplicados` | Pacientes idempotentes en Firebase + limpiador de duplicados |
 
-Para volver a un punto: `git checkout v1.7-rio-gallegos`
+Para volver a un punto: `git checkout v1.8-pacientes-sin-duplicados`
 
 ### Backups locales
 - `c:\Github repos\ODONPEI_backup_2026-05-21.zip` — v1.0
@@ -568,6 +574,29 @@ Para volver a un punto: `git checkout v1.7-rio-gallegos`
 - `c:\Github repos\ODONPEI_backup_2026-06-29_v1.2.zip` — v1.2 (Firebase estable)
 - `c:\Github repos\ODONPEI_backup_2026-07-03_v1.3.zip` — v1.3 (Chat interno)
 - `c:\Github repos\ODONPEI_backup_2026-07-07_v1.4.zip` — v1.4 (Fix sync turnos)
+
+---
+
+## ⚠️ Pacientes duplicados en Firebase (agosto 2026)
+
+**Qué pasó:** los pacientes se guardaban con `addDoc`, que crea un documento con **id al azar cada vez**. Cada vez que un dispositivo subía su copia local, generaba OTRO documento del mismo paciente. Se llegó a **303 documentos para 77 pacientes** (cada uno repetido 3, 6 o 9 veces).
+
+**Cómo se notó:** el botón de unificar celulares corregía el número, pero al rato volvía a aparecer sin corregir. Lo que pasaba era que corregía **una** copia y las otras seguían con el número viejo; cuando la app releía de la nube mostraba cualquiera de ellas.
+
+**Es el mismo bug que ya se había arreglado en turnos** (commit `94712f0`, `setDoc` por id) y que nunca se le aplicó a pacientes.
+
+### El arreglo
+- `guardarEnFirestore()` ahora usa **`setDoc(doc(db,'pacientes', paciente.id), ...)`**: el id del documento es el id del paciente, así que guardar dos veces pisa el mismo documento en vez de crear otro.
+- `actualizarEnFirestore()` apunta siempre al documento canónico y usa `setDoc` (si el documento no existe lo crea, en vez de fallar con *"No document to update"*).
+- El listener de pacientes **deduplica en memoria** mientras queden copias en la nube, así la lista no muestra el mismo paciente tres veces.
+- Botón **🧹 Limpiar duplicados** en la página Pacientes: deja un solo documento por paciente y borra las copias. **Descarga un backup JSON antes de borrar** y pide confirmar dos veces.
+
+Entre varias copias del mismo paciente gana la que tiene los datos más completos (`puntajeCopiaPaciente()` en `js/storage.js`): prioriza la que tenga el teléfono ya unificado, después la que tenga más campos llenos, odontograma, fotos y archivos.
+
+### Otra cosa que salió de esto
+`actualizarEnFirestore()` manda **el paciente entero**, con las fotos y el odontograma en base64. Un documento de Firestore no puede pasar de 1 MB, así que en pacientes con muchas fotos la escritura puede fallar en silencio. Por eso el unificador de celulares usa `actualizarCamposPacienteEnFirestore()`, que manda **solo `datosPersonales`** con `{ merge: true }`.
+
+**Moraleja:** en Firestore, todo lo que tenga un id propio se guarda con `setDoc` usando ese id. Nunca `addDoc` para algo que se puede volver a subir.
 
 ---
 

@@ -499,6 +499,10 @@ function guardarPaciente() {
         // Obtener datos del odontograma del canvas como imagen PNG
         const datosOdontograma = obtenerDatosOdontogramaDelCanvas() || null;
 
+        // Si en el primer campo entraron los dos teléfonos juntos, el segundo se muda solo
+        const numsPaciente = repartirNumeros(document.getElementById('campo-telefono')?.value || '',
+                                             document.getElementById('campo-telefono2')?.value || '');
+
         const paciente = {
             tipoHistoria: tipoHistoria,
             datosPersonales: {
@@ -508,10 +512,10 @@ function guardarPaciente() {
                 fechaNacimiento: document.getElementById('campo-fechaNacimiento')?.value || '',
                 domicilio: document.getElementById('campo-domicilio')?.value || '',
                 nombrePadre: document.getElementById('campo-nombrePadre')?.value || '',
-                telefono: unificarSiSePuede(document.getElementById('campo-telefono')?.value || ''),
-                telefonoRef: document.getElementById('campo-telefonoRef')?.value?.trim() || '',
-                telefono2: unificarSiSePuede(document.getElementById('campo-telefono2')?.value || ''),
-                telefono2Ref: document.getElementById('campo-telefono2Ref')?.value?.trim() || '',
+                telefono: numsPaciente.uno,
+                telefonoRef: document.getElementById('campo-telefonoRef')?.value?.trim() || numsPaciente.etiqueta,
+                telefono2: numsPaciente.dos,
+                telefono2Ref: document.getElementById('campo-telefono2Ref')?.value?.trim() || numsPaciente.etiqueta2,
                 obraSocial: document.getElementById('campo-obraSocial')?.value || '',
                 nAfiliado: document.getElementById('campo-nAfiliado')?.value || '',
                 dni: document.getElementById('campo-dni')?.value || ''
