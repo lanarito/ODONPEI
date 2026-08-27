@@ -571,11 +571,26 @@ function abrirUnificarCelulares() {
         </div>`;
 }
 
-async function aplicarUnificacionCelulares() {
-    if (!unificarPendientes.length) return;
+// Corre sola al abrir la app: deja todos los teléfonos en el mismo formato y
+// reparte los que traen dos números juntos. Sin botón y sin molestar a nadie.
+// Lo dudoso no se toca nunca: queda como está para corregirlo a mano.
+async function unificarCelularesAuto() {
+    const arreglables = relevarCelulares().filter(f => f.estado === 'corregir' || f.estado === 'separar');
+    if (!arreglables.length) return;
+    console.log(`📞 Unificando ${arreglables.length} teléfono(s)...`);
+    await aplicarCambiosCelulares(arreglables, true);
+}
 
-    const turnosACambiar    = unificarPendientes.filter(f => f.tipo === 'Turno');
-    const pacientesACambiar = unificarPendientes.filter(f => f.tipo === 'Paciente');
+async function aplicarUnificacionCelulares() {
+    await aplicarCambiosCelulares(unificarPendientes, false);
+    unificarPendientes = [];
+}
+
+async function aplicarCambiosCelulares(filas, silencioso) {
+    if (!filas || !filas.length) return;
+
+    const turnosACambiar    = filas.filter(f => f.tipo === 'Turno');
+    const pacientesACambiar = filas.filter(f => f.tipo === 'Paciente');
     let soloLocales = 0;
 
     let fallados = 0;
@@ -640,17 +655,21 @@ async function aplicarUnificacionCelulares() {
         if (typeof cargarPacientes === 'function') cargarPacientes();
     }
 
-    cerrarPanelRecordatorios();
+    if (!silencioso) cerrarPanelRecordatorios();
     renderizarTurnosHoy();
     renderizarSemana();
 
-    alert(
-        `✅ ${unificarPendientes.length} número(s) unificado(s).\n` +
-        `${turnosACambiar.length} en turnos · ${pacientesACambiar.length} en pacientes.` +
-        (soloLocales ? `\n\n⚠️ ${soloLocales} paciente(s) se corrigieron solo en este dispositivo (todavía no están en la nube).` : '') +
-        (fallados ? `\n\n❌ ${fallados} no se pudieron guardar en la nube. Revisá la consola (F12).` : '')
-    );
-    unificarPendientes = [];
+    const resumen = `${filas.length} número(s) unificado(s): ` +
+        `${turnosACambiar.length} en turnos, ${pacientesACambiar.length} en pacientes` +
+        (soloLocales ? ` · ${soloLocales} solo en este dispositivo` : '') +
+        (fallados ? ` · ${fallados} fallaron` : '');
+
+    if (silencioso) {
+        console.log('✅ ' + resumen);
+        if (fallados) console.warn(`⚠️ ${fallados} teléfono(s) no se pudieron guardar en la nube.`);
+    } else {
+        alert('✅ ' + resumen.replace(/ · /g, '\n'));
+    }
 }
 
 // ---------- Aviso en la página de Turnos ----------
@@ -678,3 +697,7 @@ function renderizarAvisoRecordatorios() {
 
 // Traer la plantilla compartida al arrancar
 setTimeout(sincronizarPlantilla, 1500);
+
+// El panel de diagnóstico ya no tiene botón, pero sigue existiendo: si alguna vez
+// hace falta ver qué números quedaron raros, se abre desde la consola del
+// navegador (F12) escribiendo:  abrirUnificarCelulares()

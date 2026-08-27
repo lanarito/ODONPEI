@@ -2,6 +2,9 @@
 
 const STORAGE_KEY = 'ODONPEI_PACIENTES';
 
+// Para que el mantenimiento automático corra una sola vez por sesión
+let celularesYaUnificados = false;
+
 // Guardar nuevo paciente
 function guardar(paciente) {
     paciente.id = Date.now().toString();
@@ -136,72 +139,50 @@ function puntajeCopiaPaciente(p) {
     return s;
 }
 
-function descargarBackupPacientes(pacientes, etiqueta) {
-    const blob = new Blob([JSON.stringify(pacientes, null, 2)], { type: 'application/json' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `ODONPEI_backup_${etiqueta}_${new Date().toISOString().split('T')[0]}.json`;
-    link.click();
-}
-
-async function limpiarDuplicadosPacientes() {
-    if (typeof obtenerDesdePacientesFirestore !== 'function') {
-        alert('Firebase no disponible.');
-        return;
-    }
+// Corre sola al abrir la app. Sin botón y sin preguntar nada: junta las copias
+// de cada paciente en un solo documento y borra las sobrantes.
+// Es seguro porque antes de borrar VERIFICA que el documento bueno quedó escrito.
+async function deduplicarPacientesAuto() {
+    if (typeof obtenerDesdePacientesFirestore !== 'function') return;
 
     let todos;
     try {
         todos = await obtenerDesdePacientesFirestore();
     } catch (e) {
-        alert('No se pudieron leer los pacientes de Firebase. Revisá la consola.');
+        console.warn('No se pudieron leer los pacientes para deduplicar:', e);
         return;
     }
 
     // Agrupar por el id interno del paciente
     const grupos = {};
-    todos.forEach(p => {
-        if (!p.id) return;
-        (grupos[p.id] = grupos[p.id] || []).push(p);
-    });
+    todos.forEach(p => { if (p.id) (grupos[p.id] = grupos[p.id] || []).push(p); });
 
     const ids = Object.keys(grupos);
-    const duplicados = todos.length - ids.length;
+    if (todos.length === ids.length) return;   // no hay nada repetido, seguimos de largo
 
-    if (duplicados <= 0) {
-        alert(`✅ No hay duplicados.\n${ids.length} paciente(s), ${todos.length} documento(s).`);
-        return;
-    }
-
-    if (!confirm(
-        `Hay ${todos.length} documentos para ${ids.length} pacientes.\n` +
-        `Se van a borrar ${duplicados} copias repetidas y queda una sola de cada paciente ` +
-        `(la que tenga los datos más completos).\n\n` +
-        `Primero se descarga un backup de TODO en tu computadora.\n\n` +
-        `Hacelo en UN solo dispositivo, con los demás cerrados.\n\n¿Continuar?`
-    )) return;
-
-    // Backup antes de tocar nada
-    descargarBackupPacientes(todos, 'pacientes_antes_de_limpiar');
-    if (!confirm('Se descargó el backup.\n\nRevisá que el archivo esté en tu carpeta de Descargas y recién ahí aceptá para borrar los duplicados.')) return;
+    console.log(`🧹 ${todos.length} documentos para ${ids.length} pacientes. Limpiando duplicados...`);
 
     let borrados = 0, errores = 0;
-    const finales = [];
 
     for (const id of ids) {
         const copias = grupos[id];
-        // La copia con los datos más completos gana
+        if (copias.length === 1) continue;
+
+        // Gana la copia con los datos más completos
         const mejor = copias.reduce((a, b) => puntajeCopiaPaciente(b) > puntajeCopiaPaciente(a) ? b : a);
 
-        // El documento canónico lleva el id del paciente
-        const canonico = { ...mejor, firebaseId: id };
+        // El documento bueno lleva el id del paciente como id de documento
         if (mejor.firebaseId !== id) {
-            const ok = await guardarEnFirestore(canonico);
-            if (!ok) { errores++; continue; }
+            const guardado = await guardarEnFirestore({ ...mejor, firebaseId: id });
+            if (!guardado) { errores++; continue; }
         }
-        finales.push(canonico);
 
-        // Borrar todas las copias que no sean el documento canónico
+        // ANTES de borrar nada, confirmar que el documento bueno está en la nube
+        if (typeof existePacienteEnFirestore === 'function') {
+            const existe = await existePacienteEnFirestore(id);
+            if (!existe) { errores++; continue; }
+        }
+
         for (const c of copias) {
             if (c.firebaseId && c.firebaseId !== id) {
                 const ok = await eliminarDeFirestore(c.firebaseId);
@@ -210,21 +191,8 @@ async function limpiarDuplicadosPacientes() {
         }
     }
 
-    // Dejar el localStorage con una sola copia de cada uno
-    try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(finales));
-    } catch (e) {
-        console.warn('localStorage lleno:', e);
-    }
+    console.log(`✅ Duplicados limpiados: ${borrados} copia(s) borrada(s)` + (errores ? `, ${errores} error(es)` : ''));
     if (typeof cargarPacientes === 'function') cargarPacientes();
-
-    alert(
-        `✅ Limpieza completa.\n\n` +
-        `${finales.length} paciente(s) quedaron con un solo documento.\n` +
-        `${borrados} copia(s) repetida(s) eliminada(s).` +
-        (errores ? `\n⚠️ ${errores} error(es), revisá la consola.` : '') +
-        `\n\nRecargá los otros dispositivos (Ctrl+Shift+R).`
-    );
 }
 
 // Sincronizar desde Firebase al iniciar (si está disponible)
@@ -273,7 +241,15 @@ window.addEventListener('load', () => {
                 }
             } catch (e) { console.warn('Subida inicial pacientes:', e); }
         }
-        // 2. Escuchar en tiempo real — SOLO muestra, nunca sube (evita bucle/duplicados)
+        // 2. Mantenimiento automático, sin botones y sin preguntar nada:
+        //    primero se juntan las copias repetidas de cada paciente y después se
+        //    dejan todos los teléfonos en el mismo formato. Las dos rutinas son
+        //    idempotentes: si no hay nada que hacer, no hacen nada.
+        try {
+            await deduplicarPacientesAuto();
+        } catch (e) { console.warn('Deduplicando pacientes:', e); }
+
+        // 3. Escuchar en tiempo real — SOLO muestra, nunca sube (evita bucle/duplicados)
         if (typeof sincronizarEnTiempoReal === 'function') {
             sincronizarEnTiempoReal((pacientesRemotos) => {
                 const locales = obtenerTodos();
@@ -298,6 +274,14 @@ window.addEventListener('load', () => {
                     console.warn('No se pudo guardar la copia local, se sigue con la de la nube:', e);
                 }
                 if (typeof cargarPacientes === 'function') cargarPacientes();
+
+                // Los teléfonos se unifican DESPUÉS de tener los datos frescos de la
+                // nube. Si se hiciera antes, se trabajaría sobre una copia local vieja
+                // y quedarían números sin corregir (fue justo lo que pasó la vez pasada).
+                if (!celularesYaUnificados && typeof unificarCelularesAuto === 'function') {
+                    celularesYaUnificados = true;
+                    unificarCelularesAuto().catch(e => console.warn('Unificando teléfonos:', e));
+                }
             });
         }
     }, 1500);

@@ -3,6 +3,7 @@
 const TURNOS_KEY = 'ODONPEI_TURNOS';
 let semanaOffset = 0;
 let turnosListenerActivo = false;
+let turnosCelularesUnificados = false;
 
 function obtenerTurnos() {
     return JSON.parse(localStorage.getItem(TURNOS_KEY) || '[]');
@@ -81,6 +82,12 @@ function cargarTurnos() {
                 renderizarSemana();
                 // Si el panel de recordatorios está abierto, que se actualice solo
                 if (typeof renderPanelRecordatorios === 'function') renderPanelRecordatorios();
+
+                // Con los turnos ya frescos de la nube, dejar los teléfonos en formato único
+                if (!turnosCelularesUnificados && typeof unificarCelularesAuto === 'function') {
+                    turnosCelularesUnificados = true;
+                    unificarCelularesAuto().catch(e => console.warn('Unificando teléfonos:', e));
+                }
             });
         }
     }, 800);

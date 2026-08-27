@@ -81,6 +81,15 @@ async function actualizarEnFirestore(paciente) {
   }
 }
 
+// ¿Existe el documento de este paciente? (se usa para no borrar copias
+// sin haber confirmado antes que el documento bueno quedó guardado)
+async function existePacienteEnFirestore(docId) {
+  try {
+    const snap = await getDoc(doc(db, "pacientes", docId));
+    return snap.exists();
+  } catch (e) { console.warn('Verificando paciente:', e); return false; }
+}
+
 // Actualizar SOLO algunos campos de un paciente (sin mandar el documento entero,
 // que con fotos y odontograma puede pasarse del límite de 1 MB de Firestore)
 async function actualizarCamposPacienteEnFirestore(docId, campos) {
@@ -256,6 +265,7 @@ window.guardarEnFirestore             = guardarEnFirestore;
 window.obtenerDesdePacientesFirestore = obtenerDesdePacientesFirestore;
 window.actualizarEnFirestore          = actualizarEnFirestore;
 window.actualizarCamposPacienteEnFirestore = actualizarCamposPacienteEnFirestore;
+window.existePacienteEnFirestore      = existePacienteEnFirestore;
 window.eliminarDeFirestore            = eliminarDeFirestore;
 window.sincronizarEnTiempoReal        = sincronizarEnTiempoReal;
 window.guardarTurnoEnFirestore        = guardarTurnoEnFirestore;
