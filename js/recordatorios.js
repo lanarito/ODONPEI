@@ -46,9 +46,14 @@ async function sincronizarPlantilla() {
 }
 
 // ---------- Celular → formato internacional para wa.me ----------
+// El consultorio está en RÍO GALLEGOS: característica 2966 y 6 dígitos de abonado.
 // Los celulares se cargan a mano y cada uno los escribe distinto:
-// "11 1234-5678", "011 15 1234 5678", "+54 9 11 1234 5678"...
-// wa.me necesita solo dígitos y con código de país: 5491112345678
+// "42-1234", "15 421234", "2966 421234", "+54 9 2966 421234"...
+// wa.me necesita solo dígitos y con código de país: 5492966421234
+const AREA_LOCAL = '2966';                       // Río Gallegos, Santa Cruz
+const PREFIJO_LOCAL = '+54 9 ' + AREA_LOCAL + ' ';
+const LARGO_ABONADO_LOCAL = 6;                   // los números de acá tienen 6 dígitos
+
 function normalizarCelular(raw) {
     if (!raw) return '';
     const esInternacional = String(raw).trim().startsWith('+');
@@ -65,9 +70,10 @@ function normalizarCelular(raw) {
     return '549' + limpiarLocalAR(d);
 }
 
-// Saca el 0 de la característica y el 15 del celular (formato viejo argentino)
+// Deja el número nacional: característica + abonado, sin 0 y sin 15
 function limpiarLocalAR(n) {
     if (n.startsWith('0')) n = n.slice(1);
+
     // Con "15" el número queda en 12 dígitos: característica (2-4) + 15 + abonado
     if (n.length === 12) {
         for (const largo of [2, 3, 4]) {
@@ -77,6 +83,17 @@ function limpiarLocalAR(n) {
             }
         }
     }
+
+    // Cargado con el 15 adelante y sin característica: "15 421234" → 2966 421234
+    if (n.startsWith('15') && n.length === 2 + LARGO_ABONADO_LOCAL) {
+        return AREA_LOCAL + n.slice(2);
+    }
+
+    // Solo el abonado, como se dice acá: "421234" → 2966 421234
+    if (n.length === LARGO_ABONADO_LOCAL) {
+        return AREA_LOCAL + n;
+    }
+
     return n;
 }
 
@@ -119,8 +136,18 @@ function analizarCelular(raw) {
     const digitos = normalizarCelular(texto);
     if (!digitos) return { estado: 'revisar', valor: texto, motivo: 'no tiene números' };
 
+    // Quedó solo el prefijo que trae el campo por defecto, sin número atrás
+    if (digitos === '549' + AREA_LOCAL || digitos === '549') {
+        return { estado: 'vacio', valor: '', motivo: '' };
+    }
+
     if (digitos.startsWith('549')) {
         const resto = digitos.slice(3);
+        // Ninguna característica argentina empieza con 15. Si quedó un 15 adelante
+        // es un celular viejo al que no le podemos adivinar la característica.
+        if (resto.startsWith('15')) {
+            return { estado: 'revisar', valor: texto, motivo: 'empieza con 15 y no se sabe la característica' };
+        }
         if (resto.length !== 10) {
             return {
                 estado: 'revisar', valor: texto,
@@ -142,6 +169,7 @@ function analizarCelular(raw) {
 // Deja el número en formato único si se puede; si es dudoso lo devuelve tal cual
 function unificarSiSePuede(raw) {
     const a = analizarCelular(raw);
+    if (a.estado === 'vacio') return '';          // vacío o solo el prefijo: no se guarda nada
     return (a.estado === 'corregir' || a.estado === 'ok') ? a.valor : String(raw || '').trim();
 }
 
@@ -190,12 +218,13 @@ function armarMensaje(turno) {
 }
 
 // ---------- Acciones ----------
-function recordarTurno(id) {
+// cual = 1 (celular principal) o 2 (el otro, ej: el del papá)
+function recordarTurno(id, cual) {
     const turnos = obtenerTurnos();
     const t = turnos.find(x => x.id === id);
     if (!t) return;
 
-    const tel = normalizarCelular(t.celular);
+    const tel = normalizarCelular(cual === 2 ? t.celular2 : t.celular);
     if (!tel) {
         alert('Este turno no tiene celular cargado.\n\nModificá el turno y agregalo para poder mandar el recordatorio.');
         return;
@@ -277,20 +306,26 @@ function renderPanelRecordatorios() {
         lista = '<div class="rec-vacio">No hay turnos para este día.</div>';
     } else {
         lista = turnos.map(t => {
-            const tel = normalizarCelular(t.celular);
+            const tel  = normalizarCelular(t.celular);
+            const tel2 = normalizarCelular(t.celular2);
             const recordable = ESTADOS_RECORDABLES.includes(t.estado);
             let accion;
 
+            // Botón extra cuando el turno tiene un segundo número cargado
+            const btn2 = tel2
+                ? `<button class="btn-rec btn-rec-2" onclick="recordarTurno('${t.id}', 2)" title="${t.celular2}">📲 2º</button>`
+                : '';
+
             if (!recordable) {
                 accion = `<span class="rec-nota">no corresponde</span>`;
-            } else if (!tel) {
+            } else if (!tel && !tel2) {
                 accion = `<button class="btn-rec btn-rec-falta" onclick="editarTurnoDesdeRecordatorios('${t.id}')">✏️ Cargar celular</button>`;
             } else if (t.recordadoEn) {
                 const h = new Date(t.recordadoEn).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
-                accion = `<span class="rec-hecho">✅ ${h}</span>
+                accion = `<span class="rec-hecho">✅ ${h}</span>${btn2}
                           <button class="rec-link" onclick="desmarcarRecordado('${t.id}')">deshacer</button>`;
             } else {
-                accion = `<button class="btn-rec" onclick="recordarTurno('${t.id}')">📲 Recordar</button>`;
+                accion = `<button class="btn-rec" onclick="recordarTurno('${t.id}', 1)">📲 Recordar</button>${btn2}`;
             }
 
             return `
@@ -298,7 +333,7 @@ function renderPanelRecordatorios() {
                     <div class="rec-item-info">
                         <span class="rec-hora">${t.hora}</span>
                         <span class="rec-nombre">${t.pacienteNombre}</span>
-                        <span class="rec-tel">${tel ? '+' + tel : '— sin celular —'}</span>
+                        <span class="rec-tel">${tel ? t.celular : '— sin celular —'}${tel2 ? ' · ' + t.celular2 : ''}</span>
                     </div>
                     <div class="rec-item-accion">${accion}</div>
                 </div>`;
@@ -368,29 +403,38 @@ function relevarCelulares() {
     const filas = [];
 
     obtenerTurnos().forEach(t => {
-        const a = analizarCelular(t.celular);
-        if (a.estado === 'vacio') return;
-        filas.push({
-            tipo: 'Turno', id: t.id,
-            nombre: t.pacienteNombre,
-            detalle: new Date(t.fecha + 'T12:00:00').toLocaleDateString('es-AR') + ' ' + t.hora,
-            actual: String(t.celular || '').trim(),
-            nuevo: a.valor, estado: a.estado, motivo: a.motivo
+        const fecha = new Date(t.fecha + 'T12:00:00').toLocaleDateString('es-AR') + ' ' + t.hora;
+        ['celular', 'celular2'].forEach(campo => {
+            const a = analizarCelular(t[campo]);
+            if (a.estado === 'vacio') return;
+            filas.push({
+                tipo: 'Turno', id: t.id, campo,
+                nombre: t.pacienteNombre,
+                detalle: fecha + (campo === 'celular2' ? ' · 2º número' : ''),
+                actual: String(t[campo] || '').trim(),
+                nuevo: a.valor, estado: a.estado, motivo: a.motivo
+            });
         });
     });
 
     if (typeof obtenerTodos === 'function') {
         obtenerTodos().forEach(p => {
-            const tel = p.datosPersonales?.telefono;
-            const a = analizarCelular(tel);
-            if (a.estado === 'vacio') return;
-            filas.push({
-                tipo: 'Paciente', id: p.id,
-                nombre: p.datosPersonales?.nombre || '(sin nombre)',
-                detalle: p.firebaseId ? '' : 'solo en este dispositivo',
-                actual: String(tel || '').trim(),
-                nuevo: a.valor, estado: a.estado, motivo: a.motivo,
-                sinFirebase: !p.firebaseId
+            const dp = p.datosPersonales;
+            if (!dp) return;
+            ['telefono', 'telefono2'].forEach(campo => {
+                const a = analizarCelular(dp[campo]);
+                if (a.estado === 'vacio') return;
+                const ref = campo === 'telefono' ? dp.telefonoRef : dp.telefono2Ref;
+                filas.push({
+                    tipo: 'Paciente', id: p.id, campo,
+                    nombre: dp.nombre || '(sin nombre)',
+                    detalle: [ref, campo === 'telefono2' ? '2º número' : '',
+                              p.firebaseId ? '' : 'solo en este dispositivo']
+                             .filter(Boolean).join(' · '),
+                    actual: String(dp[campo] || '').trim(),
+                    nuevo: a.valor, estado: a.estado, motivo: a.motivo,
+                    sinFirebase: !p.firebaseId
+                });
             });
         });
     }
@@ -473,9 +517,9 @@ async function aplicarUnificacionCelulares() {
         turnosACambiar.forEach(f => {
             const t = turnos.find(x => x.id === f.id);
             if (!t) return;
-            t.celularOriginal = t.celular;   // por las dudas, se guarda lo que estaba
-            t.celular = f.nuevo;
-            tocados.push(t);
+            t[f.campo + 'Original'] = t[f.campo];   // por las dudas, se guarda lo que estaba
+            t[f.campo] = f.nuevo;
+            if (!tocados.includes(t)) tocados.push(t);
         });
         guardarTurnosStorage(turnos);
         if (typeof actualizarTurnoEnFirestore === 'function') {
@@ -490,9 +534,11 @@ async function aplicarUnificacionCelulares() {
         pacientesACambiar.forEach(f => {
             const p = pacientes.find(x => x.id === f.id);
             if (!p || !p.datosPersonales) return;
-            p.datosPersonales.telefonoOriginal = p.datosPersonales.telefono;
-            p.datosPersonales.telefono = f.nuevo;
-            if (p.firebaseId) tocados.push(p); else soloLocales++;
+            p.datosPersonales[f.campo + 'Original'] = p.datosPersonales[f.campo];
+            p.datosPersonales[f.campo] = f.nuevo;
+            if (p.firebaseId) {
+                if (!tocados.includes(p)) tocados.push(p);
+            } else soloLocales++;
         });
         localStorage.setItem('ODONPEI_PACIENTES', JSON.stringify(pacientes));
         if (typeof actualizarEnFirestore === 'function') {

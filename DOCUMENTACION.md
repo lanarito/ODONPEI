@@ -120,7 +120,8 @@ Selector de tipo de historia clínica:
 - Fecha de Nacimiento
 - Domicilio
 - Nombre de Madre/Padre
-- Teléfono de Contacto
+- Teléfono de Contacto (+ campo para aclarar de quién es)
+- Otro Teléfono, opcional (+ campo para aclarar de quién es)
 - Obra Social
 - N° Afiliado
 - DNI
@@ -286,7 +287,8 @@ Los turnos se guardan en Firebase con `setDoc` usando el **id local como id del 
   id: "timestamp",
   firebaseId: "abc123",
   pacienteNombre: "Apellido Nombre",   // Texto libre
-  celular: "11 1234-5678",
+  celular: "+54 9 2966 42-1234",
+  celular2: "+54 9 2966 56-7890",    // opcional: el otro contacto (papá/mamá)
   fecha: "YYYY-MM-DD",
   hora: "HH:MM",
   duracion: 30 | 60 | 90,             // minutos
@@ -330,30 +332,58 @@ También hay un botón **📲 Recordar por WhatsApp** dentro del detalle de cada
 Los celulares se cargan a mano y cada uno los escribe distinto. Hay dos funciones:
 `formatearCelular()` los deja legibles para guardarlos y mostrarlos en pantalla, y `normalizarCelular()` los convierte a lo que necesita `wa.me` (solo dígitos, con código de país) al momento de abrir WhatsApp.
 
+> **El consultorio está en Río Gallegos:** característica **2966** y 6 dígitos de abonado.
+> En el código: `AREA_LOCAL`, `PREFIJO_LOCAL` y `LARGO_ABONADO_LOCAL` arriba de `js/recordatorios.js`.
+> Si algún día se mudan o abren en otra ciudad, se cambia ahí y listo.
+
 | Se escribe | Se guarda como | Se manda a |
 |------------|----------------|-----------|
-| `11 1234-5678` | `+54 9 11 1234-5678` | `5491112345678` |
-| `011 15 1234-5678` | `+54 9 11 1234-5678` | `5491112345678` |
-| `+54 9 11 1234 5678` | `+54 9 11 1234-5678` | `5491112345678` |
-| `(0351) 15-234-5678` | `+54 9 351 234-5678` | `5493512345678` |
-| `+1 555 123 4567` | `+15551234567` | `15551234567` (otro país: se respeta) |
+| `42-1234` (solo el abonado) | `+54 9 2966 42-1234` | `5492966421234` |
+| `421234` | `+54 9 2966 42-1234` | `5492966421234` |
+| `15 421234` (con el 15 viejo) | `+54 9 2966 42-1234` | `5492966421234` |
+| `02966 15 421234` | `+54 9 2966 42-1234` | `5492966421234` |
+| `11 1234-5678` (de otra provincia) | `+54 9 11 1234-5678` | `5491112345678` |
+| `+54 9 2966 42-1234` | ya está bien | `5492966421234` |
 
-Saca el `0` de la característica y el `15` del celular. El número final se muestra en el panel para poder controlarlo de un vistazo.
+Reglas: saca el `0` de la característica y el `15` del celular; si vienen solo los 6 dígitos del abonado (o `15` + 6 dígitos) les pone **2966** adelante; si el número ya trae característica completa (10 dígitos) se respeta tal cual.
+
+**Los que NO se pueden adivinar** quedan marcados para revisar a mano:
+
+| Caso | Por qué |
+|------|---------|
+| `1234-5678` | 8 dígitos: no es de acá (serían 6) ni un nacional completo (serían 10) |
+| `15 1234-5678` | Empieza con 15 y lo que sigue no da un número de acá. Ninguna característica argentina empieza con 15, así que no hay forma de saber cuál era |
+| `11 1234-56789` | Tiene un dígito de más, es un error de tipeo |
+| `2966 421234 / 2966 567890` | Dos números en un mismo campo (para eso está el segundo campo de teléfono) |
+
+### El campo de teléfono ya viene con el prefijo
+
+Los campos de celular arrancan con **`+54 9 2966 `** puesto, así solo hay que escribir los 6 dígitos que siguen. Si el paciente es de afuera, se borra el `2966` y se pone la característica que corresponda. Si se deja el prefijo solo, sin número atrás, no se guarda nada (queda vacío).
+
+### Dos teléfonos por paciente (mamá y papá)
+
+Tanto los **turnos** como los **pacientes** aceptan dos números:
+
+| Dónde | Campos |
+|-------|--------|
+| Turno | `celular` + `celular2` |
+| Paciente | `telefono` + `telefonoRef`, `telefono2` + `telefono2Ref` |
+
+Los `Ref` son un texto libre para aclarar de quién es cada uno (*mamá*, *papá*, *abuela*). Se ven en la ficha del paciente y en la historia clínica impresa.
+
+En el panel de recordatorios, un turno con dos números muestra el botón **📲 Recordar** (manda al primero) y al lado un botón **📲 2º** (manda al otro). Cualquiera de los dos marca el turno como recordado.
 
 ### Unificar celulares ya cargados (botón 📞 en Turnos)
 
-Deja **todos** los teléfonos guardados en el mismo formato: `+54 9 11 1234-5678`. Recorre los turnos (`celular`) y los pacientes (`datosPersonales.telefono`).
+Deja **todos** los teléfonos guardados en el mismo formato: `+54 9 2966 42-1234`. Recorre los cuatro campos: `celular` y `celular2` de los turnos, `telefono` y `telefono2` de los pacientes.
 
 1. Primero muestra una **vista previa** de qué va a cambiar: `11 1234-5678` → `+54 9 11 1234-5678`
 2. Separa en tres grupos: **se corrigen**, **hay que revisarlos a mano**, **ya están bien**
 3. Recién con el botón **✅ Unificar** escribe en localStorage y Firebase
 
-Guarda el número viejo en `celularOriginal` / `telefonoOriginal` por las dudas.
+Guarda el número viejo en `celularOriginal` / `celular2Original` / `telefonoOriginal` / `telefono2Original` por las dudas.
 
-**Casos que NO toca** (los marca en naranja para revisar a mano):
-- Faltan dígitos (ej: `1234-5678` sin característica)
-- Dos números en el mismo campo (`11 5555-1111 / 11 6666-2222`)
-- Dígitos de más
+**Casos que NO toca:** los de la tabla de arriba (los marca en naranja para revisar a mano).
 
 **Pacientes sin `firebaseId`** (que todavía no subieron a la nube) se corrigen solo en ese dispositivo y el aviso final lo aclara. No se mandan a Firebase como nuevos porque `actualizarEnFirestore()` los crearía duplicados.
 
@@ -528,8 +558,9 @@ El guardado usaba `canvas.datosOdontograma` (propiedad inexistente) en lugar de 
 | `v1.4-turnos-sync-estable` | Fix sync de turnos: borrar/modificar firme en todos lados, sin resucitar |
 | `v1.5-recordatorios` | Recordatorios de turnos por WhatsApp de un clic |
 | `v1.6-celulares-unificados` | Todos los teléfonos en un formato único + unificador de los ya cargados |
+| `v1.7-rio-gallegos` | Reglas de Río Gallegos (2966), prefijo precargado y dos teléfonos por paciente |
 
-Para volver a un punto: `git checkout v1.6-celulares-unificados`
+Para volver a un punto: `git checkout v1.7-rio-gallegos`
 
 ### Backups locales
 - `c:\Github repos\ODONPEI_backup_2026-05-21.zip` — v1.0

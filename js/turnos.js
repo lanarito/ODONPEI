@@ -235,7 +235,11 @@ function mostrarFormTurno(fecha = '', hora = '') {
                     </div>
                     <div class="form-group">
                         <label>Celular</label>
-                        <input type="tel" id="turno-celular" placeholder="Ej: 11 1234-5678" autocomplete="off">
+                        <input type="tel" id="turno-celular" value="${PREFIJO_LOCAL}" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label>Otro celular (opcional)</label>
+                        <input type="tel" id="turno-celular2" placeholder="${PREFIJO_LOCAL}" autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label>Fecha *</label>
@@ -289,6 +293,7 @@ function guardarTurno(event) {
 
             t.pacienteNombre = document.getElementById('turno-nombre').value.trim();
             t.celular        = unificarSiSePuede(document.getElementById('turno-celular').value);
+            t.celular2       = unificarSiSePuede(document.getElementById('turno-celular2')?.value || '');
             t.fecha          = nuevaFecha;
             t.hora           = nuevaHora;
             t.duracion       = parseInt(document.getElementById('turno-duracion').value);
@@ -311,6 +316,7 @@ function guardarTurno(event) {
             id: Date.now().toString(),
             pacienteNombre: document.getElementById('turno-nombre').value.trim(),
             celular: unificarSiSePuede(document.getElementById('turno-celular').value),
+            celular2: unificarSiSePuede(document.getElementById('turno-celular2')?.value || ''),
             fecha: document.getElementById('turno-fecha').value,
             hora: document.getElementById('turno-hora').value,
             duracion: parseInt(document.getElementById('turno-duracion').value),
@@ -363,7 +369,11 @@ function editarTurno(id) {
                     </div>
                     <div class="form-group">
                         <label>Celular</label>
-                        <input type="tel" id="turno-celular" value="${turno.celular || ''}" autocomplete="off">
+                        <input type="tel" id="turno-celular" value="${turno.celular || PREFIJO_LOCAL}" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label>Otro celular (opcional)</label>
+                        <input type="tel" id="turno-celular2" value="${turno.celular2 || ''}" placeholder="${PREFIJO_LOCAL}" autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label>Fecha *</label>
@@ -408,6 +418,7 @@ function verTurno(id) {
                 <p style="margin-bottom:8px;">📅 <strong>${fechaLegible}</strong></p>
                 <p style="margin-bottom:8px;">🕐 ${turno.hora} · ${turno.duracion} min</p>
                 ${turno.celular ? `<p style="margin-bottom:8px;">📱 ${turno.celular}</p>` : ''}
+                ${turno.celular2 ? `<p style="margin-bottom:8px;">📱 ${turno.celular2} <span style="color:#999; font-size:12px;">(2º)</span></p>` : ''}
                 ${turno.notas ? `<p style="margin-bottom:12px;">📝 ${turno.notas}</p>` : ''}
                 <div class="form-group" style="margin-top:16px;">
                     <label>Estado</label>
@@ -421,10 +432,17 @@ function verTurno(id) {
                     </select>
                 </div>
                 <div style="margin-top:20px; display:flex; flex-direction:column; gap:8px;">
-                    ${turno.celular ? `
-                    <button onclick="recordarTurno('${turno.id}'); verTurno('${turno.id}')" class="btn" style="background:#25D366; color:white; width:100%;">
-                        ${turno.recordadoEn ? '📲 Volver a recordar por WhatsApp' : '📲 Recordar por WhatsApp'}
-                    </button>
+                    ${turno.celular || turno.celular2 ? `
+                    <div style="display:flex; gap:8px;">
+                        ${turno.celular ? `
+                        <button onclick="recordarTurno('${turno.id}', 1); verTurno('${turno.id}')" class="btn" style="background:#25D366; color:white; flex:1;">
+                            📲 ${turno.recordadoEn ? 'Volver a recordar' : 'Recordar por WhatsApp'}
+                        </button>` : ''}
+                        ${turno.celular2 ? `
+                        <button onclick="recordarTurno('${turno.id}', 2); verTurno('${turno.id}')" class="btn" style="background:#25D366; color:white; flex:${turno.celular ? '0 0 auto' : '1'};">
+                            📲 ${turno.celular ? '2º' : 'Recordar por WhatsApp'}
+                        </button>` : ''}
+                    </div>
                     ${turno.recordadoEn ? `<div style="font-size:12px; color:#4CAF50; text-align:center; margin-top:-2px;">✅ Recordado el ${new Date(turno.recordadoEn).toLocaleString('es-AR', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })}</div>` : ''}
                     ` : ''}
                     <div style="display:flex; gap:8px;">

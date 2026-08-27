@@ -869,7 +869,7 @@ function generarHTMLHistoriaCompletaPrint() {
                         </div>
                         <div class="dato-item">
                             <div class="dato-label">Teléfono de Contacto</div>
-                            <div class="dato-valor">${datosPersonales.telefono || 'N/A'}</div>
+                            <div class="dato-valor">${datosPersonales.telefono || 'N/A'}${datosPersonales.telefonoRef ? ` (${datosPersonales.telefonoRef})` : ''}${datosPersonales.telefono2 ? ` · ${datosPersonales.telefono2}${datosPersonales.telefono2Ref ? ` (${datosPersonales.telefono2Ref})` : ''}` : ''}</div>
                         </div>
                         <div class="dato-item">
                             <div class="dato-label">Obra Social</div>

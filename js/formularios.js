@@ -42,7 +42,13 @@ function generarFormulario(tipo, dataPaciente = null) {
                     </div>
                     <div class="form-group">
                         <label>Teléfono de Contacto</label>
-                        <input type="tel" id="campo-telefono" value="${dp.telefono || ''}">
+                        <input type="tel" id="campo-telefono" value="${dp.telefono || PREFIJO_LOCAL}">
+                        <input type="text" id="campo-telefonoRef" class="tel-ref" placeholder="¿de quién? ej: mamá" value="${dp.telefonoRef || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>Otro Teléfono (opcional)</label>
+                        <input type="tel" id="campo-telefono2" value="${dp.telefono2 || ''}" placeholder="${PREFIJO_LOCAL}">
+                        <input type="text" id="campo-telefono2Ref" class="tel-ref" placeholder="¿de quién? ej: papá" value="${dp.telefono2Ref || ''}">
                     </div>
                     <div class="form-group">
                         <label>Obra Social</label>

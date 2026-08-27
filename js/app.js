@@ -335,7 +335,7 @@ function mostrarHistoriaClinica() {
                         <strong>Domicilio:</strong><br>${data.datosPersonales.domicilio}
                     </div>
                     <div>
-                        <strong>Teléfono:</strong><br>${data.datosPersonales.telefono}
+                        <strong>Teléfono:</strong><br>${data.datosPersonales.telefono || 'N/A'}${data.datosPersonales.telefonoRef ? ` <span style="color:#999;">(${data.datosPersonales.telefonoRef})</span>` : ''}${data.datosPersonales.telefono2 ? `<br>${data.datosPersonales.telefono2}${data.datosPersonales.telefono2Ref ? ` <span style="color:#999;">(${data.datosPersonales.telefono2Ref})</span>` : ''}` : ''}
                     </div>
                     <div>
                         <strong>Obra Social:</strong><br>${data.datosPersonales.obraSocial || 'N/A'}
@@ -509,6 +509,9 @@ function guardarPaciente() {
                 domicilio: document.getElementById('campo-domicilio')?.value || '',
                 nombrePadre: document.getElementById('campo-nombrePadre')?.value || '',
                 telefono: unificarSiSePuede(document.getElementById('campo-telefono')?.value || ''),
+                telefonoRef: document.getElementById('campo-telefonoRef')?.value?.trim() || '',
+                telefono2: unificarSiSePuede(document.getElementById('campo-telefono2')?.value || ''),
+                telefono2Ref: document.getElementById('campo-telefono2Ref')?.value?.trim() || '',
                 obraSocial: document.getElementById('campo-obraSocial')?.value || '',
                 nAfiliado: document.getElementById('campo-nAfiliado')?.value || '',
                 dni: document.getElementById('campo-dni')?.value || ''

@@ -1672,3 +1672,19 @@ body {
     margin-top: 6px;
     line-height: 1.5;
 }
+
+/* Campo chico para aclarar de quién es el teléfono (mamá / papá / etc.) */
+.tel-ref {
+    margin-top: 5px;
+    font-size: 12px !important;
+    padding: 6px 10px !important;
+    color: #666;
+    background: #fafafa;
+}
+
+.btn-rec-2 {
+    background: #4DB6AC;
+    padding: 6px 10px;
+}
+
+.btn-rec-2:hover { background: #26A69A; }
