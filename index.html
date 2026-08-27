@@ -97,10 +97,14 @@
                         <button onclick="navegarSemana(0)" class="btn btn-primary">Hoy</button>
                         <button onclick="navegarSemana(1)" class="btn btn-outline">Siguiente →</button>
                         <button onclick="mostrarFormTurno()" class="btn btn-primary" style="background:#4CAF50;">+ Nuevo Turno</button>
+                        <button onclick="abrirPanelRecordatorios(1)" class="btn btn-secondary" style="background:#25D366; color:white;">📲 Recordatorios</button>
                         <button onclick="recuperarTurnosEnFirebase()" class="btn btn-secondary" style="background:#FF9800; color:white;">🔄 Recuperar</button>
                         <button onclick="limpiarDuplicadosTurnos()" class="btn btn-secondary" style="background:#9C27B0; color:white;">🧹 Limpiar duplicados</button>
                     </div>
                 </div>
+                <!-- Aviso de recordatorios de mañana -->
+                <div id="aviso-recordatorios"></div>
+
                 <!-- Turnos de hoy -->
                 <div id="turnos-hoy-section" class="turnos-hoy-section"></div>
 
@@ -125,6 +129,7 @@
                     <div id="calendario-semana"></div>
                 </div>
                 <div id="form-turno-container"></div>
+                <div id="panel-recordatorios-container"></div>
             </section>
 
             <!-- Página de Pacientes -->
@@ -388,6 +393,7 @@
     <script src="js/formularios.js"></script>
     <script src="js/tratamientos.js"></script>
     <script src="js/turnos.js"></script>
+    <script src="js/recordatorios.js"></script>
     <script src="js/chat.js"></script>
     <script src="js/app.js"></script>
 </body>

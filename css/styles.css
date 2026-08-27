@@ -1329,3 +1329,244 @@ body {
     .cal-dia-num { font-size: 14px; }
     .cal-hora-label { font-size: 9px; padding: 2px 3px; }
 }
+
+/* ========== RECORDATORIOS POR WHATSAPP ========== */
+.rec-aviso {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    background: #E8F8EE;
+    border: 1px solid #B7E4C7;
+    border-left: 4px solid #25D366;
+    border-radius: 10px;
+}
+
+.rec-aviso-ok {
+    background: #F3F7F4;
+    border-left-color: #9CCFB0;
+}
+
+.rec-aviso-texto {
+    font-size: 14px;
+    color: #2E5B41;
+}
+
+.rec-aviso-btn {
+    background: #25D366 !important;
+    color: #fff !important;
+    padding: 6px 14px !important;
+    font-size: 13px !important;
+}
+
+.rec-modal {
+    max-width: 560px !important;
+}
+
+.rec-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.rec-nav-btn {
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #666;
+}
+
+.rec-nav-btn:hover { background: #f5f5f5; }
+
+.rec-dia {
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: #1565C0;
+    text-transform: capitalize;
+}
+
+.rec-resumen {
+    font-size: 13px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.rec-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.rec-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 9px 12px;
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+.rec-item-hecho { background: #F1F8F3; border-color: #D6EADD; }
+.rec-item-off   { opacity: 0.5; }
+
+.rec-item-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex: 1;
+    min-width: 0;
+}
+
+.rec-hora {
+    font-weight: bold;
+    font-size: 13px;
+    color: #333;
+    min-width: 44px;
+}
+
+.rec-nombre {
+    font-size: 14px;
+    color: #333;
+}
+
+.rec-tel {
+    font-size: 12px;
+    color: #999;
+}
+
+.rec-item-accion {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-rec {
+    background: #25D366;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-rec:hover { background: #1EBE5A; }
+
+.btn-rec-falta {
+    background: #FF9800;
+}
+
+.btn-rec-falta:hover { background: #F57C00; }
+
+.rec-hecho {
+    font-size: 12px;
+    color: #4CAF50;
+    white-space: nowrap;
+}
+
+.rec-nota {
+    font-size: 12px;
+    color: #aaa;
+    font-style: italic;
+}
+
+.rec-link {
+    background: none;
+    border: none;
+    color: #1565C0;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+}
+
+.rec-link-editar {
+    display: block;
+    margin: 0 auto 10px;
+}
+
+.rec-vacio {
+    font-size: 13px;
+    color: #999;
+    text-align: center;
+    padding: 16px;
+}
+
+.rec-plantilla-editor {
+    background: #FAFAFA;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.rec-plantilla-editor label {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 6px;
+}
+
+.rec-plantilla-editor textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.rec-plantilla-ayuda {
+    font-size: 11px;
+    color: #999;
+    margin: 6px 0 10px;
+}
+
+.rec-plantilla-ayuda code {
+    background: #eee;
+    border-radius: 4px;
+    padding: 1px 5px;
+}
+
+.rec-plantilla-btns {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.rec-plantilla-btns .btn {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+.rec-pie {
+    font-size: 12px;
+    color: #888;
+    text-align: center;
+    line-height: 1.5;
+}
+
+@media (max-width: 480px) {
+    .rec-item { flex-direction: column; align-items: stretch; }
+    .rec-item-accion { justify-content: flex-end; }
+    .rec-aviso { flex-direction: column; align-items: stretch; text-align: center; }
+}

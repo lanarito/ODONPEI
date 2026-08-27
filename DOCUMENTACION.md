@@ -38,7 +38,8 @@ ODONPEI/
 │   ├── odontograma.js      # Canvas modo Paint para dibujar el odontograma
 │   ├── tratamientos.js     # Tratamientos, presupuestos e impresión
 │   ├── turnos.js           # Turnero digital con vista semanal + sync Firebase
-│   └── chat.js             # Chat interno en tiempo real entre estaciones (Firebase)
+│   ├── chat.js             # Chat interno en tiempo real entre estaciones (Firebase)
+│   └── recordatorios.js    # Recordatorios de turnos por WhatsApp (un clic)
 ├── ODONPEI 2.png           # Logo principal (puzzle de dientes coloridos)
 ├── Muela.png               # Imagen de muela (usada en bienvenida y marca de agua)
 └── DOCUMENTACION.md        # Este archivo
@@ -242,6 +243,7 @@ Los turnos se guardan en Firebase con `setDoc` usando el **id local como id del 
 | `ODONPEI_TURNOS` | Array de todos los turnos |
 | `ODONPEI_ATENCIONES` | Objeto `{ 'YYYY-MM': N }` con conteo mensual |
 | `ODONPEI_ESTACION` | Nombre de la estación de este dispositivo (chat interno) |
+| `ODONPEI_PLANTILLA_RECORDATORIO` | Texto del mensaje de recordatorio (copia local; la real vive en Firebase) |
 | `odonpei_usuario` | Usuario logueado (sessionStorage) |
 
 ### Colecciones y documentos Firebase
@@ -251,6 +253,7 @@ Los turnos se guardan en Firebase con `setDoc` usando el **id local como id del 
 | `turnos` (colección) | Misma estructura que localStorage, con `onSnapshot` activo |
 | `config/atenciones` (documento) | Objeto `{ 'YYYY-MM': N }` con contador mensual, con `onSnapshot` activo |
 | `chat` (colección) | Mensajes del chat interno `{ texto, estacion, ts, fecha }`, con `onSnapshot` activo |
+| `config/recordatorio` (documento) | `{ plantilla }` — texto del mensaje de WhatsApp, compartido entre estaciones |
 
 ### Estructura de un paciente
 ```javascript
@@ -288,9 +291,59 @@ Los turnos se guardan en Firebase con `setDoc` usando el **id local como id del 
   duracion: 30 | 60 | 90,             // minutos
   notas: "texto libre",
   estado: "pendiente|confirmado|cancelado|reprogramado|asistio|noasistio",
-  fechaCreacion: "ISO date"
+  fechaCreacion: "ISO date",
+  recordadoEn: "ISO date"             // cuándo se le mandó el recordatorio (vacío = falta)
 }
 ```
+
+---
+
+## Recordatorios por WhatsApp (`js/recordatorios.js`)
+
+Recordatorios de turnos con **un clic**: la app arma la lista del día y abre WhatsApp con el mensaje ya escrito; la doctora solo aprieta enviar.
+
+### Por qué NO es automático
+El sitio es estático (GitHub Pages): **no hay un servidor propio** que se despierte a las 9 de la mañana a mandar mensajes. Para que fuera 100% automático haría falta un cron (GitHub Actions o Firebase Functions) más la API oficial de WhatsApp de Meta (verificación de negocio + plantillas aprobadas) o un servicio pago tipo Twilio. Se decidió no ir por ahí: son ~2 minutos de trabajo por día contra bastante infraestructura y trámite.
+
+Lo que **sí** es automático: saber a quién falta recordar. La marca `recordadoEn` viaja por Firebase, así que si ella recuerda un turno desde la notebook, en la máquina del consultorio ya figura como hecho.
+
+### Cómo se usa
+1. En **Turnos** aparece arriba un aviso verde: *"📲 Mañana: 6 turnos · 4 sin recordar"* → botón **Recordar ahora**
+   (también está el botón **📲 Recordatorios** en la barra de la página, siempre visible)
+2. Se abre el panel con los turnos de mañana (se puede navegar a otros días con ← →)
+3. Cada turno tiene su botón **📲 Recordar** → abre WhatsApp Web (o la app en el celular) con el mensaje escrito
+4. Al usarlo, el turno queda marcado **✅ con la hora**. Si se apretó por error: **deshacer**
+5. Cuando el paciente contesta, se le cambia el estado a 🔵 Confirmado como siempre
+
+También hay un botón **📲 Recordar por WhatsApp** dentro del detalle de cada turno, para avisos sueltos.
+
+### Casos que contempla
+| Situación | Qué hace |
+|-----------|----------|
+| Turno sin celular | Botón naranja **✏️ Cargar celular** que abre la edición del turno |
+| Turno cancelado / asistió / no asistió | Se muestra gris, sin botón (*"no corresponde"*) |
+| Turno que se movió de día u hora | Se le borra `recordadoEn` → vuelve a aparecer como "sin recordar" |
+| Ya recordado | Muestra ✅ y la hora; se puede volver a mandar desde el detalle del turno |
+
+### Formato del celular
+Los celulares se cargan a mano y cada uno los escribe distinto. `normalizarCelular()` los convierte al formato que necesita `wa.me` (solo dígitos, con código de país):
+
+| Se escribe | Se manda a |
+|------------|-----------|
+| `11 1234-5678` | `5491112345678` |
+| `011 15 1234-5678` | `5491112345678` |
+| `+54 9 11 1234 5678` | `5491112345678` |
+| `(0351) 15-234-5678` | `5493512345678` |
+| `+1 555 123 4567` | `15551234567` (otro país: se respeta) |
+
+Saca el `0` de la característica y el `15` del celular. El número final se muestra en el panel para poder controlarlo de un vistazo.
+
+### El mensaje
+Editable desde el panel (**✏️ Editar el mensaje**) y **compartido entre las dos máquinas** (se guarda en `config/recordatorio` de Firebase). Por defecto:
+
+> Hola {nombre}! 😊 Te recordamos tu turno en el consultorio el {dia} a las {hora} hs. Respondé CONFIRMO para confirmarlo. ¡Gracias!
+
+Reemplazos disponibles: `{nombre}` (primer nombre), `{completo}`, `{dia}` (ej: *viernes, 28 de agosto*), `{fecha}` (28/8/2026), `{hora}`.
 
 ---
 
@@ -437,8 +490,9 @@ El guardado usaba `canvas.datosOdontograma` (propiedad inexistente) en lugar de 
 | `v1.2-firebase-estable` | Sync en tiempo real estable, reglas Firebase sin vencimiento, anti-duplicados |
 | `v1.3-chat-estable` | Chat interno entre estaciones (sonido fuerte + voz, apertura automática) |
 | `v1.4-turnos-sync-estable` | Fix sync de turnos: borrar/modificar firme en todos lados, sin resucitar |
+| `v1.5-recordatorios` | Recordatorios de turnos por WhatsApp de un clic |
 
-Para volver a un punto: `git checkout v1.4-turnos-sync-estable`
+Para volver a un punto: `git checkout v1.5-recordatorios`
 
 ### Backups locales
 - `c:\Github repos\ODONPEI_backup_2026-05-21.zip` — v1.0

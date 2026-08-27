@@ -79,12 +79,17 @@ function cargarTurnos() {
                 guardarTurnosStorage(turnosRemotos);
                 renderizarTurnosHoy();
                 renderizarSemana();
+                // Si el panel de recordatorios está abierto, que se actualice solo
+                if (typeof renderPanelRecordatorios === 'function') renderPanelRecordatorios();
             });
         }
     }, 800);
 }
 
 function renderizarTurnosHoy() {
+    // El aviso de recordatorios se refresca junto con los turnos de hoy
+    if (typeof renderizarAvisoRecordatorios === 'function') renderizarAvisoRecordatorios();
+
     const section = document.getElementById('turnos-hoy-section');
     if (!section) return;
     const hoy = fechaStr(new Date());
@@ -276,10 +281,16 @@ function guardarTurno(event) {
         const turnos = obtenerTurnos();
         const t = turnos.find(t => t.id === idEdicion);
         if (t) {
+            const nuevaFecha = document.getElementById('turno-fecha').value;
+            const nuevaHora  = document.getElementById('turno-hora').value;
+            // Si se movió el turno, el recordatorio que se mandó ya no sirve:
+            // hay que volver a avisarle al paciente el día/hora nuevo.
+            if (t.recordadoEn && (nuevaFecha !== t.fecha || nuevaHora !== t.hora)) t.recordadoEn = '';
+
             t.pacienteNombre = document.getElementById('turno-nombre').value.trim();
             t.celular        = document.getElementById('turno-celular').value.trim();
-            t.fecha          = document.getElementById('turno-fecha').value;
-            t.hora           = document.getElementById('turno-hora').value;
+            t.fecha          = nuevaFecha;
+            t.hora           = nuevaHora;
             t.duracion       = parseInt(document.getElementById('turno-duracion').value);
             t.notas          = document.getElementById('turno-notas').value.trim();
             guardarTurnosStorage(turnos);
@@ -410,6 +421,12 @@ function verTurno(id) {
                     </select>
                 </div>
                 <div style="margin-top:20px; display:flex; flex-direction:column; gap:8px;">
+                    ${turno.celular ? `
+                    <button onclick="recordarTurno('${turno.id}'); verTurno('${turno.id}')" class="btn" style="background:#25D366; color:white; width:100%;">
+                        ${turno.recordadoEn ? '📲 Volver a recordar por WhatsApp' : '📲 Recordar por WhatsApp'}
+                    </button>
+                    ${turno.recordadoEn ? `<div style="font-size:12px; color:#4CAF50; text-align:center; margin-top:-2px;">✅ Recordado el ${new Date(turno.recordadoEn).toLocaleString('es-AR', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })}</div>` : ''}
+                    ` : ''}
                     <div style="display:flex; gap:8px;">
                         <button onclick="editarTurno('${turno.id}')" class="btn btn-secondary" style="flex:1;">✏️ Modificar</button>
                         <button onclick="guardarEstadoTurno('${turno.id}')" class="btn btn-primary" style="flex:1;">Guardar</button>

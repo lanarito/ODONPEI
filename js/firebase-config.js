@@ -208,6 +208,23 @@ function escucharContadorEnFirestore(callback) {
   });
 }
 
+// ========== PLANTILLA DE RECORDATORIOS ==========
+// Se guarda en la nube para que las dos estaciones manden el mismo mensaje
+
+async function guardarPlantillaEnFirestore(texto) {
+  try {
+    await setDoc(doc(db, "config", "recordatorio"), { plantilla: texto });
+    return true;
+  } catch (e) { console.warn('Firebase plantilla guardar:', e); return false; }
+}
+
+async function obtenerPlantillaDesdeFirestore() {
+  try {
+    const snap = await getDoc(doc(db, "config", "recordatorio"));
+    return snap.exists() ? (snap.data().plantilla || '') : '';
+  } catch (e) { console.warn('Firebase plantilla obtener:', e); return ''; }
+}
+
 // Exponer funciones al scope global para que storage.js pueda usarlas
 window.guardarEnFirestore             = guardarEnFirestore;
 window.obtenerDesdePacientesFirestore = obtenerDesdePacientesFirestore;
@@ -226,3 +243,5 @@ window.enviarMensajeFirestore         = enviarMensajeFirestore;
 window.escucharChatEnTiempoReal       = escucharChatEnTiempoReal;
 window.eliminarMensajeFirestore       = eliminarMensajeFirestore;
 window.vaciarChatFirestore            = vaciarChatFirestore;
+window.guardarPlantillaEnFirestore    = guardarPlantillaEnFirestore;
+window.obtenerPlantillaDesdeFirestore = obtenerPlantillaDesdeFirestore;
