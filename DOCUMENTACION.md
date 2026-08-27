@@ -233,6 +233,7 @@ También se usa **un único listener** de turnos (antes se apilaba uno nuevo por
 Los turnos se guardan en Firebase con `setDoc` usando el **id local como id del documento** (`setDoc(doc(db,"turnos", turno.id), turno)`). Así, guardar el mismo turno muchas veces **sobreescribe el mismo documento** en lugar de crear copias. Por lo mismo, **borrar** usa ese id como id de documento, garantizando que el borrado se propague.
 
 ### Botones de mantenimiento (página Turnos)
+- **📞 Unificar celulares** — deja todos los teléfonos en el mismo formato (ver sección de Recordatorios)
 - **🔄 Recuperar** — sube a Firebase todos los turnos que estén en el dispositivo actual. Útil si un dispositivo tiene turnos locales que no llegaron a la nube. ⚠️ **Usar con cuidado:** al re-subir todo, puede revivir turnos borrados en otros dispositivos. Usar solo como recuperación manual e intencional.
 - **🧹 Limpiar duplicados** — deja un solo turno de cada uno y elimina los duplicados de Firebase. Hacerlo en UN solo dispositivo con los demás cerrados.
 
@@ -326,17 +327,37 @@ También hay un botón **📲 Recordar por WhatsApp** dentro del detalle de cada
 | Ya recordado | Muestra ✅ y la hora; se puede volver a mandar desde el detalle del turno |
 
 ### Formato del celular
-Los celulares se cargan a mano y cada uno los escribe distinto. `normalizarCelular()` los convierte al formato que necesita `wa.me` (solo dígitos, con código de país):
+Los celulares se cargan a mano y cada uno los escribe distinto. Hay dos funciones:
+`formatearCelular()` los deja legibles para guardarlos y mostrarlos en pantalla, y `normalizarCelular()` los convierte a lo que necesita `wa.me` (solo dígitos, con código de país) al momento de abrir WhatsApp.
 
-| Se escribe | Se manda a |
-|------------|-----------|
-| `11 1234-5678` | `5491112345678` |
-| `011 15 1234-5678` | `5491112345678` |
-| `+54 9 11 1234 5678` | `5491112345678` |
-| `(0351) 15-234-5678` | `5493512345678` |
-| `+1 555 123 4567` | `15551234567` (otro país: se respeta) |
+| Se escribe | Se guarda como | Se manda a |
+|------------|----------------|-----------|
+| `11 1234-5678` | `+54 9 11 1234-5678` | `5491112345678` |
+| `011 15 1234-5678` | `+54 9 11 1234-5678` | `5491112345678` |
+| `+54 9 11 1234 5678` | `+54 9 11 1234-5678` | `5491112345678` |
+| `(0351) 15-234-5678` | `+54 9 351 234-5678` | `5493512345678` |
+| `+1 555 123 4567` | `+15551234567` | `15551234567` (otro país: se respeta) |
 
 Saca el `0` de la característica y el `15` del celular. El número final se muestra en el panel para poder controlarlo de un vistazo.
+
+### Unificar celulares ya cargados (botón 📞 en Turnos)
+
+Deja **todos** los teléfonos guardados en el mismo formato: `+54 9 11 1234-5678`. Recorre los turnos (`celular`) y los pacientes (`datosPersonales.telefono`).
+
+1. Primero muestra una **vista previa** de qué va a cambiar: `11 1234-5678` → `+54 9 11 1234-5678`
+2. Separa en tres grupos: **se corrigen**, **hay que revisarlos a mano**, **ya están bien**
+3. Recién con el botón **✅ Unificar** escribe en localStorage y Firebase
+
+Guarda el número viejo en `celularOriginal` / `telefonoOriginal` por las dudas.
+
+**Casos que NO toca** (los marca en naranja para revisar a mano):
+- Faltan dígitos (ej: `1234-5678` sin característica)
+- Dos números en el mismo campo (`11 5555-1111 / 11 6666-2222`)
+- Dígitos de más
+
+**Pacientes sin `firebaseId`** (que todavía no subieron a la nube) se corrigen solo en ese dispositivo y el aviso final lo aclara. No se mandan a Firebase como nuevos porque `actualizarEnFirestore()` los crearía duplicados.
+
+De acá en adelante el problema no vuelve: al guardar un turno o un paciente, el teléfono ya se guarda unificado (`unificarSiSePuede()` en `js/turnos.js` y `js/app.js`).
 
 ### El mensaje
 Editable desde el panel (**✏️ Editar el mensaje**) y **compartido entre las dos máquinas** (se guarda en `config/recordatorio` de Firebase). Por defecto:
@@ -491,8 +512,9 @@ El guardado usaba `canvas.datosOdontograma` (propiedad inexistente) en lugar de 
 | `v1.3-chat-estable` | Chat interno entre estaciones (sonido fuerte + voz, apertura automática) |
 | `v1.4-turnos-sync-estable` | Fix sync de turnos: borrar/modificar firme en todos lados, sin resucitar |
 | `v1.5-recordatorios` | Recordatorios de turnos por WhatsApp de un clic |
+| `v1.6-celulares-unificados` | Todos los teléfonos en un formato único + unificador de los ya cargados |
 
-Para volver a un punto: `git checkout v1.5-recordatorios`
+Para volver a un punto: `git checkout v1.6-celulares-unificados`
 
 ### Backups locales
 - `c:\Github repos\ODONPEI_backup_2026-05-21.zip` — v1.0

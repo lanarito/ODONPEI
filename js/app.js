@@ -508,7 +508,7 @@ function guardarPaciente() {
                 fechaNacimiento: document.getElementById('campo-fechaNacimiento')?.value || '',
                 domicilio: document.getElementById('campo-domicilio')?.value || '',
                 nombrePadre: document.getElementById('campo-nombrePadre')?.value || '',
-                telefono: document.getElementById('campo-telefono')?.value || '',
+                telefono: unificarSiSePuede(document.getElementById('campo-telefono')?.value || ''),
                 obraSocial: document.getElementById('campo-obraSocial')?.value || '',
                 nAfiliado: document.getElementById('campo-nAfiliado')?.value || '',
                 dni: document.getElementById('campo-dni')?.value || ''

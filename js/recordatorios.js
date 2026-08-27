@@ -75,6 +75,71 @@ function limpiarLocalAR(n) {
     return n;
 }
 
+// ---------- Formato único para mostrar y guardar ----------
+// Todos los números terminan guardados igual: +54 9 11 1234-5678
+// Se sigue guardando "lindo" (con espacios) porque se muestra en pantalla;
+// normalizarCelular() lo vuelve a convertir a dígitos cuando se abre WhatsApp.
+
+// Características de 3 dígitos más usadas (el resto se asume de 4; 11 es de 2)
+const AREAS_3_DIGITOS = new Set([
+    '220','221','223','230','236','237','249','260','261','263','264','266',
+    '280','291','297','299','341','342','343','345','348','351','353','358',
+    '362','364','370','376','379','380','381','383','385','387','388'
+]);
+
+function formatearCelular(digitos) {
+    if (!digitos) return '';
+    if (!digitos.startsWith('549')) return '+' + digitos;   // otro país: se deja como está
+    const n = digitos.slice(3);
+    let largoArea = 4;
+    if (n.startsWith('11')) largoArea = 2;
+    else if (AREAS_3_DIGITOS.has(n.slice(0, 3))) largoArea = 3;
+    const area = n.slice(0, largoArea);
+    const resto = n.slice(largoArea);
+    const abonado = resto.length > 4 ? resto.slice(0, resto.length - 4) + '-' + resto.slice(-4) : resto;
+    return '+54 9 ' + area + ' ' + abonado;
+}
+
+// Revisa un número cargado a mano y dice qué hacer con él.
+// estado: 'vacio' | 'ok' | 'corregir' | 'revisar'
+function analizarCelular(raw) {
+    const texto = String(raw || '').trim();
+    if (!texto) return { estado: 'vacio', valor: '', motivo: '' };
+
+    // Más de un número en el mismo campo ("11 1234-5678 / 11 8765-4321")
+    if (/[\/;,]| o /i.test(texto) && (texto.replace(/\D/g, '').length > 12)) {
+        return { estado: 'revisar', valor: texto, motivo: 'parece tener más de un número' };
+    }
+
+    const digitos = normalizarCelular(texto);
+    if (!digitos) return { estado: 'revisar', valor: texto, motivo: 'no tiene números' };
+
+    if (digitos.startsWith('549')) {
+        const resto = digitos.slice(3);
+        if (resto.length !== 10) {
+            return {
+                estado: 'revisar', valor: texto,
+                motivo: resto.length < 10 ? 'faltan dígitos (¿sin característica?)' : 'tiene dígitos de más'
+            };
+        }
+    } else if (digitos.length < 8) {
+        return { estado: 'revisar', valor: texto, motivo: 'demasiado corto' };
+    }
+
+    const unificado = formatearCelular(digitos);
+    return {
+        estado: unificado === texto ? 'ok' : 'corregir',
+        valor: unificado,
+        motivo: ''
+    };
+}
+
+// Deja el número en formato único si se puede; si es dudoso lo devuelve tal cual
+function unificarSiSePuede(raw) {
+    const a = analizarCelular(raw);
+    return (a.estado === 'corregir' || a.estado === 'ok') ? a.valor : String(raw || '').trim();
+}
+
 // ---------- Fechas ----------
 function fechaDeOffset(off) {
     const d = new Date();
@@ -275,6 +340,162 @@ function renderPanelRecordatorios() {
                 </div>
             </div>
         </div>`;
+}
+
+// ========== UNIFICAR CELULARES YA CARGADOS ==========
+// Pasa por todos los turnos y pacientes y deja todos los números en el mismo
+// formato. Primero muestra qué va a cambiar; recién con "Unificar" escribe.
+
+let unificarPendientes = [];   // lo que se va a cambiar, calculado en el relevamiento
+
+function relevarCelulares() {
+    const filas = [];
+
+    obtenerTurnos().forEach(t => {
+        const a = analizarCelular(t.celular);
+        if (a.estado === 'vacio') return;
+        filas.push({
+            tipo: 'Turno', id: t.id,
+            nombre: t.pacienteNombre,
+            detalle: new Date(t.fecha + 'T12:00:00').toLocaleDateString('es-AR') + ' ' + t.hora,
+            actual: String(t.celular || '').trim(),
+            nuevo: a.valor, estado: a.estado, motivo: a.motivo
+        });
+    });
+
+    if (typeof obtenerTodos === 'function') {
+        obtenerTodos().forEach(p => {
+            const tel = p.datosPersonales?.telefono;
+            const a = analizarCelular(tel);
+            if (a.estado === 'vacio') return;
+            filas.push({
+                tipo: 'Paciente', id: p.id,
+                nombre: p.datosPersonales?.nombre || '(sin nombre)',
+                detalle: p.firebaseId ? '' : 'solo en este dispositivo',
+                actual: String(tel || '').trim(),
+                nuevo: a.valor, estado: a.estado, motivo: a.motivo,
+                sinFirebase: !p.firebaseId
+            });
+        });
+    }
+
+    return filas;
+}
+
+function abrirUnificarCelulares() {
+    const filas = relevarCelulares();
+    unificarPendientes = filas.filter(f => f.estado === 'corregir');
+    const ok      = filas.filter(f => f.estado === 'ok');
+    const revisar = filas.filter(f => f.estado === 'revisar');
+
+    const cont = document.getElementById('panel-recordatorios-container');
+    if (!cont) return;
+
+    const filaHTML = f => `
+        <div class="uni-fila uni-${f.estado}">
+            <div class="uni-quien">
+                <span class="uni-tipo">${f.tipo}</span>
+                <span class="uni-nombre">${f.nombre}</span>
+                ${f.detalle ? `<span class="uni-detalle">${f.detalle}</span>` : ''}
+            </div>
+            <div class="uni-numeros">
+                <span class="uni-antes">${f.actual}</span>
+                ${f.estado === 'corregir' ? `<span class="uni-flecha">→</span><span class="uni-despues">${f.nuevo}</span>` : ''}
+                ${f.estado === 'revisar' ? `<span class="uni-motivo">⚠️ ${f.motivo}</span>` : ''}
+            </div>
+        </div>`;
+
+    let cuerpo = '';
+    if (unificarPendientes.length) {
+        cuerpo += `<div class="uni-titulo">Se van a corregir (${unificarPendientes.length})</div>
+                   <div class="uni-lista">${unificarPendientes.map(filaHTML).join('')}</div>`;
+    }
+    if (revisar.length) {
+        cuerpo += `<div class="uni-titulo uni-titulo-warn">Hay que revisarlos a mano (${revisar.length})</div>
+                   <div class="uni-lista">${revisar.map(filaHTML).join('')}</div>
+                   <div class="uni-nota">Estos no se tocan. Abrí el turno o el paciente y corregí el número.</div>`;
+    }
+    if (ok.length) {
+        cuerpo += `<div class="uni-titulo uni-titulo-ok">Ya están bien (${ok.length})</div>`;
+    }
+    if (!cuerpo) {
+        cuerpo = `<div class="rec-vacio">No hay teléfonos cargados todavía.</div>`;
+    }
+
+    recordPanelAbierto = false;   // este panel reemplaza al de recordatorios
+    cont.innerHTML = `
+        <div class="modal-overlay" onclick="cerrarPanelRecordatorios()">
+            <div class="modal-content rec-modal" onclick="event.stopPropagation()">
+                <h3 style="margin-bottom:6px; color:#333;">📞 Unificar celulares</h3>
+                <p class="uni-intro">
+                    Deja todos los números en el mismo formato
+                    (<strong>+54 9 11 1234-5678</strong>) para que WhatsApp funcione siempre.
+                </p>
+                ${cuerpo}
+                <div class="form-actions" style="margin-top:16px; display:flex; gap:8px;">
+                    <button class="btn btn-outline" onclick="cerrarPanelRecordatorios()" style="flex:1;">Cancelar</button>
+                    <button class="btn btn-primary" onclick="aplicarUnificacionCelulares()" style="flex:1;"
+                        ${unificarPendientes.length ? '' : 'disabled'}>
+                        ✅ Unificar ${unificarPendientes.length || ''}
+                    </button>
+                </div>
+            </div>
+        </div>`;
+}
+
+async function aplicarUnificacionCelulares() {
+    if (!unificarPendientes.length) return;
+
+    const turnosACambiar    = unificarPendientes.filter(f => f.tipo === 'Turno');
+    const pacientesACambiar = unificarPendientes.filter(f => f.tipo === 'Paciente');
+    let soloLocales = 0;
+
+    // --- Turnos ---
+    if (turnosACambiar.length) {
+        const turnos = obtenerTurnos();
+        const tocados = [];
+        turnosACambiar.forEach(f => {
+            const t = turnos.find(x => x.id === f.id);
+            if (!t) return;
+            t.celularOriginal = t.celular;   // por las dudas, se guarda lo que estaba
+            t.celular = f.nuevo;
+            tocados.push(t);
+        });
+        guardarTurnosStorage(turnos);
+        if (typeof actualizarTurnoEnFirestore === 'function') {
+            for (const t of tocados) await actualizarTurnoEnFirestore(t);
+        }
+    }
+
+    // --- Pacientes ---
+    if (pacientesACambiar.length && typeof obtenerTodos === 'function') {
+        const pacientes = obtenerTodos();
+        const tocados = [];
+        pacientesACambiar.forEach(f => {
+            const p = pacientes.find(x => x.id === f.id);
+            if (!p || !p.datosPersonales) return;
+            p.datosPersonales.telefonoOriginal = p.datosPersonales.telefono;
+            p.datosPersonales.telefono = f.nuevo;
+            if (p.firebaseId) tocados.push(p); else soloLocales++;
+        });
+        localStorage.setItem('ODONPEI_PACIENTES', JSON.stringify(pacientes));
+        if (typeof actualizarEnFirestore === 'function') {
+            // Solo los que ya existen en la nube: los que no tienen firebaseId
+            // se duplicarían si los mandáramos como nuevos.
+            for (const p of tocados) await actualizarEnFirestore(p);
+        }
+    }
+
+    cerrarPanelRecordatorios();
+    renderizarTurnosHoy();
+    renderizarSemana();
+
+    alert(
+        `✅ ${unificarPendientes.length} número(s) unificado(s).\n` +
+        `${turnosACambiar.length} en turnos · ${pacientesACambiar.length} en pacientes.` +
+        (soloLocales ? `\n\n⚠️ ${soloLocales} paciente(s) se corrigieron solo en este dispositivo (todavía no están en la nube).` : '')
+    );
+    unificarPendientes = [];
 }
 
 // ---------- Aviso en la página de Turnos ----------

@@ -288,7 +288,7 @@ function guardarTurno(event) {
             if (t.recordadoEn && (nuevaFecha !== t.fecha || nuevaHora !== t.hora)) t.recordadoEn = '';
 
             t.pacienteNombre = document.getElementById('turno-nombre').value.trim();
-            t.celular        = document.getElementById('turno-celular').value.trim();
+            t.celular        = unificarSiSePuede(document.getElementById('turno-celular').value);
             t.fecha          = nuevaFecha;
             t.hora           = nuevaHora;
             t.duracion       = parseInt(document.getElementById('turno-duracion').value);
@@ -310,7 +310,7 @@ function guardarTurno(event) {
         const turno = {
             id: Date.now().toString(),
             pacienteNombre: document.getElementById('turno-nombre').value.trim(),
-            celular: document.getElementById('turno-celular').value.trim(),
+            celular: unificarSiSePuede(document.getElementById('turno-celular').value),
             fecha: document.getElementById('turno-fecha').value,
             hora: document.getElementById('turno-hora').value,
             duracion: parseInt(document.getElementById('turno-duracion').value),
