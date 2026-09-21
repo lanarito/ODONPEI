@@ -678,9 +678,36 @@ Un mismo paciente puede tener 5, 10 o los turnos que sean, y no son duplicados. 
 
 ## Cómo Hacer Deploy
 
-Cualquier `git push` a la rama `main` actualiza automáticamente el sitio en GitHub Pages.  
-El sitio tarda **2-3 minutos** en reflejar los cambios.  
-Para ver los cambios sin caché: **Ctrl+Shift+R** en el navegador.
+Cualquier `git push` a la rama `main` actualiza automáticamente el sitio en GitHub Pages.
+
+**El deploy no es instantáneo.** GitHub encola una compilación y tarda **2 a 5 minutos**. Si se prueba antes de que termine, se ve la versión vieja y parece que el cambio no se aplicó. Para saber si ya está publicado, sin depender del navegador:
+
+```bash
+curl -s https://lanarito.github.io/ODONPEI/js/turnos.js | grep -c nombreDeLaFuncionNueva
+```
+
+O mirar el estado del último deploy (`in_progress` = todavía está subiendo):
+
+```bash
+curl -s "https://api.github.com/repos/lanarito/ODONPEI/deployments?per_page=1"
+```
+
+### Caché: por qué el cambio no aparece aunque ya esté publicado
+
+GitHub Pages manda los archivos con `Cache-Control: max-age=600`, así que el navegador se guarda `styles.css` y los `.js` por **10 minutos como mínimo** — en tablets y celulares, bastante más. Por eso pasaba que en una máquina se veía el cambio y en la tablet no.
+
+**Solución permanente:** los archivos se cargan con una versión pegada en la URL (*cache busting*):
+
+```html
+<link rel="stylesheet" href="css/styles.css?v=2.2">
+<script src="js/turnos.js?v=2.2"></script>
+```
+
+Al cambiar el número, para el navegador es una dirección distinta y la baja de nuevo sin importar el caché.
+
+> ⚠️ **Al tocar cualquier `.css` o `.js` hay que SUBIR ese número en todas las líneas de `index.html`.** Si no se sube, los dispositivos siguen con la versión vieja y parece que el cambio no funcionó.
+
+`index.html` igual se cachea hasta 10 minutos, así que la primera vez puede hacer falta **Ctrl+Shift+R** (en la tablet: cerrar y reabrir el navegador). De ahí en más, cada cambio entra solo.
 
 ---
 
