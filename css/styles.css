@@ -960,7 +960,7 @@ body {
 .hoy-hora {
     font-weight: bold;
     font-size: 13px;
-    min-width: 80px;
+    min-width: 108px;
 }
 
 .hoy-nombre {
@@ -1698,3 +1698,14 @@ body {
 }
 
 .uni-despues small { font-weight: normal; color: #777; }
+
+/* Franjas que siguen ocupadas por un turno de 1 hora o más:
+   mismo color que el turno, un poco más apagadas, para ver dónde arranca */
+.cal-turno-sigue {
+    opacity: 0.75;
+    border-left: 3px dashed rgba(0, 0, 0, 0.18);
+}
+
+.cal-turno-sigue .cal-turno-badge {
+    opacity: 0.7;
+}

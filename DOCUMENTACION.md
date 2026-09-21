@@ -96,6 +96,21 @@ Los tres elementos son transparentes (sin fondo), integrados al degradado del na
 - Campos: **Nombre** (libre, sin requerir paciente existente), **Celular**, Fecha, Hora, Duración, Notas
 - El nombre se ve directamente en la celda del calendario
 
+#### Turnos de más de media hora
+La grilla es de franjas de 30 minutos, pero un turno **ocupa todas las franjas que le corresponden por su duración**:
+
+| Duración | Casillas que marca | Ejemplo desde las 16:00 |
+|----------|--------------------|--------------------------|
+| 30 min | 1 | 16:00 |
+| 1 hora | 2 | 16:00 y 16:30 |
+| 1 hora 30 | 3 | 16:00, 16:30 y 17:00 |
+
+La franja donde **arranca** el turno lleva la letra del estado (P, C, X…); las que siguen llevan una **flecha ↓** y se ven un poco más apagadas, para saber de un vistazo dónde empieza. Se puede hacer click en cualquiera de ellas: todas abren el mismo turno.
+
+> **Por qué importa:** antes solo se pintaba la primera franja. Un turno de 1 hora a las 16:00 dejaba las 16:30 aparentemente libre, y la administrativa podía sobreturnar ese horario.
+
+Las funciones están en `js/turnos.js`: `franjasQueOcupa()`, `horaFinTurno()` y `mapearOcupacion()`. Los turnos viejos sin el campo `duracion` se toman como de 30 minutos.
+
 #### Estados de turno (selector al hacer click en el turno)
 | Letra | Estado | Color |
 |-------|--------|-------|
@@ -164,7 +179,7 @@ El odontograma se guarda como imagen PNG (base64) junto con el paciente.
 
 ### 3b. Turnos — Funciones adicionales
 
-**Turnos de hoy** — al abrir la sección Turnos aparece automáticamente arriba una lista con todos los turnos del día actual: hora, nombre, celular y estado. Si no hay turnos dice "Sin turnos para hoy". Se actualiza cuando se cambia el estado de un turno.
+**Turnos de hoy** — al abrir la sección Turnos aparece automáticamente arriba una lista con todos los turnos del día actual: horario completo (**16:00 a 17:00**), nombre, celular y estado. Si no hay turnos dice "Sin turnos para hoy". Se actualiza cuando se cambia el estado de un turno.
 
 **Buscador de turnos** — campo de texto encima del calendario. Al escribir un nombre muestra todos los turnos de esa persona en cualquier fecha, ordenados cronológicamente. Útil para ver el historial de visitas de un paciente tentativo o existente.
 

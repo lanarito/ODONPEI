@@ -122,7 +122,7 @@ function renderizarTurnosHoy() {
         <div class="hoy-lista">
             ${turnos.map(t => `
                 <div class="hoy-turno estado-${t.estado}" onclick="verTurno('${t.id}')">
-                    <span class="hoy-hora">${t.hora}</span>
+                    <span class="hoy-hora">${t.hora} a ${horaFinTurno(t)}</span>
                     <span class="hoy-nombre">${t.pacienteNombre}</span>
                     ${t.celular ? `<span class="hoy-cel">📱 ${t.celular}</span>` : ''}
                     <span class="cal-turno-badge">${ESTADO_LETRA[t.estado] || 'P'}</span>
@@ -166,6 +166,36 @@ function navegarSemana(dir) {
     renderizarSemana();
 }
 
+// ---------- Duración: un turno ocupa varias franjas de media hora ----------
+// Un turno de 1 hora a las 16:00 ocupa la casilla de las 16:00 Y la de las 16:30.
+// Si solo se pinta la primera, la de las 16:30 se ve libre y confunde.
+
+function franjasQueOcupa(turno) {
+    return Math.max(1, Math.ceil((parseInt(turno.duracion) || 30) / 30));
+}
+
+function horaFinTurno(turno) {
+    const [h, m] = String(turno.hora || '00:00').split(':').map(Number);
+    const total = h * 60 + m + (parseInt(turno.duracion) || 30);
+    return String(Math.floor(total / 60) % 24).padStart(2, '0') + ':' +
+           String(total % 60).padStart(2, '0');
+}
+
+// Devuelve { 'fecha|hora': [{ turno, inicio }] } con TODAS las franjas ocupadas
+function mapearOcupacion(turnos, horas) {
+    const ocupacion = {};
+    turnos.forEach(t => {
+        const desde = horas.indexOf(t.hora);
+        if (desde === -1) return;                      // horario fuera de la grilla
+        const franjas = franjasQueOcupa(t);
+        for (let k = 0; k < franjas && desde + k < horas.length; k++) {
+            const clave = t.fecha + '|' + horas[desde + k];
+            (ocupacion[clave] = ocupacion[clave] || []).push({ turno: t, inicio: k === 0 });
+        }
+    });
+    return ocupacion;
+}
+
 function renderizarSemana() {
     const lunes = getLunesDeSemana(semanaOffset);
     const dias = Array.from({ length: 6 }, (_, i) => {
@@ -204,19 +234,24 @@ function renderizarSemana() {
         </div>`;
     });
 
+    // Todas las franjas que ocupa cada turno según su duración
+    const ocupacion = mapearOcupacion(turnos, horas);
+    const ESTADO_LETRA = { pendiente:'P', confirmado:'C', cancelado:'X', reprogramado:'R', asistio:'A', noasistio:'NA' };
+
     // Filas horarias
     horas.forEach(hora => {
         const esMediaHora = hora.endsWith(':30');
         html += `<div class="cal-hora-label${esMediaHora ? ' cal-media-hora' : ''}">${hora}</div>`;
         dias.forEach(d => {
             const fStr = fechaStr(d);
-            const slot = turnos.filter(t => t.fecha === fStr && t.hora === hora);
+            const slot = ocupacion[fStr + '|' + hora] || [];
             html += `<div class="cal-celda${esMediaHora ? ' cal-celda-media' : ''}" onclick="mostrarFormTurno('${fStr}','${hora}')">`;
-            const ESTADO_LETRA = { pendiente:'P', confirmado:'C', cancelado:'X', reprogramado:'R', asistio:'A', noasistio:'NA' };
-            slot.forEach(t => {
+            slot.forEach(({ turno: t, inicio }) => {
                 const letra = ESTADO_LETRA[t.estado] || 'P';
-                html += `<div class="cal-turno estado-${t.estado}" onclick="event.stopPropagation();verTurno('${t.id}')">
-                    <span class="cal-turno-badge">${letra}</span> ${t.pacienteNombre}
+                // La franja donde empieza lleva la letra del estado; las que siguen
+                // llevan una flecha, para ver de un vistazo dónde arranca el turno
+                html += `<div class="cal-turno estado-${t.estado}${inicio ? '' : ' cal-turno-sigue'}" onclick="event.stopPropagation();verTurno('${t.id}')" title="${t.pacienteNombre} · ${t.hora} a ${horaFinTurno(t)}">
+                    <span class="cal-turno-badge">${inicio ? letra : '↓'}</span> ${t.pacienteNombre}
                 </div>`;
             });
             html += '</div>';
@@ -435,7 +470,7 @@ function verTurno(id) {
             <div class="modal-content" onclick="event.stopPropagation()">
                 <h3 style="margin-bottom:16px; color:#333;">${turno.pacienteNombre}</h3>
                 <p style="margin-bottom:8px;">📅 <strong>${fechaLegible}</strong></p>
-                <p style="margin-bottom:8px;">🕐 ${turno.hora} · ${turno.duracion} min</p>
+                <p style="margin-bottom:8px;">🕐 ${turno.hora} a ${horaFinTurno(turno)} · ${turno.duracion} min</p>
                 ${turno.celular ? `<p style="margin-bottom:8px;">📱 ${turno.celular}</p>` : ''}
                 ${turno.celular2 ? `<p style="margin-bottom:8px;">📱 ${turno.celular2} <span style="color:#999; font-size:12px;">(2º)</span></p>` : ''}
                 ${turno.notas ? `<p style="margin-bottom:12px;">📝 ${turno.notas}</p>` : ''}
