@@ -692,6 +692,21 @@ O mirar el estado del último deploy (`in_progress` = todavía está subiendo):
 curl -s "https://api.github.com/repos/lanarito/ODONPEI/deployments?per_page=1"
 ```
 
+### `.nojekyll`: por qué está ese archivo vacío en la raíz
+
+GitHub Pages, por defecto, compila el sitio con **Jekyll** (un generador pensado para blogs). ODONPEI no lo necesita: es HTML, CSS y JS planos. Esa compilación de más puede **fallar** y dejar el sitio publicado con la versión anterior, sin ningún aviso visible: en la web todo sigue andando, pero con el código viejo.
+
+Pasó el 21/09/2026: un deploy quedó en estado `error` y durante un rato pareció que un arreglo "no funcionaba", cuando en realidad nunca se había publicado.
+
+El archivo vacío **`.nojekyll`** en la raíz le dice a GitHub que no compile nada y publique los archivos tal cual. Es más rápido y no se puede romper. **No borrarlo.**
+
+Para ver si un deploy salió bien o falló:
+
+```bash
+curl -s "https://api.github.com/repos/lanarito/ODONPEI/deployments?per_page=1"
+```
+Y con el `statuses_url` que devuelve, el estado: `success`, `in_progress` o `error`.
+
 ### Caché: por qué el cambio no aparece aunque ya esté publicado
 
 GitHub Pages manda los archivos con `Cache-Control: max-age=600`, así que el navegador se guarda `styles.css` y los `.js` por **10 minutos como mínimo** — en tablets y celulares, bastante más. Por eso pasaba que en una máquina se veía el cambio y en la tablet no.
