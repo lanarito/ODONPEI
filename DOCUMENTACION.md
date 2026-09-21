@@ -596,9 +596,10 @@ El guardado usaba `canvas.datosOdontograma` (propiedad inexistente) en lugar de 
 | `v1.8-pacientes-sin-duplicados` | Pacientes idempotentes en Firebase + limpiador de duplicados |
 | `v1.9-mantenimiento-automatico` | Sin botones de mantenimiento: deduplicar y unificar corren solos al cargar |
 | `v2.0-recordatorios-whatsapp` | Recordatorios por WhatsApp, teléfonos unificados y base sin duplicados |
-| `v2.1-sin-botones-de-mantenimiento` | Cierre: ningún botón de mantenimiento, todo corre solo |
+| `v2.1-sin-botones-de-mantenimiento` | Ningún botón de mantenimiento, todo corre solo |
+| `v2.2-turnos-por-duracion` | Turnos de 1 hora o más marcan todas sus casillas + `.nojekyll` y cache busting |
 
-Para volver a un punto: `git checkout v2.1-sin-botones-de-mantenimiento`
+Para volver a un punto: `git checkout v2.2-turnos-por-duracion`
 
 ### Backups locales
 - `c:\Github repos\ODONPEI_backup_2026-05-21.zip` — v1.0
@@ -607,6 +608,7 @@ Para volver a un punto: `git checkout v2.1-sin-botones-de-mantenimiento`
 - `c:\Github repos\ODONPEI_backup_2026-07-03_v1.3.zip` — v1.3 (Chat interno)
 - `c:\Github repos\ODONPEI_backup_2026-07-07_v1.4.zip` — v1.4 (Fix sync turnos)
 - `c:\Github repos\ODONPEI_backup_2026-08-27_v2.1.zip` — v2.1 (Recordatorios WhatsApp + teléfonos unificados + fix duplicados + mantenimiento automático)
+- `c:\Github repos\ODONPEI_backup_2026-09-21_v2.2.zip` — v2.2 (Turnos por duración + fix del deploy de Pages)
 
 ### Backup de la base en la nube
 - `c:\Github repos\ODONPEI_backup_firebase_2026-08-27.json` (9,4 MB) — copia cruda de Firestore (303 documentos de `pacientes` + 248 de `turnos`) tomada **antes** de la deduplicación automática.
