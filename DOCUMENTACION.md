@@ -39,7 +39,8 @@ ODONPEI/
 │   ├── tratamientos.js     # Tratamientos, presupuestos e impresión
 │   ├── turnos.js           # Turnero digital con vista semanal + sync Firebase
 │   ├── chat.js             # Chat interno en tiempo real entre estaciones (Firebase)
-│   └── recordatorios.js    # Recordatorios de turnos por WhatsApp (un clic)
+│   ├── recordatorios.js    # Recordatorios de turnos por WhatsApp (un clic)
+│   └── caja.js             # Comprobantes de pago (página Caja)
 ├── ODONPEI 2.png           # Logo principal (puzzle de dientes coloridos)
 ├── Muela.png               # Imagen de muela (usada en bienvenida y marca de agua)
 └── DOCUMENTACION.md        # Este archivo
@@ -67,7 +68,7 @@ Estructura de izquierda a derecha:
 
 Los tres elementos son transparentes (sin fondo), integrados al degradado del navbar.
 
-**Navegación:** Inicio | Pacientes | Turnos | Nuevo Paciente | ODONPEI (usuario) | Salir
+**Navegación:** Inicio | Pacientes | Turnos | Caja | Nuevo Paciente | ODONPEI (usuario) | Salir
 
 ---
 
@@ -273,6 +274,7 @@ Son idempotentes: si no hay nada que hacer, no hacen nada. Van dejando el detall
 | `ODONPEI_TURNOS` | Array de todos los turnos |
 | `ODONPEI_ATENCIONES` | Objeto `{ 'YYYY-MM': N }` con conteo mensual |
 | `ODONPEI_ESTACION` | Nombre de la estación de este dispositivo (chat interno) |
+| `ODONPEI_PAGOS` | Comprobantes de pago emitidos |
 | `ODONPEI_PLANTILLA_RECORDATORIO` | Texto del mensaje de recordatorio (copia local; la real vive en Firebase) |
 | `odonpei_usuario` | Usuario logueado (sessionStorage) |
 
@@ -283,6 +285,7 @@ Son idempotentes: si no hay nada que hacer, no hacen nada. Van dejando el detall
 | `turnos` (colección) | Misma estructura que localStorage, con `onSnapshot` activo |
 | `config/atenciones` (documento) | Objeto `{ 'YYYY-MM': N }` con contador mensual, con `onSnapshot` activo |
 | `chat` (colección) | Mensajes del chat interno `{ texto, estacion, ts, fecha }`, con `onSnapshot` activo |
+| `pagos` (colección) | Comprobantes de pago `{ numero, fecha, hora, nombre, monto, formaPago, concepto }`, con `onSnapshot` activo |
 | `config/recordatorio` (documento) | `{ plantilla }` — texto del mensaje de WhatsApp, compartido entre estaciones |
 
 ### Estructura de un paciente
@@ -447,6 +450,60 @@ Los nombres se cargan casi siempre en mayúsculas (`SARMIENTO ROMINA`). Mandar e
 
 ---
 
+## Caja — Comprobantes de Pago (`js/caja.js`)
+
+Permite entregarle al paciente un comprobante del pago. **No es una factura:** si el paciente necesita factura, la Dra. la emite aparte. El papel lo dice expresamente (*"Documento no válido como factura"*) para que nadie lo presente donde no corresponde.
+
+### La pantalla
+
+Está pensada para la administrativa, con pasos numerados y botones grandes. El objetivo es que escriba lo mínimo:
+
+1. **¿A quién le cobrás?** — los turnos del día aparecen como botones. Toca el nombre y se completa solo. Si el que paga no tenía turno, se escribe el nombre a mano. Los turnos cancelados no se ofrecen.
+2. **¿Cuánto pagó?** — campo grande; abajo va apareciendo el monto escrito en letras a medida que tipea, para control.
+3. **¿Cómo pagó?** — Efectivo, Transferencia, Débito o Mercado Pago. Viene marcado Efectivo.
+
+El **concepto** viene puesto como *"Tratamiento odontológico"* y se puede cambiar; si no se toca, sale así.
+
+Al final, el botón verde grande **🖨️ IMPRIMIR COMPROBANTE**.
+
+### El papel
+
+Una hoja A4 con el comprobante **repetido dos veces** y una línea de corte punteada en el medio:
+- Arriba: **ORIGINAL — Paciente**
+- Abajo: **DUPLICADO — Consultorio**
+
+Lleva el logo de ODONPEI, la muela como marca de agua y los mismos colores que el presupuesto. Datos fijos del encabezado (constante `DATOS_CONSULTORIO`):
+
+```
+ODONPEI
+Dra. María Luján Díaz
+Laprida 772
++54 9 2966 67-3798
+```
+
+El monto sale **en números y en letras** (*$ 25.000 — Veinticinco mil pesos*). Las letras no son decorativas: un recibo con el monto escrito no se puede adulterar con una lapicera.
+
+### Numeración
+
+Formato **`06102026-01`**: fecha del día + el número que va ese día, reiniciando cada jornada. No es numeración fiscal, solo sirve para identificar un papel.
+
+### Qué se guarda
+
+Los pagos **sí** se guardan (colección `pagos` en Firebase, `setDoc` por id como los turnos), pero eso es invisible para quien cobra: el flujo son los mismos tres toques. Sirve para dos cosas:
+
+- **Cobrado hoy** — al pie de la pantalla aparece la lista del día con el total.
+- **Reimprimir** (🖨️) si se traspapela un papel, y **anular** (✕) si se cargó mal.
+
+> Se imprime **antes** de guardar, a propósito: si llegara a fallar el guardado, el papel igual salió y el paciente se va con su comprobante.
+
+### Lo que NO hace
+
+- No está vinculado a la ficha del paciente: el nombre es texto libre, igual que en los turnos. No hay "historial de pagos del paciente".
+- No maneja cuotas ni pagos a cuenta. Se definió que el pago es único.
+- No descuenta de un presupuesto.
+
+---
+
 ## Chat Interno (`js/chat.js`)
 
 Chat grupal en tiempo real entre las **estaciones** del consultorio (secretaría, consultorios, tablets, celulares). Todos escriben en el mismo chat y todos ven todo; cada mensaje va firmado con la estación que lo envió. Usa el mismo Firebase que turnos/pacientes (colección `chat`), sin dependencias nuevas.
@@ -598,8 +655,9 @@ El guardado usaba `canvas.datosOdontograma` (propiedad inexistente) en lugar de 
 | `v2.0-recordatorios-whatsapp` | Recordatorios por WhatsApp, teléfonos unificados y base sin duplicados |
 | `v2.1-sin-botones-de-mantenimiento` | Ningún botón de mantenimiento, todo corre solo |
 | `v2.2-turnos-por-duracion` | Turnos de 1 hora o más marcan todas sus casillas + `.nojekyll` y cache busting |
+| `v2.3-caja` | Página Caja: comprobantes de pago con original y duplicado |
 
-Para volver a un punto: `git checkout v2.2-turnos-por-duracion`
+Para volver a un punto: `git checkout v2.3-caja`
 
 ### Backups locales
 - `c:\Github repos\ODONPEI_backup_2026-05-21.zip` — v1.0

@@ -1709,3 +1709,245 @@ body {
 .cal-turno-sigue .cal-turno-badge {
     opacity: 0.7;
 }
+
+/* ========== CAJA ==========
+   Pensada para la administrativa: pasos numerados, botones grandes,
+   lo mínimo para escribir. */
+.caja-contenido {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.caja-fecha {
+    text-align: center;
+    font-size: 14px;
+    color: #1565C0;
+    background: #E3F2FD;
+    border-radius: 20px;
+    padding: 6px 16px;
+    display: inline-block;
+    text-transform: capitalize;
+    margin-bottom: 18px;
+}
+
+.caja-paso {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.caja-paso-titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.caja-paso-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #A8D8EA;
+    color: #fff;
+    font-size: 14px;
+}
+
+.caja-turnos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.caja-turno-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 10px 14px;
+    border: 2px solid #E0E0E0;
+    border-radius: 10px;
+    background: #fafafa;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    transition: all 0.15s;
+}
+
+.caja-turno-btn:hover { border-color: #A8D8EA; background: #F5FBFD; }
+
+.caja-turno-btn.activo {
+    border-color: #4A90E2;
+    background: #E3F2FD;
+}
+
+.caja-turno-nombre { font-size: 14px; color: #333; font-weight: 600; }
+.caja-turno-hora   { font-size: 12px; color: #888; }
+
+.caja-sin-turnos {
+    font-size: 13px;
+    color: #999;
+    padding: 10px 0;
+}
+
+.caja-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #E0E0E0;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+.caja-input:focus {
+    outline: none;
+    border-color: #A8D8EA;
+}
+
+.caja-monto-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.caja-signo {
+    font-size: 30px;
+    font-weight: bold;
+    color: #2E7D32;
+}
+
+.caja-input-monto {
+    font-size: 30px !important;
+    font-weight: bold;
+    padding: 10px 14px;
+    color: #2E7D32;
+}
+
+.caja-monto-letras {
+    font-size: 13px;
+    color: #777;
+    font-style: italic;
+    margin-top: 8px;
+    min-height: 18px;
+}
+
+.caja-pagos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.caja-pago-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 14px 10px;
+    border: 2px solid #E0E0E0;
+    border-radius: 10px;
+    background: #fafafa;
+    font-size: 15px;
+    font-family: inherit;
+    cursor: pointer;
+    color: #555;
+    transition: all 0.15s;
+}
+
+.caja-pago-btn:hover { border-color: #A8D8EA; }
+
+.caja-pago-btn.activo {
+    border-color: #4CAF50;
+    background: #E8F5E9;
+    color: #2E7D32;
+    font-weight: bold;
+}
+
+.caja-paso-concepto { padding-top: 14px; }
+
+.caja-concepto-label {
+    display: block;
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 6px;
+}
+
+.caja-imprimir {
+    width: 100%;
+    padding: 20px;
+    margin: 6px 0 20px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: inherit;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(46,125,50,0.3);
+}
+
+.caja-imprimir:hover { filter: brightness(1.07); }
+.caja-imprimir:active { transform: translateY(1px); }
+
+/* Lo cobrado hoy */
+.caja-cobrado {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 14px 18px;
+}
+
+.caja-cobrado-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    font-weight: bold;
+    color: #333;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #E8F5E9;
+    margin-bottom: 8px;
+}
+
+.caja-total { color: #2E7D32; font-size: 20px; }
+
+.caja-pago-fila {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    font-size: 13px;
+    border-bottom: 1px solid #f5f5f5;
+    flex-wrap: wrap;
+}
+
+.caja-pago-num    { color: #aaa; font-family: monospace; font-size: 12px; }
+.caja-pago-nombre { flex: 1; color: #333; min-width: 120px; }
+.caja-pago-forma  { color: #888; font-size: 12px; }
+.caja-pago-monto  { font-weight: bold; color: #2E7D32; min-width: 90px; text-align: right; }
+
+.caja-link {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 2px 4px;
+    opacity: 0.6;
+}
+
+.caja-link:hover { opacity: 1; }
+.caja-link-borrar { color: #E53935; }
+
+@media (max-width: 480px) {
+    .caja-pago-btn { min-width: 100%; }
+    .caja-turno-btn { flex: 1; min-width: 45%; }
+    .caja-imprimir { font-size: 17px; padding: 18px; }
+}

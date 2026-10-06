@@ -190,6 +190,9 @@ function cambiarPagina(pagina) {
         case 'turnos':
             cargarTurnos();
             break;
+        case 'caja':
+            cargarCaja();
+            break;
         case 'pacientes':
             cargarPacientes();
             break;

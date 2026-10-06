@@ -250,6 +250,42 @@ function escucharContadorEnFirestore(callback) {
   });
 }
 
+// ========== CAJA — COMPROBANTES DE PAGO ==========
+// Mismo criterio que turnos: setDoc con el id del pago como id del documento,
+// así nunca se duplican por más veces que se suban.
+
+async function guardarPagoEnFirestore(pago) {
+  try {
+    await setDoc(doc(db, "pagos", pago.id), pago);
+    pago.firebaseId = pago.id;
+    return pago;
+  } catch (e) { console.warn('Firebase pago guardar:', e); return null; }
+}
+
+async function obtenerPagosDesdeFirestore() {
+  try {
+    const snap = await getDocs(collection(db, "pagos"));
+    const pagos = [];
+    snap.forEach((d) => { const p = d.data(); p.firebaseId = d.id; pagos.push(p); });
+    return pagos;
+  } catch (e) { console.warn('Firebase pagos obtener:', e); return []; }
+}
+
+async function eliminarPagoDeFirestore(docId) {
+  try {
+    await deleteDoc(doc(db, "pagos", docId));
+    return true;
+  } catch (e) { console.warn('Firebase pago eliminar:', e); return false; }
+}
+
+function sincronizarPagosEnTiempoReal(callback) {
+  return onSnapshot(collection(db, "pagos"), (snapshot) => {
+    const pagos = [];
+    snapshot.forEach((d) => { const p = d.data(); p.firebaseId = d.id; pagos.push(p); });
+    callback(pagos);
+  });
+}
+
 // ========== PLANTILLA DE RECORDATORIOS ==========
 // Se guarda en la nube para que las dos estaciones manden el mismo mensaje
 
@@ -288,5 +324,9 @@ window.enviarMensajeFirestore         = enviarMensajeFirestore;
 window.escucharChatEnTiempoReal       = escucharChatEnTiempoReal;
 window.eliminarMensajeFirestore       = eliminarMensajeFirestore;
 window.vaciarChatFirestore            = vaciarChatFirestore;
+window.guardarPagoEnFirestore         = guardarPagoEnFirestore;
+window.obtenerPagosDesdeFirestore     = obtenerPagosDesdeFirestore;
+window.eliminarPagoDeFirestore        = eliminarPagoDeFirestore;
+window.sincronizarPagosEnTiempoReal   = sincronizarPagosEnTiempoReal;
 window.guardarPlantillaEnFirestore    = guardarPlantillaEnFirestore;
 window.obtenerPlantillaDesdeFirestore = obtenerPlantillaDesdeFirestore;
