@@ -91,6 +91,44 @@ async function sincronizarContadorDesdeFirebase() {
     } catch (e) { console.warn('Sync contador:', e); }
 }
 
+// ========== TODO EN MAYÚSCULAS ==========
+// Los datos se cargan siempre en mayúsculas, escriba como escriba quien los
+// carga. Así no conviven "Melano", "melano" y "MELANO" como si fueran personas
+// distintas, que es lo que después rompe las búsquedas y los duplicados.
+//
+// Solo afecta a los campos CORTOS (nombre, domicilio, concepto...). Los textos
+// largos quedan como se escriben: un diagnóstico entero en mayúscula no hay
+// quien lo lea. El chat tampoco, porque sería escribirse a los gritos.
+
+const CAMPOS_SIN_MAYUSCULAS = [
+    'login-usuario',        // el usuario del sistema es "odonpei"
+    'buscador-pacientes',   // los buscadores ya ignoran mayúsculas
+    'buscador-turnos',
+    'cme-otro-input',       // nombre de la estación del chat
+    'chat-input'
+];
+
+function aMayusculas(texto) {
+    return String(texto || '').toUpperCase();
+}
+
+document.addEventListener('input', (e) => {
+    const el = e.target;
+    if (!el || el.tagName !== 'INPUT') return;          // los textarea quedan afuera
+    if ((el.getAttribute('type') || 'text') !== 'text') return;
+    if (CAMPOS_SIN_MAYUSCULAS.includes(el.id)) return;
+    if (el.closest && el.closest('#chat-panel')) return;
+
+    const enMayusculas = el.value.toUpperCase();
+    if (enMayusculas === el.value) return;
+
+    // Guardar dónde estaba el cursor: si no, salta al final y no se puede
+    // corregir una letra en el medio de una palabra
+    const desde = el.selectionStart, hasta = el.selectionEnd;
+    el.value = enMayusculas;
+    try { el.setSelectionRange(desde, hasta); } catch (err) { /* algunos inputs no lo permiten */ }
+});
+
 // ========== USUARIOS (sin contraseña por ahora) ==========
 const USUARIOS_VALIDOS = ['odonpei'];
 
@@ -509,19 +547,19 @@ function guardarPaciente() {
         const paciente = {
             tipoHistoria: tipoHistoria,
             datosPersonales: {
-                nombre: nombre,
-                alias: document.getElementById('campo-alias')?.value || '',
+                nombre: aMayusculas(nombre),
+                alias: aMayusculas(document.getElementById('campo-alias')?.value || ''),
                 edad: document.getElementById('campo-edad')?.value || '',
                 fechaNacimiento: document.getElementById('campo-fechaNacimiento')?.value || '',
-                domicilio: document.getElementById('campo-domicilio')?.value || '',
-                nombrePadre: document.getElementById('campo-nombrePadre')?.value || '',
+                domicilio: aMayusculas(document.getElementById('campo-domicilio')?.value || ''),
+                nombrePadre: aMayusculas(document.getElementById('campo-nombrePadre')?.value || ''),
                 telefono: numsPaciente.uno,
-                telefonoRef: document.getElementById('campo-telefonoRef')?.value?.trim() || numsPaciente.etiqueta,
+                telefonoRef: aMayusculas(document.getElementById('campo-telefonoRef')?.value?.trim() || numsPaciente.etiqueta),
                 telefono2: numsPaciente.dos,
-                telefono2Ref: document.getElementById('campo-telefono2Ref')?.value?.trim() || numsPaciente.etiqueta2,
-                obraSocial: document.getElementById('campo-obraSocial')?.value || '',
-                nAfiliado: document.getElementById('campo-nAfiliado')?.value || '',
-                dni: document.getElementById('campo-dni')?.value || ''
+                telefono2Ref: aMayusculas(document.getElementById('campo-telefono2Ref')?.value?.trim() || numsPaciente.etiqueta2),
+                obraSocial: aMayusculas(document.getElementById('campo-obraSocial')?.value || ''),
+                nAfiliado: aMayusculas(document.getElementById('campo-nAfiliado')?.value || ''),
+                dni: aMayusculas(document.getElementById('campo-dni')?.value || '')
             },
             tratamientos: {
                 realizados: document.getElementById('campo-tratamientos-realizados')?.value || '',

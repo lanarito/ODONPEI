@@ -450,6 +450,32 @@ Los nombres se cargan casi siempre en mayúsculas (`SARMIENTO ROMINA`). Mandar e
 
 ---
 
+## Todo en mayúsculas
+
+Los datos se guardan **siempre en mayúsculas**, escriba como escriba quien los carga. El motivo es evitar que convivan `Melano`, `melano` y `MELANO` como si fueran personas distintas, que es lo que después ensucia las búsquedas y genera duplicados.
+
+Funciona en dos niveles (`js/app.js`):
+- **Mientras se escribe:** un único `addEventListener('input')` en todo el documento pasa a mayúscula lo que se tipea, **conservando la posición del cursor** (si no, salta al final y no se puede corregir una letra en el medio de una palabra).
+- **Al guardar:** `aMayusculas()` se aplica de nuevo sobre los campos clave de pacientes, turnos y comprobantes, por si el valor entró pegado o puesto por código.
+
+### Qué SÍ y qué NO
+
+| Pasa a mayúscula | Queda como se escribe |
+|------------------|------------------------|
+| Nombre, alias, domicilio, madre/padre | Diagnóstico, observaciones, medicación |
+| Obra social, N° afiliado, DNI | Tratamientos realizados y propuesta |
+| Nombre del turno | Notas del turno |
+| Nombre y concepto del comprobante | Mensajes del chat |
+| De quién es cada teléfono | Buscadores y usuario del login |
+
+La regla es simple: **los `<input type="text">` sí, los `<textarea>` no.** Un diagnóstico entero en mayúscula no hay quien lo lea, y el chat en mayúscula es escribirse a los gritos. Las excepciones puntuales están en la lista `CAMPOS_SIN_MAYUSCULAS`.
+
+> **El WhatsApp no se ve afectado:** `formatearNombre()` en `js/recordatorios.js` convierte `MELANO ALFONSO` a `Melano Alfonso` antes de armar el mensaje, así al paciente no le llega un texto gritado. Las dos cosas conviven bien: adentro mayúscula, para afuera normal.
+
+**Los datos viejos quedaron como estaban.** Esto rige de acá en adelante. Casi todos los nombres ya estaban en mayúscula de antes.
+
+---
+
 ## Caja — Comprobantes de Pago (`js/caja.js`)
 
 Permite entregarle al paciente un comprobante del pago. **No es una factura:** si el paciente necesita factura, la Dra. la emite aparte. El papel lo dice expresamente (*"Documento no válido como factura"*) para que nadie lo presente donde no corresponde.

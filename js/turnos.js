@@ -341,7 +341,7 @@ function guardarTurno(event) {
             // hay que volver a avisarle al paciente el día/hora nuevo.
             if (t.recordadoEn && (nuevaFecha !== t.fecha || nuevaHora !== t.hora)) t.recordadoEn = '';
 
-            t.pacienteNombre = document.getElementById('turno-nombre').value.trim();
+            t.pacienteNombre = aMayusculas(document.getElementById('turno-nombre').value.trim());
             const nums       = repartirNumeros(document.getElementById('turno-celular').value,
                                                document.getElementById('turno-celular2')?.value || '');
             t.celular        = nums.uno;
@@ -368,7 +368,7 @@ function guardarTurno(event) {
                                           document.getElementById('turno-celular2')?.value || '');
         const turno = {
             id: Date.now().toString(),
-            pacienteNombre: document.getElementById('turno-nombre').value.trim(),
+            pacienteNombre: aMayusculas(document.getElementById('turno-nombre').value.trim()),
             celular: numsTurno.uno,
             celular2: numsTurno.dos,
             fecha: document.getElementById('turno-fecha').value,

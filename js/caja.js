@@ -21,7 +21,7 @@ const DATOS_CONSULTORIO = {
 };
 
 const FORMAS_PAGO = ['Efectivo', 'Transferencia', 'Débito', 'Mercado Pago'];
-const CONCEPTO_DEFAULT = 'Tratamiento odontológico';
+const CONCEPTO_DEFAULT = 'TRATAMIENTO ODONTOLÓGICO';
 
 let cajaFormaPago = 'Efectivo';
 let cajaListenerActivo = false;
@@ -276,9 +276,9 @@ function mostrarMontoEnLetras() {
 
 // ---------- Emitir ----------
 function emitirComprobante() {
-    const nombre = document.getElementById('caja-nombre')?.value.trim();
+    const nombre = aMayusculas(document.getElementById('caja-nombre')?.value.trim());
     const monto = parseFloat(document.getElementById('caja-monto')?.value);
-    const concepto = document.getElementById('caja-concepto')?.value.trim() || CONCEPTO_DEFAULT;
+    const concepto = aMayusculas(document.getElementById('caja-concepto')?.value.trim()) || CONCEPTO_DEFAULT;
 
     if (!nombre) {
         alert('Falta el nombre del paciente.');
