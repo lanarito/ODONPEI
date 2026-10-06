@@ -537,7 +537,19 @@ Cada copia mide **108 mm**. Dos copias más la línea de corte dan **222 mm**, y
 
 > **La lección, que costó dos intentos:** no alcanza con que entre en el papel. **Chrome, por defecto, imprime encabezado y pie de página** (la fecha y la dirección web del sitio) y eso se come unos 22 mm que no aparecen en ninguna cuenta de márgenes. Una primera versión quedó en 276 mm de 277 mm y se partía en dos hojas. Hay que dejar margen de sobra, no calcular al límite.
 >
-> Aparte, conviene que en el consultorio dejen **desmarcada** la opción *"Encabezados y pies de página"* en el diálogo de impresión de Chrome: si no, en el comprobante del paciente sale impresa la dirección del sitio.
+### Sacar la fecha y la dirección web que imprime Chrome
+
+Chrome agrega por su cuenta, en cada hoja, la fecha arriba y la dirección del sitio abajo. **Eso no se puede desactivar desde el código**: no existe ninguna instrucción de CSS ni de JavaScript que se lo prohíba, es una opción del navegador de cada computadora.
+
+Lo que sí se hizo: la página declara `@page { margin: 0 }` y el aire se da con `padding` en `.hoja`. Al no reservar margen, muchas versiones de Chrome directamente no dibujan el encabezado ni el pie.
+
+**Lo único que lo garantiza** es desmarcarlo una vez en cada máquina:
+
+1. Al imprimir (Ctrl + P), abrir **"Más configuraciones"**
+2. Desmarcar **"Encabezados y pies de página"**
+3. Chrome lo recuerda para la próxima
+
+Conviene hacerlo en las dos máquinas del consultorio: si no, en el comprobante que se lleva el paciente sale impresa la dirección del sitio.
 
 Dentro de cada copia, el contenido usa **84 mm de los 96 mm** disponibles. Si se le agrega algo al comprobante hay que rehacer esa cuenta: `.comprobante` tiene `overflow: hidden` y lo que sobre se corta sin aviso. También hay `page-break-inside: avoid` para que el navegador no parta una copia al medio, y la tabla usa `table-layout: fixed` para que no se desarme si la hoja queda angosta.
 

@@ -423,7 +423,7 @@ function generarHTMLComprobante(pago) {
 <title>Comprobante ${pago.numero} - ${pago.nombre}</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    @page { size: A4 portrait; margin: 8mm; }
+    @page { size: A4 portrait; margin: 0; }
     body { font-family: Arial, Helvetica, sans-serif; color: #333; background: #f5f5f5; }
 
     .hoja { max-width: 190mm; margin: 0 auto; }
@@ -496,7 +496,11 @@ function generarHTMLComprobante(pago) {
 
     @media print {
         html, body { background: white; margin: 0; padding: 0; }
-        .hoja { max-width: none; width: 100%; }
+        /* El margen lo pone el padding, no la hoja: con @page margin 0 Chrome
+           no reserva lugar para su encabezado y su pie (la fecha y la dirección
+           del sitio). Igual conviene desmarcarlos en el diálogo de impresión,
+           que es lo único que lo garantiza. */
+        .hoja { max-width: none; width: 100%; padding: 10mm 8mm; }
         /* Que no se parta una copia ni se vaya a la hoja siguiente */
         .hoja, .comprobante { page-break-inside: avoid; break-inside: avoid; }
         .comprobante { border: none; border-radius: 0; }
