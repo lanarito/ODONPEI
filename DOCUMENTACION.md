@@ -518,7 +518,7 @@ Así está armada cada copia:
                                       ORIGINAL — Paciente
 ```
 
-**El logo (72 mm de ancho) va solo, centrado.** La imagen `ODONPEI 2.png` ya *es* la marca: dice ODONPEI con el diente de rompecabezas y abajo "Odontología Pediátrica Inclusiva". Por eso **no se repite el nombre al lado** — hacerlo era lo que lo dejaba chico y apretado. Es un logo apaisado (relación 3,5:1), que es justo lo que pide un encabezado centrado.
+**El logo (82 mm de ancho) va solo, centrado.** La imagen `ODONPEI 2.png` ya *es* la marca: dice ODONPEI con el diente de rompecabezas y abajo "Odontología Pediátrica Inclusiva". Por eso **no se repite el nombre al lado** — hacerlo era lo que lo dejaba chico y apretado. Es un logo apaisado (relación 3,5:1), que es justo lo que pide un encabezado centrado.
 
 Debajo, los datos de la profesional a la izquierda y el recuadro del comprobante a la derecha. El celular lleva el **ícono de WhatsApp**, dibujado como SVG dentro del propio comprobante (no una imagen aparte), así se imprime siempre aunque la máquina esté sin conexión.
 
@@ -526,14 +526,15 @@ No lleva línea de firma ni sello, por pedido del consultorio.
 
 ### Las medidas, y por qué importan
 
-Cada copia mide **108 mm**. Dos copias más la línea de corte dan **222 mm**, y entran en un A4 pase lo que pase:
+Cada copia mide **120 mm**. Con el padding de la hoja, las dos copias más la línea de corte ocupan **266 mm de los 297**, dejando unos 3 cm libres abajo:
 
 | Configuración de impresión | Disponible | ¿Entran las dos? |
 |----------------------------|-----------|------------------|
-| Margen mínimo, sin encabezados | 281 mm | sí |
-| Por defecto de Chrome | 277 mm | sí |
-| Chrome con encabezado y pie de página | 255 mm | sí |
-| Margen grande + encabezado y pie | 235 mm | sí |
+| Margen 0 (el que pide la página), sin encabezados | 297 mm | sí |
+| Margen 0 con encabezado y pie de Chrome | 275 mm | sí |
+| Si alguien elige "Márgenes: Predeterminado" **y** deja los encabezados | 255 mm | **se parte** |
+
+El único caso que falla pide las dos cosas a la vez, y se arregla en el diálogo de impresión poniendo **Márgenes: Mínimo** o desmarcando los encabezados.
 
 > **La lección, que costó dos intentos:** no alcanza con que entre en el papel. **Chrome, por defecto, imprime encabezado y pie de página** (la fecha y la dirección web del sitio) y eso se come unos 22 mm que no aparecen en ninguna cuenta de márgenes. Una primera versión quedó en 276 mm de 277 mm y se partía en dos hojas. Hay que dejar margen de sobra, no calcular al límite.
 >
@@ -551,7 +552,7 @@ Lo que sí se hizo: la página declara `@page { margin: 0 }` y el aire se da con
 
 Conviene hacerlo en las dos máquinas del consultorio: si no, en el comprobante que se lleva el paciente sale impresa la dirección del sitio.
 
-Dentro de cada copia, el contenido usa **84 mm de los 96 mm** disponibles. Si se le agrega algo al comprobante hay que rehacer esa cuenta: `.comprobante` tiene `overflow: hidden` y lo que sobre se corta sin aviso. También hay `page-break-inside: avoid` para que el navegador no parta una copia al medio, y la tabla usa `table-layout: fixed` para que no se desarme si la hoja queda angosta.
+Dentro de cada copia, el contenido usa **95 mm de los 106 mm** disponibles. Si se le agrega algo al comprobante hay que rehacer esa cuenta: `.comprobante` tiene `overflow: hidden` y lo que sobre se corta sin aviso. También hay `page-break-inside: avoid` para que el navegador no parta una copia al medio, y la tabla usa `table-layout: fixed` para que no se desarme si la hoja queda angosta.
 
 ### Numeración
 

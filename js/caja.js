@@ -432,8 +432,8 @@ function generarHTMLComprobante(pago) {
         background: white;
         border: 1px solid #ccc;
         border-radius: 6px;
-        padding: 6mm 8mm;
-        height: 108mm;
+        padding: 7mm 9mm;
+        height: 120mm;
         position: relative;
         overflow: hidden;
     }
@@ -450,8 +450,8 @@ function generarHTMLComprobante(pago) {
     /* El logo ya es la marca (dice ODONPEI y Odontología Pediátrica Inclusiva),
        así que va solo, centrado y a lo ancho. No hace falta repetir el nombre
        al lado: era justamente lo que lo hacía ver chico y apretado. */
-    .logo-top { text-align: center; margin-bottom: 2.5mm; }
-    .logo { width: 72mm; height: auto; max-width: 100%; }
+    .logo-top { text-align: center; margin-bottom: 3mm; }
+    .logo { width: 82mm; height: auto; max-width: 100%; }
 
     .encabezado {
         display: flex; justify-content: space-between; align-items: flex-start; gap: 8mm;
@@ -460,8 +460,8 @@ function generarHTMLComprobante(pago) {
         padding: 2.5mm 0; margin-bottom: 4mm;
     }
     .datos-prof { text-align: left; }
-    .profesional { font-size: 13.5px; font-weight: bold; color: #333; margin-bottom: 0.5mm; }
-    .dato { font-size: 11px; color: #666; line-height: 1.5; }
+    .profesional { font-size: 14px; font-weight: bold; color: #333; margin-bottom: 1mm; }
+    .dato { font-size: 11.5px; color: #666; line-height: 1.6; }
 
     /* El celular con el dibujito de WhatsApp al lado */
     .telefono-wsp { display: flex; align-items: center; gap: 1.5mm; }
@@ -473,13 +473,13 @@ function generarHTMLComprobante(pago) {
     .sin-valor-fiscal { font-size: 9px; color: #999; font-style: italic; margin-top: 1mm; }
 
     .datos { width: 100%; border-collapse: collapse; table-layout: fixed; }
-    .datos td { padding: 2mm 0; vertical-align: middle; border-bottom: 1px dotted #ddd; }
+    .datos td { padding: 3mm 0; vertical-align: middle; border-bottom: 1px dotted #ddd; }
     .datos tr:last-child td { border-bottom: none; }
     .etiqueta { width: 32mm; font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
     .etiqueta-der { width: 30mm; padding-left: 6mm !important; }
-    .valor { font-size: 12.5px; word-wrap: break-word; }
-    .fuerte { font-weight: bold; font-size: 15px; }
-    .monto { font-weight: bold; font-size: 20px; color: #2E7D32; margin-right: 2.5mm; }
+    .valor { font-size: 13px; word-wrap: break-word; }
+    .fuerte { font-weight: bold; font-size: 16px; }
+    .monto { font-weight: bold; font-size: 21px; color: #2E7D32; margin-right: 3mm; }
     .letras { font-size: 11.5px; color: #666; font-style: italic; }
 
     .pie { margin-top: auto; display: flex; justify-content: flex-end; align-items: flex-end; }
