@@ -686,8 +686,9 @@ El guardado usaba `canvas.datosOdontograma` (propiedad inexistente) en lugar de 
 | `v2.1-sin-botones-de-mantenimiento` | Ningún botón de mantenimiento, todo corre solo |
 | `v2.2-turnos-por-duracion` | Turnos de 1 hora o más marcan todas sus casillas + `.nojekyll` y cache busting |
 | `v2.3-caja` | Página Caja: comprobantes de pago con original y duplicado |
+| `v2.5-caja-y-mayusculas` | Caja completa (tilde de cobrado) + todos los datos en mayúsculas |
 
-Para volver a un punto: `git checkout v2.3-caja`
+Para volver a un punto: `git checkout v2.5-caja-y-mayusculas`
 
 ### Backups locales
 - `c:\Github repos\ODONPEI_backup_2026-05-21.zip` — v1.0
@@ -697,6 +698,7 @@ Para volver a un punto: `git checkout v2.3-caja`
 - `c:\Github repos\ODONPEI_backup_2026-07-07_v1.4.zip` — v1.4 (Fix sync turnos)
 - `c:\Github repos\ODONPEI_backup_2026-08-27_v2.1.zip` — v2.1 (Recordatorios WhatsApp + teléfonos unificados + fix duplicados + mantenimiento automático)
 - `c:\Github repos\ODONPEI_backup_2026-09-21_v2.2.zip` — v2.2 (Turnos por duración + fix del deploy de Pages)
+- `c:\Github repos\ODONPEI_backup_2026-10-06_v2.5.zip` — v2.5 (Caja + todo en mayúsculas)
 
 ### Backup de la base en la nube
 - `c:\Github repos\ODONPEI_backup_firebase_2026-08-27.json` (9,4 MB) — copia cruda de Firestore (303 documentos de `pacientes` + 248 de `turnos`) tomada **antes** de la deduplicación automática.
