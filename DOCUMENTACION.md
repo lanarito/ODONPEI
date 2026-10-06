@@ -502,7 +502,13 @@ Una hoja A4 con el comprobante **repetido dos veces** y una línea de corte punt
 - Arriba: **ORIGINAL — Paciente**
 - Abajo: **DUPLICADO — Consultorio**
 
-Lleva el logo de ODONPEI, la muela como marca de agua y los mismos colores que el presupuesto. Datos fijos del encabezado (constante `DATOS_CONSULTORIO`):
+Lleva el **logo de ODONPEI en grande** (150px) a la izquierda, la muela como marca de agua y los mismos colores que el presupuesto. El celular va con el **ícono de WhatsApp** al lado, debajo de la dirección.
+
+> El ícono está dibujado como SVG dentro del propio comprobante, no es una imagen aparte: así se imprime siempre, aunque la máquina esté sin conexión.
+
+No lleva línea de firma ni sello, por pedido del consultorio.
+
+Datos fijos del encabezado (constante `DATOS_CONSULTORIO`):
 
 ```
 ODONPEI
