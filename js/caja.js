@@ -432,8 +432,8 @@ function generarHTMLComprobante(pago) {
         background: white;
         border: 1px solid #ccc;
         border-radius: 6px;
-        padding: 8mm 10mm;
-        height: 132mm;
+        padding: 7mm 9mm;
+        height: 125mm;
         position: relative;
         overflow: hidden;
     }
@@ -490,12 +490,15 @@ function generarHTMLComprobante(pago) {
 
     .corte {
         border-top: 2px dashed #bbb;
-        text-align: center; font-size: 10px; color: #aaa;
-        margin: 4mm 0; padding-top: 1mm;
+        text-align: center; font-size: 9px; color: #aaa;
+        margin: 2.5mm 0 0; padding-top: 0.5mm; line-height: 1.2;
     }
 
     @media print {
-        body { background: white; }
+        html, body { background: white; margin: 0; padding: 0; }
+        .hoja { max-width: none; width: 100%; }
+        /* Que no se parta una copia ni se vaya a la hoja siguiente */
+        .hoja, .comprobante { page-break-inside: avoid; break-inside: avoid; }
         .comprobante { border: none; border-radius: 0; }
     }
 </style>

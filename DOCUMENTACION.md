@@ -524,7 +524,19 @@ Debajo, los datos de la profesional a la izquierda y el recuadro del comprobante
 
 No lleva línea de firma ni sello, por pedido del consultorio.
 
-> **Las medidas están calculadas para que entre justo:** cada copia mide 132 mm, y dos copias más la línea de corte dan 273 mm de los 277 mm imprimibles de un A4. Si se agrega contenido al comprobante hay que rehacer esa cuenta, porque `.comprobante` tiene `overflow: hidden` y lo que sobre se corta sin aviso.
+### Las medidas, y por qué importan
+
+Cada copia mide **125 mm**. Dos copias más la línea de corte dan **256 mm**, y así entran en una hoja A4 **aunque el navegador imponga sus propios márgenes**:
+
+| Margen de impresión | Disponible | ¿Entran las dos? |
+|---------------------|-----------|------------------|
+| 10 mm (el que pide la página) | 277 mm | sí |
+| Por defecto del navegador (~12,7 mm) | 271 mm | sí |
+| 20 mm | 257 mm | sí |
+
+> **Lección:** una primera versión quedaba en 276 mm de 277 mm y la segunda copia se iba a otra hoja apenas el navegador agregaba un milímetro. Hay que dejar margen de sobra, no calcular al límite.
+
+Dentro de cada copia, el contenido usa **104 mm de los 111 mm** disponibles. Si se le agrega algo al comprobante hay que rehacer esa cuenta: `.comprobante` tiene `overflow: hidden` y lo que sobre se corta sin aviso. También hay `page-break-inside: avoid` para que el navegador no parta una copia al medio.
 
 Datos fijos del encabezado (constante `DATOS_CONSULTORIO`):
 
