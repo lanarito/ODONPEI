@@ -518,7 +518,7 @@ Así está armada cada copia:
                                       ORIGINAL — Paciente
 ```
 
-**El logo va solo, centrado y a lo ancho.** La imagen `ODONPEI 2.png` ya *es* la marca: dice ODONPEI con el diente de rompecabezas y abajo "Odontología Pediátrica Inclusiva". Por eso **no se repite el nombre al lado** — hacerlo era lo que lo dejaba chico y apretado. Es un logo apaisado (relación 3,5:1), que es justo lo que pide un encabezado centrado.
+**El logo (72 mm de ancho) va solo, centrado.** La imagen `ODONPEI 2.png` ya *es* la marca: dice ODONPEI con el diente de rompecabezas y abajo "Odontología Pediátrica Inclusiva". Por eso **no se repite el nombre al lado** — hacerlo era lo que lo dejaba chico y apretado. Es un logo apaisado (relación 3,5:1), que es justo lo que pide un encabezado centrado.
 
 Debajo, los datos de la profesional a la izquierda y el recuadro del comprobante a la derecha. El celular lleva el **ícono de WhatsApp**, dibujado como SVG dentro del propio comprobante (no una imagen aparte), así se imprime siempre aunque la máquina esté sin conexión.
 
@@ -526,28 +526,20 @@ No lleva línea de firma ni sello, por pedido del consultorio.
 
 ### Las medidas, y por qué importan
 
-Cada copia mide **125 mm**. Dos copias más la línea de corte dan **256 mm**, y así entran en una hoja A4 **aunque el navegador imponga sus propios márgenes**:
+Cada copia mide **108 mm**. Dos copias más la línea de corte dan **222 mm**, y entran en un A4 pase lo que pase:
 
-| Margen de impresión | Disponible | ¿Entran las dos? |
-|---------------------|-----------|------------------|
-| 10 mm (el que pide la página) | 277 mm | sí |
-| Por defecto del navegador (~12,7 mm) | 271 mm | sí |
-| 20 mm | 257 mm | sí |
+| Configuración de impresión | Disponible | ¿Entran las dos? |
+|----------------------------|-----------|------------------|
+| Margen mínimo, sin encabezados | 281 mm | sí |
+| Por defecto de Chrome | 277 mm | sí |
+| Chrome con encabezado y pie de página | 255 mm | sí |
+| Margen grande + encabezado y pie | 235 mm | sí |
 
-> **Lección:** una primera versión quedaba en 276 mm de 277 mm y la segunda copia se iba a otra hoja apenas el navegador agregaba un milímetro. Hay que dejar margen de sobra, no calcular al límite.
+> **La lección, que costó dos intentos:** no alcanza con que entre en el papel. **Chrome, por defecto, imprime encabezado y pie de página** (la fecha y la dirección web del sitio) y eso se come unos 22 mm que no aparecen en ninguna cuenta de márgenes. Una primera versión quedó en 276 mm de 277 mm y se partía en dos hojas. Hay que dejar margen de sobra, no calcular al límite.
+>
+> Aparte, conviene que en el consultorio dejen **desmarcada** la opción *"Encabezados y pies de página"* en el diálogo de impresión de Chrome: si no, en el comprobante del paciente sale impresa la dirección del sitio.
 
-Dentro de cada copia, el contenido usa **104 mm de los 111 mm** disponibles. Si se le agrega algo al comprobante hay que rehacer esa cuenta: `.comprobante` tiene `overflow: hidden` y lo que sobre se corta sin aviso. También hay `page-break-inside: avoid` para que el navegador no parta una copia al medio.
-
-Datos fijos del encabezado (constante `DATOS_CONSULTORIO`):
-
-```
-ODONPEI
-Dra. María Luján Díaz
-Laprida 772
-+54 9 2966 67-3798
-```
-
-El monto sale **en números y en letras** (*$ 25.000 — Veinticinco mil pesos*). Las letras no son decorativas: un recibo con el monto escrito no se puede adulterar con una lapicera.
+Dentro de cada copia, el contenido usa **84 mm de los 96 mm** disponibles. Si se le agrega algo al comprobante hay que rehacer esa cuenta: `.comprobante` tiene `overflow: hidden` y lo que sobre se corta sin aviso. También hay `page-break-inside: avoid` para que el navegador no parta una copia al medio, y la tabla usa `table-layout: fixed` para que no se desarme si la hoja queda angosta.
 
 ### Numeración
 

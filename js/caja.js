@@ -423,7 +423,7 @@ function generarHTMLComprobante(pago) {
 <title>Comprobante ${pago.numero} - ${pago.nombre}</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    @page { size: A4 portrait; margin: 10mm; }
+    @page { size: A4 portrait; margin: 8mm; }
     body { font-family: Arial, Helvetica, sans-serif; color: #333; background: #f5f5f5; }
 
     .hoja { max-width: 190mm; margin: 0 auto; }
@@ -432,8 +432,8 @@ function generarHTMLComprobante(pago) {
         background: white;
         border: 1px solid #ccc;
         border-radius: 6px;
-        padding: 7mm 9mm;
-        height: 125mm;
+        padding: 6mm 8mm;
+        height: 108mm;
         position: relative;
         overflow: hidden;
     }
@@ -450,41 +450,41 @@ function generarHTMLComprobante(pago) {
     /* El logo ya es la marca (dice ODONPEI y Odontología Pediátrica Inclusiva),
        así que va solo, centrado y a lo ancho. No hace falta repetir el nombre
        al lado: era justamente lo que lo hacía ver chico y apretado. */
-    .logo-top { text-align: center; margin-bottom: 3mm; }
-    .logo { width: 95mm; height: auto; max-width: 100%; }
+    .logo-top { text-align: center; margin-bottom: 2.5mm; }
+    .logo { width: 72mm; height: auto; max-width: 100%; }
 
     .encabezado {
         display: flex; justify-content: space-between; align-items: flex-start; gap: 8mm;
         border-top: 3px solid #A8D8EA;
         border-bottom: 3px solid #A8D8EA;
-        padding: 3mm 0; margin-bottom: 5mm;
+        padding: 2.5mm 0; margin-bottom: 4mm;
     }
     .datos-prof { text-align: left; }
-    .profesional { font-size: 15px; font-weight: bold; color: #333; margin-bottom: 1mm; }
-    .dato { font-size: 12px; color: #666; line-height: 1.6; }
+    .profesional { font-size: 13.5px; font-weight: bold; color: #333; margin-bottom: 0.5mm; }
+    .dato { font-size: 11px; color: #666; line-height: 1.5; }
 
     /* El celular con el dibujito de WhatsApp al lado */
     .telefono-wsp { display: flex; align-items: center; gap: 1.5mm; }
     .icono-wsp { width: 13px; height: 13px; flex-shrink: 0; }
 
-    .recuadro { text-align: right; border: 2px solid #A8D8EA; border-radius: 6px; padding: 3mm 5mm; }
-    .titulo { font-size: 14px; font-weight: bold; color: #4A90E2; text-transform: uppercase; }
-    .numero { font-size: 16px; font-weight: bold; color: #333; margin: 1mm 0; }
+    .recuadro { text-align: right; border: 2px solid #A8D8EA; border-radius: 5px; padding: 2mm 4mm; }
+    .titulo { font-size: 12.5px; font-weight: bold; color: #4A90E2; text-transform: uppercase; }
+    .numero { font-size: 14px; font-weight: bold; color: #333; margin: 0.8mm 0; }
     .sin-valor-fiscal { font-size: 9px; color: #999; font-style: italic; margin-top: 1mm; }
 
-    .datos { width: 100%; border-collapse: collapse; }
-    .datos td { padding: 3mm 0; vertical-align: middle; border-bottom: 1px dotted #ddd; }
+    .datos { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .datos td { padding: 2mm 0; vertical-align: middle; border-bottom: 1px dotted #ddd; }
     .datos tr:last-child td { border-bottom: none; }
-    .etiqueta { width: 34mm; font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+    .etiqueta { width: 32mm; font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
     .etiqueta-der { width: 30mm; padding-left: 6mm !important; }
-    .valor { font-size: 14px; }
-    .fuerte { font-weight: bold; font-size: 17px; }
-    .monto { font-weight: bold; font-size: 23px; color: #2E7D32; margin-right: 3mm; }
+    .valor { font-size: 12.5px; word-wrap: break-word; }
+    .fuerte { font-weight: bold; font-size: 15px; }
+    .monto { font-weight: bold; font-size: 20px; color: #2E7D32; margin-right: 2.5mm; }
     .letras { font-size: 11.5px; color: #666; font-style: italic; }
 
     .pie { margin-top: auto; display: flex; justify-content: flex-end; align-items: flex-end; }
     .etiqueta-copia {
-        font-size: 12px; font-weight: bold; color: #4A90E2;
+        font-size: 10.5px; font-weight: bold; color: #4A90E2;
         border: 1px solid #A8D8EA; border-radius: 4px; padding: 1.5mm 4mm;
     }
 
