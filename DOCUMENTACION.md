@@ -502,11 +502,29 @@ Una hoja A4 con el comprobante **repetido dos veces** y una línea de corte punt
 - Arriba: **ORIGINAL — Paciente**
 - Abajo: **DUPLICADO — Consultorio**
 
-Lleva el **logo de ODONPEI en grande** (150px) a la izquierda, la muela como marca de agua y los mismos colores que el presupuesto. El celular va con el **ícono de WhatsApp** al lado, debajo de la dirección.
+Así está armada cada copia:
 
-> El ícono está dibujado como SVG dentro del propio comprobante, no es una imagen aparte: así se imprime siempre, aunque la máquina esté sin conexión.
+```
+        [ LOGO ODONPEI centrado, 95 mm de ancho ]
+════════════════════════════════════════════════════
+ Dra. María Luján Díaz        ┌─ COMPROBANTE DE PAGO ─┐
+ Laprida 772                  │ N° 06102026-01        │
+ ⬤ +54 9 2966 67-3798         │ Fecha: 6/10/2026      │
+                              └───────────────────────┘
+════════════════════════════════════════════════════
+ RECIBÍ DE          MELANO ALFONSO
+ LA SUMA DE         $ 25.000  (Veinticinco mil pesos)
+ EN CONCEPTO DE     ...        FORMA DE PAGO    ...
+                                      ORIGINAL — Paciente
+```
+
+**El logo va solo, centrado y a lo ancho.** La imagen `ODONPEI 2.png` ya *es* la marca: dice ODONPEI con el diente de rompecabezas y abajo "Odontología Pediátrica Inclusiva". Por eso **no se repite el nombre al lado** — hacerlo era lo que lo dejaba chico y apretado. Es un logo apaisado (relación 3,5:1), que es justo lo que pide un encabezado centrado.
+
+Debajo, los datos de la profesional a la izquierda y el recuadro del comprobante a la derecha. El celular lleva el **ícono de WhatsApp**, dibujado como SVG dentro del propio comprobante (no una imagen aparte), así se imprime siempre aunque la máquina esté sin conexión.
 
 No lleva línea de firma ni sello, por pedido del consultorio.
+
+> **Las medidas están calculadas para que entre justo:** cada copia mide 132 mm, y dos copias más la línea de corte dan 273 mm de los 277 mm imprimibles de un A4. Si se agrega contenido al comprobante hay que rehacer esa cuenta, porque `.comprobante` tiene `overflow: hidden` y lo que sobre se corta sin aviso.
 
 Datos fijos del encabezado (constante `DATOS_CONSULTORIO`):
 

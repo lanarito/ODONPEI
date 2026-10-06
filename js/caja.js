@@ -368,15 +368,16 @@ function unaCopia(pago, etiqueta) {
         <div class="comprobante">
             <div class="watermark"></div>
             <div class="cuerpo">
+                <div class="logo-top">
+                    <img src="${new URL('ODONPEI 2.png', window.location.href).href}"
+                         alt="${DATOS_CONSULTORIO.nombre}" class="logo">
+                </div>
+
                 <div class="encabezado">
-                    <div class="marca">
-                        <img src="${new URL('ODONPEI 2.png', window.location.href).href}" class="logo">
-                        <div>
-                            <div class="nombre-consultorio">${DATOS_CONSULTORIO.nombre}</div>
-                            <div class="dato">${DATOS_CONSULTORIO.profesional}</div>
-                            <div class="dato">${DATOS_CONSULTORIO.direccion}</div>
-                            <div class="dato telefono-wsp">${ICONO_WHATSAPP}${DATOS_CONSULTORIO.telefono}</div>
-                        </div>
+                    <div class="datos-prof">
+                        <div class="profesional">${DATOS_CONSULTORIO.profesional}</div>
+                        <div class="dato">${DATOS_CONSULTORIO.direccion}</div>
+                        <div class="dato telefono-wsp">${ICONO_WHATSAPP}${DATOS_CONSULTORIO.telefono}</div>
                     </div>
                     <div class="recuadro">
                         <div class="titulo">Comprobante de pago</div>
@@ -389,22 +390,19 @@ function unaCopia(pago, etiqueta) {
                 <table class="datos">
                     <tr>
                         <td class="etiqueta">Recibí de</td>
-                        <td class="valor fuerte">${pago.nombre}</td>
+                        <td class="valor fuerte" colspan="3">${pago.nombre}</td>
                     </tr>
                     <tr>
                         <td class="etiqueta">La suma de</td>
-                        <td class="valor monto">${formatearMonto(pago.monto)}</td>
-                    </tr>
-                    <tr>
-                        <td class="etiqueta"></td>
-                        <td class="valor letras">(${montoEnLetras(pago.monto)})</td>
+                        <td class="valor" colspan="3">
+                            <span class="monto">${formatearMonto(pago.monto)}</span>
+                            <span class="letras">(${montoEnLetras(pago.monto)})</span>
+                        </td>
                     </tr>
                     <tr>
                         <td class="etiqueta">En concepto de</td>
                         <td class="valor">${pago.concepto}</td>
-                    </tr>
-                    <tr>
-                        <td class="etiqueta">Forma de pago</td>
+                        <td class="etiqueta etiqueta-der">Forma de pago</td>
                         <td class="valor">${pago.formaPago}</td>
                     </tr>
                 </table>
@@ -434,8 +432,8 @@ function generarHTMLComprobante(pago) {
         background: white;
         border: 1px solid #ccc;
         border-radius: 6px;
-        padding: 10mm;
-        height: 128mm;
+        padding: 8mm 10mm;
+        height: 132mm;
         position: relative;
         overflow: hidden;
     }
@@ -449,13 +447,20 @@ function generarHTMLComprobante(pago) {
     }
     .cuerpo { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; }
 
+    /* El logo ya es la marca (dice ODONPEI y Odontología Pediátrica Inclusiva),
+       así que va solo, centrado y a lo ancho. No hace falta repetir el nombre
+       al lado: era justamente lo que lo hacía ver chico y apretado. */
+    .logo-top { text-align: center; margin-bottom: 3mm; }
+    .logo { width: 95mm; height: auto; max-width: 100%; }
+
     .encabezado {
-        display: flex; justify-content: space-between; align-items: flex-start;
-        border-bottom: 3px solid #A8D8EA; padding-bottom: 6mm; margin-bottom: 7mm;
+        display: flex; justify-content: space-between; align-items: flex-start; gap: 8mm;
+        border-top: 3px solid #A8D8EA;
+        border-bottom: 3px solid #A8D8EA;
+        padding: 3mm 0; margin-bottom: 5mm;
     }
-    .marca { display: flex; gap: 7mm; align-items: center; }
-    .logo { width: 150px; height: auto; }
-    .nombre-consultorio { font-size: 26px; font-weight: bold; color: #333; letter-spacing: 1.5px; margin-bottom: 1mm; }
+    .datos-prof { text-align: left; }
+    .profesional { font-size: 15px; font-weight: bold; color: #333; margin-bottom: 1mm; }
     .dato { font-size: 12px; color: #666; line-height: 1.6; }
 
     /* El celular con el dibujito de WhatsApp al lado */
@@ -464,16 +469,18 @@ function generarHTMLComprobante(pago) {
 
     .recuadro { text-align: right; border: 2px solid #A8D8EA; border-radius: 6px; padding: 3mm 5mm; }
     .titulo { font-size: 14px; font-weight: bold; color: #4A90E2; text-transform: uppercase; }
-    .numero { font-size: 16px; font-weight: bold; color: #333; margin: 2mm 0 1mm; }
-    .sin-valor-fiscal { font-size: 9px; color: #999; font-style: italic; margin-top: 2mm; }
+    .numero { font-size: 16px; font-weight: bold; color: #333; margin: 1mm 0; }
+    .sin-valor-fiscal { font-size: 9px; color: #999; font-style: italic; margin-top: 1mm; }
 
     .datos { width: 100%; border-collapse: collapse; }
-    .datos td { padding: 3.5mm 0; vertical-align: top; border-bottom: 1px dotted #ddd; }
-    .etiqueta { width: 38mm; font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+    .datos td { padding: 3mm 0; vertical-align: middle; border-bottom: 1px dotted #ddd; }
+    .datos tr:last-child td { border-bottom: none; }
+    .etiqueta { width: 34mm; font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+    .etiqueta-der { width: 30mm; padding-left: 6mm !important; }
     .valor { font-size: 14px; }
-    .fuerte { font-weight: bold; font-size: 16px; }
-    .monto { font-weight: bold; font-size: 22px; color: #2E7D32; }
-    .letras { font-size: 12px; color: #666; font-style: italic; border-bottom: none; }
+    .fuerte { font-weight: bold; font-size: 17px; }
+    .monto { font-weight: bold; font-size: 23px; color: #2E7D32; margin-right: 3mm; }
+    .letras { font-size: 11.5px; color: #666; font-style: italic; }
 
     .pie { margin-top: auto; display: flex; justify-content: flex-end; align-items: flex-end; }
     .etiqueta-copia {
