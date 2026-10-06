@@ -458,7 +458,11 @@ Permite entregarle al paciente un comprobante del pago. **No es una factura:** s
 
 Está pensada para la administrativa, con pasos numerados y botones grandes. El objetivo es que escriba lo mínimo:
 
-1. **¿A quién le cobrás?** — los turnos del día aparecen como botones. Toca el nombre y se completa solo. Si el que paga no tenía turno, se escribe el nombre a mano. Los turnos cancelados no se ofrecen.
+1. **¿A quién le cobrás?** — los turnos del día aparecen como botones, ordenados por hora. Toca el nombre y se completa solo. Si el que paga no tenía turno, se escribe el nombre a mano. Los turnos cancelados no se ofrecen.
+
+   **Al que ya se le cobró, el botón queda en verde con un ✓ y lo cobrado** (*✓ $ 25.000*), así se ve de un vistazo quién falta. Si se intenta cobrarle de nuevo a alguien en el mismo día, avisa cuánto ya pagó y pide confirmar. **No lo bloquea**, porque puede ser legítimo: dos tratamientos en el día, o dos hermanos que figuran con el mismo apellido.
+
+   La comparación es por nombre, sin importar mayúsculas ni espacios de más (`nombreNormalizado()`): el turno puede decir `MELANO ALFONSO` y el comprobante `Melano Alfonso`.
 2. **¿Cuánto pagó?** — campo grande; abajo va apareciendo el monto escrito en letras a medida que tipea, para control.
 3. **¿Cómo pagó?** — Efectivo, Transferencia, Débito o Mercado Pago. Viene marcado Efectivo.
 

@@ -144,6 +144,20 @@ function formatearMonto(monto) {
     return '$ ' + Number(monto).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 }
 
+// ---------- Quién ya pagó hoy ----------
+// Se compara por nombre, sin importar mayúsculas ni espacios de más, porque el
+// turno puede decir "MELANO ALFONSO" y el comprobante "Melano Alfonso".
+function nombreNormalizado(nombre) {
+    return String(nombre || '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function pagosDeHoyDe(nombre) {
+    const hoy = fechaStr(new Date());
+    const buscado = nombreNormalizado(nombre);
+    if (!buscado) return [];
+    return obtenerPagos().filter(p => p.fecha === hoy && nombreNormalizado(p.nombre) === buscado);
+}
+
 // ---------- Pantalla ----------
 function seleccionarPacienteCaja(nombre) {
     const input = document.getElementById('caja-nombre');
@@ -176,12 +190,20 @@ function renderizarCaja() {
         .sort((a, b) => a.hora.localeCompare(b.hora));
 
     const botonesTurnos = turnosHoy.length
-        ? turnosHoy.map(t => `
-            <button class="caja-turno-btn" data-nombre="${t.pacienteNombre}"
+        ? turnosHoy.map(t => {
+            // Si ya se le cobró hoy, el botón queda marcado con el ✓ y lo cobrado
+            const cobrados = pagosDeHoyDe(t.pacienteNombre);
+            const totalCobrado = cobrados.reduce((s, p) => s + Number(p.monto || 0), 0);
+            return `
+            <button class="caja-turno-btn${cobrados.length ? ' pagado' : ''}" data-nombre="${t.pacienteNombre}"
                     onclick="seleccionarPacienteCaja('${String(t.pacienteNombre).replace(/'/g, "\\'")}')">
                 <span class="caja-turno-nombre">${t.pacienteNombre}</span>
-                <span class="caja-turno-hora">${t.hora}</span>
-            </button>`).join('')
+                <span class="caja-turno-pie">
+                    <span class="caja-turno-hora">${t.hora}</span>
+                    ${cobrados.length ? `<span class="caja-turno-pagado">✓ ${formatearMonto(totalCobrado)}</span>` : ''}
+                </span>
+            </button>`;
+        }).join('')
         : `<div class="caja-sin-turnos">No hay turnos cargados para hoy. Escribí el nombre abajo.</div>`;
 
     // Lo cobrado hoy
@@ -267,6 +289,19 @@ function emitirComprobante() {
         alert('Falta el monto, o no es un número válido.');
         document.getElementById('caja-monto')?.focus();
         return;
+    }
+
+    // Aviso por si se le está cobrando dos veces a la misma persona en el día.
+    // No se bloquea: puede ser legítimo (dos tratamientos, dos hijos del mismo
+    // apellido), pero conviene que lo confirme.
+    const previos = pagosDeHoyDe(nombre);
+    if (previos.length) {
+        const yaCobrado = previos.reduce((s, p) => s + Number(p.monto || 0), 0);
+        const detalle = previos.map(p => `   ${p.numero}  ${formatearMonto(p.monto)}  ${p.formaPago}`).join('\n');
+        if (!confirm(
+            `A ${nombre} ya se le cobró hoy ${formatearMonto(yaCobrado)}:\n\n${detalle}\n\n` +
+            `¿Querés cobrarle ${formatearMonto(monto)} de nuevo?`
+        )) return;
     }
 
     const ahora = new Date();
