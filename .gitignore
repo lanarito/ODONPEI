@@ -36,3 +36,9 @@ tmp/
 start-server.ps1
 server.py
 start.bat
+
+# Claves de Firebase — NUNCA al repositorio (es publico en GitHub Pages)
+*clave-admin*.json
+*serviceaccount*.json
+*firebase-adminsdk*.json
+odonpei-*.json
