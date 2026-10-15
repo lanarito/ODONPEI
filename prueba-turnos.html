@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pedir turno - ODONPEI</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(160deg, #A8D8EA 0%, #FFD9E0 100%);
+    min-height: 100vh; padding: 18px 14px 40px; color: #333;
+  }
+  .hoja { max-width: 460px; margin: 0 auto; }
+  .tarjeta { background:#fff; border-radius:20px; padding:22px 20px; box-shadow:0 6px 24px rgba(0,0,0,.10); }
+
+  .logo { width: 190px; max-width: 72%; display:block; margin: 4px auto 14px; }
+  h1 { font-size:21px; text-align:center; color:#333; margin-bottom:4px; }
+  .bajada { text-align:center; color:#888; font-size:13.5px; margin-bottom:20px; line-height:1.5; }
+
+  .dia { margin-bottom: 16px; }
+  .dia-nombre { font-size:14px; font-weight:700; color:#4A90E2; margin-bottom:8px; }
+  .horarios { display:flex; flex-wrap:wrap; gap:7px; }
+  .hora {
+    border:2px solid #E4EAF0; background:#FAFCFD; border-radius:11px;
+    padding:11px 0; width:72px; text-align:center; font-size:15px; color:#444;
+    cursor:pointer; font-family:inherit; transition:all .14s;
+  }
+  .hora:hover { border-color:#A8D8EA; background:#F2FAFD; }
+  .hora.elegida { background:#4A90E2; border-color:#4A90E2; color:#fff; font-weight:700; transform:scale(1.04); }
+
+  .form { margin-top:18px; padding-top:18px; border-top:2px dashed #EDF1F5; display:none; }
+  .form.visible { display:block; animation:aparecer .25s ease; }
+  @keyframes aparecer { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+  .elegido { background:#E8F4FD; border-radius:12px; padding:11px 14px; font-size:14.5px; color:#1565C0; margin-bottom:16px; text-align:center; }
+  .elegido b { display:block; font-size:16px; margin-top:2px; }
+
+  label { display:block; font-size:12.5px; color:#8A93A0; margin:12px 0 5px; font-weight:600; }
+  input, textarea {
+    width:100%; padding:13px 14px; border:2px solid #E4EAF0; border-radius:12px;
+    font-size:16px; font-family:inherit; color:#333; background:#fff;
+  }
+  input:focus, textarea:focus { outline:none; border-color:#A8D8EA; }
+  textarea { resize:none; height:74px; font-size:14.5px; }
+  .ayudita { font-size:11.5px; color:#AAB2BD; margin-top:5px; }
+
+  .confirmar {
+    width:100%; margin-top:20px; padding:17px; border:none; border-radius:14px;
+    background:linear-gradient(135deg,#5CBF7E,#2E9E57); color:#fff;
+    font-size:17px; font-weight:700; font-family:inherit; cursor:pointer;
+    box-shadow:0 4px 14px rgba(46,158,87,.32);
+  }
+  .confirmar:active { transform:translateY(1px); }
+
+  .hablar { margin-top:16px; text-align:center; }
+  .hablar a { display:inline-flex; align-items:center; gap:7px; color:#128C4B;
+    font-size:14px; text-decoration:none; font-weight:600; padding:11px 18px;
+    border:2px solid #CDEBD8; border-radius:30px; background:#F3FBF6; }
+  .pie { text-align:center; font-size:11.5px; color:#8A93A0; margin-top:18px; line-height:1.7; }
+
+  .listo { display:none; text-align:center; padding:14px 4px; }
+  .listo.visible { display:block; animation:aparecer .3s ease; }
+  .tilde { width:76px; height:76px; border-radius:50%; background:#E8F7EE;
+    display:flex; align-items:center; justify-content:center; font-size:40px; margin:6px auto 16px; }
+  .listo h2 { font-size:21px; color:#2E9E57; margin-bottom:12px; }
+  .resumen { background:#F7F9FB; border-radius:14px; padding:18px; font-size:15px; line-height:1.9; margin:16px 0; }
+  .resumen .gde { font-size:18px; font-weight:700; color:#333; }
+
+  .pregunta { text-align:center; padding:6px 0 4px; }
+  .pregunta h1 { margin-bottom:8px; }
+  .opciones { display:flex; flex-direction:column; gap:11px; margin-top:22px; }
+  .opcion {
+    border:2px solid #E4EAF0; background:#FAFCFD; border-radius:15px;
+    padding:18px 16px; font-family:inherit; font-size:16px; color:#333;
+    cursor:pointer; text-align:left; transition:all .15s; width:100%;
+  }
+  .opcion:hover { border-color:#A8D8EA; background:#F2FAFD; }
+  .opcion b { display:block; font-size:16.5px; margin-bottom:3px; }
+  .opcion span { font-size:12.5px; color:#8A93A0; line-height:1.5; display:block; }
+
+  .primera { display:none; text-align:center; padding:8px 4px; }
+  .primera.visible { display:block; animation:aparecer .3s ease; }
+  .primera .icono { font-size:46px; margin:8px 0 14px; }
+  .primera h2 { font-size:20px; color:#333; margin-bottom:12px; }
+  .wsp-grande {
+    display:flex; align-items:center; justify-content:center; gap:9px;
+    width:100%; margin-top:20px; padding:17px; border-radius:14px;
+    background:linear-gradient(135deg,#4ADE80,#128C4B); color:#fff;
+    font-size:17px; font-weight:700; text-decoration:none;
+    box-shadow:0 4px 14px rgba(18,140,75,.3);
+  }
+  .volver { background:none; border:none; color:#8A93A0; font-size:13.5px;
+    font-family:inherit; cursor:pointer; margin-top:18px; text-decoration:underline; }
+
+  .franja-prueba { max-width:460px; margin:0 auto 10px; text-align:center;
+    font-size:10.5px; letter-spacing:2px; color:rgba(255,255,255,.85); font-weight:700; }
+  .nota-prueba { background:#FFF4D6; border:1px solid #F0D98B; border-radius:12px;
+    padding:12px 14px; font-size:13px; color:#7A6321; line-height:1.6; margin:14px 0 0; }
+</style>
+</head>
+<body>
+<div class="franja-prueba">VERSI&Oacute;N DE PRUEBA</div>
+<div class="hoja">
+  <div class="tarjeta">
+
+    <div id="paso0" class="pregunta">
+      <img class="logo" src="ODONPEI 2.png" alt="ODONPEI">
+      <h1>Pedir un turno</h1>
+      <p class="bajada">&iquest;Es la primera vez que viene el paciente?</p>
+      <div class="opciones">
+        <button class="opcion" onclick="irA('primera')">
+          <b>&#127775; S&iacute;, es la primera vez</b>
+          <span>Preferimos hablar con vos antes, para recibirlo de la mejor manera</span>
+        </button>
+        <button class="opcion" onclick="irA('paso1')">
+          <b>&#128197; Ya vino antes</b>
+          <span>Eleg&iacute; d&iacute;a y hora de los que tenemos disponibles</span>
+        </button>
+      </div>
+      <p class="pie">ODONPEI &middot; Dra. Mar&iacute;a Luj&aacute;n D&iacute;az<br>Laprida 772 &middot; R&iacute;o Gallegos</p>
+    </div>
+
+    <div class="primera" id="primera">
+      <div class="icono">&#128172;</div>
+      <h2>Queremos conocerlo primero</h2>
+      <p class="bajada">Para la primera visita preferimos hablar con vos.<br><br>
+      As&iacute; sabemos c&oacute;mo recibirlo, cu&aacute;nto tiempo reservarle y qu&eacute; necesita
+      para estar c&oacute;modo. Cada chico es distinto y nos gusta prepararnos.</p>
+      <a class="wsp-grande" href="https://wa.me/5492966673798?text=Hola!%20Es%20la%20primera%20vez%20que%20vamos%20a%20la%20consulta%20y%20queria%20pedir%20un%20turno">
+        &#128172; Escribirnos por WhatsApp
+      </a>
+      <button class="volver" onclick="irA('paso0')">Volver</button>
+      <p class="pie">Te respondemos de lunes a s&aacute;bado</p>
+    </div>
+
+    <div id="paso1" style="display:none">
+      <img class="logo" src="ODONPEI 2.png" alt="ODONPEI">
+      <h1>Pedir un turno</h1>
+      <p class="bajada">Eleg&iacute; el d&iacute;a y la hora que te queden c&oacute;modos.<br>Son los horarios que tenemos disponibles esta semana.</p>
+      <div id="dias"></div>
+
+      <div class="form" id="form">
+        <div class="elegido">Tu turno ser&iacute;a el<b id="elegido-txt"></b></div>
+        <label>&iquest;C&oacute;mo se llama el paciente?</label>
+        <input type="text" id="nombre" placeholder="Nombre y apellido" autocomplete="off">
+        <label>Celular de contacto</label>
+        <input type="tel" id="cel" value="+54 9 2966 " autocomplete="off">
+        <label>&iquest;Hay algo que debamos saber? (opcional)</label>
+        <textarea id="nota" placeholder="Por ejemplo: es la primera vez, viene con acompanante, tiene alguna condicion que debamos tener en cuenta..."></textarea>
+        <div class="ayudita">Esto nos ayuda a prepararnos para recibirlo mejor.</div>
+        <button class="confirmar" onclick="confirmar()">Confirmar turno</button>
+      </div>
+
+      <div class="hablar">
+        <a href="https://wa.me/5492966673798?text=Hola!%20Necesito%20consultar%20algo%20sobre%20un%20turno">
+          &#128172; Prefiero hablar con alguien
+        </a>
+      </div>
+      <p class="pie">ODONPEI &middot; Dra. Mar&iacute;a Luj&aacute;n D&iacute;az<br>Laprida 772 &middot; R&iacute;o Gallegos</p>
+    </div>
+
+    <div class="listo" id="listo">
+      <div class="tilde">&#9989;</div>
+      <h2>&iexcl;Turno confirmado!</h2>
+      <div class="resumen">
+        <span id="r-nombre" class="gde"></span><br>
+        <span id="r-cuando"></span>
+      </div>
+      <p class="bajada">Te vamos a enviar un recordatorio por WhatsApp el d&iacute;a anterior.<br><br>
+      Si no pod&eacute;s venir, avisanos con tiempo: ese lugar lo puede necesitar otra familia.</p>
+      <div class="nota-prueba"><b>Versi&oacute;n de prueba:</b> as&iacute; se ver&iacute;a la confirmaci&oacute;n.
+      Este turno <b>no qued&oacute; registrado</b> en la agenda del consultorio.</div>
+      <div class="hablar">
+        <a href="https://wa.me/5492966673798?text=Hola!%20Necesito%20avisar%20algo%20sobre%20mi%20turno">&#128172; Escribirnos</a>
+      </div>
+      <p class="pie">ODONPEI &middot; Laprida 772 &middot; R&iacute;o Gallegos</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var DISPONIBILIDAD = [{"fecha": "2026-10-16", "etiqueta": "Viernes 16 de octubre", "libres": ["15:00", "15:30", "19:00", "19:30", "20:00"]}, {"fecha": "2026-10-17", "etiqueta": "Sábado 17 de octubre", "libres": ["15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"]}, {"fecha": "2026-10-19", "etiqueta": "Lunes 19 de octubre", "libres": ["15:00", "15:30", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"]}, {"fecha": "2026-10-20", "etiqueta": "Martes 20 de octubre", "libres": ["15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"]}, {"fecha": "2026-10-21", "etiqueta": "Miércoles 21 de octubre", "libres": ["16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"]}, {"fecha": "2026-10-22", "etiqueta": "Jueves 22 de octubre", "libres": ["16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"]}];
+var elegido = null;
+
+function irA(pantalla) {
+  ['paso0', 'primera', 'paso1', 'listo'].forEach(function (id) {
+    var el = document.getElementById(id);
+    el.style.display = (id === pantalla) ? 'block' : 'none';
+    el.classList.toggle('visible', id === pantalla);
+  });
+  window.scrollTo(0, 0);
+}
+
+document.getElementById('dias').innerHTML = DISPONIBILIDAD.map(function (d) {
+  var botones = d.libres.map(function (h) {
+    return '<button class="hora" onclick="elegir(\'' + d.fecha + '\',\'' + h + '\',this,\'' + d.etiqueta + '\')">' + h + '</button>';
+  }).join('');
+  return '<div class="dia"><div class="dia-nombre">' + d.etiqueta + '</div><div class="horarios">' + botones + '</div></div>';
+}).join('');
+
+function elegir(fecha, hora, btn, etiqueta) {
+  var todos = document.querySelectorAll('.hora');
+  for (var i = 0; i < todos.length; i++) todos[i].classList.remove('elegida');
+  btn.classList.add('elegida');
+  elegido = { fecha: fecha, hora: hora, etiqueta: etiqueta };
+  document.getElementById('elegido-txt').textContent = etiqueta + ' a las ' + hora;
+  document.getElementById('form').classList.add('visible');
+  document.getElementById('form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+document.getElementById('nombre').addEventListener('input', function (e) {
+  var p = e.target.selectionStart;
+  e.target.value = e.target.value.toUpperCase();
+  e.target.setSelectionRange(p, p);
+});
+
+function confirmar() {
+  var nombre = document.getElementById('nombre').value.trim();
+  var cel = document.getElementById('cel').value.replace(/\D/g, '');
+  if (!nombre) { alert('Falta el nombre del paciente'); return; }
+  if (cel.length < 12) { alert('Falta completar el celular'); return; }
+  document.getElementById('r-nombre').textContent = nombre;
+  document.getElementById('r-cuando').textContent = elegido.etiqueta + ' a las ' + elegido.hora + ' hs';
+  irA('listo');
+}
+</script>
+</body>
+</html>
