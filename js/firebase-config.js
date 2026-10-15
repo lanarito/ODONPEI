@@ -32,9 +32,32 @@ async function firebaseLogin(usuario, password) {
 }
 function firebaseLogout() { return signOut(auth); }
 function onFirebaseAuthChange(cb) { return onAuthStateChanged(auth, cb); }
+// Avisa UNA sola vez, apenas hay alguien logueado.
+//
+// Hace falta porque con las reglas nuevas Firestore rechaza todo lo que se lea
+// sin sesión iniciada. Antes la app empezaba a leer 1,5 segundos después de
+// abrir la página —o sea, con la pantalla de login todavía puesta— y esas
+// lecturas se rechazaban. Lo peor no era la lectura: el escuchador en tiempo
+// real moría ahí y NO se vuelve a levantar solo, así que los pacientes dejaban
+// de sincronizarse entre dispositivos en esa pestaña.
+//
+// Con esto, cada parte de la app pide sus datos cuando el login ya está hecho,
+// sin importar cuánto tarde la persona en escribir la contraseña.
+function cuandoHayaLogin(cb) {
+  let yaCorrio = false;
+  const dejarDeEscuchar = onAuthStateChanged(auth, (user) => {
+    if (user && !yaCorrio) {
+      yaCorrio = true;
+      dejarDeEscuchar();
+      cb(user);
+    }
+  });
+}
+
 window.firebaseLogin = firebaseLogin;
 window.firebaseLogout = firebaseLogout;
 window.onFirebaseAuthChange = onFirebaseAuthChange;
+window.cuandoHayaLogin = cuandoHayaLogin;
 window.firebaseAuth = auth;
 
 // ========== FUNCIONES FIRESTORE ==========

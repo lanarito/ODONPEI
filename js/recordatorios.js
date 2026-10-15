@@ -710,8 +710,12 @@ function renderizarAvisoRecordatorios() {
         </div>`;
 }
 
-// Traer la plantilla compartida al arrancar
-setTimeout(sincronizarPlantilla, 1500);
+// Traer la plantilla compartida, una vez que el login esté hecho: leerla antes
+// la rechazan las reglas y quedaría el texto por defecto en vez del que editaron
+setTimeout(() => {
+    if (typeof cuandoHayaLogin === 'function') cuandoHayaLogin(sincronizarPlantilla);
+    else sincronizarPlantilla();
+}, 1000);
 
 // El panel de diagnóstico ya no tiene botón, pero sigue existiendo: si alguna vez
 // hace falta ver qué números quedaron raros, se abre desde la consola del

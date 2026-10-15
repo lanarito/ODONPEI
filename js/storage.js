@@ -226,9 +226,12 @@ async function sincronizarDesdeFirebase() {
     return false;
 }
 
-// Esperar a que firebase-config.js (módulo) termine de asignar window.xxx
-window.addEventListener('load', () => {
-    setTimeout(async () => {
+// Todo lo que toca Firebase se hace DESPUÉS de que el login esté confirmado.
+// Antes esto corría 1,5 segundos después de abrir la página, con la pantalla de
+// login todavía puesta: con las reglas nuevas esas lecturas se rechazan y el
+// escuchador en tiempo real muere sin volver a levantarse, así que los pacientes
+// dejaban de sincronizarse entre la compu y la tablet.
+async function sincronizarPacientesConLaNube() {
         // 1. Subir UNA SOLA VEZ los pacientes locales que aún no están en Firebase
         //    (se comparan por el campo .id, así no se duplican los que ya están)
         if (typeof obtenerDesdePacientesFirestore === 'function' && typeof guardarEnFirestore === 'function') {
@@ -284,5 +287,19 @@ window.addEventListener('load', () => {
                 }
             });
         }
-    }, 1500);
+}
+
+window.addEventListener('load', () => {
+    // El pequeño retraso es solo para darle tiempo a firebase-config.js (que es
+    // un módulo) a publicar sus funciones en window
+    setTimeout(() => {
+        if (typeof cuandoHayaLogin === 'function') {
+            cuandoHayaLogin(() => {
+                sincronizarPacientesConLaNube().catch(e => console.warn('Sync pacientes:', e));
+            });
+        } else {
+            // Si por lo que sea Firebase no cargó, al menos que la app no quede trabada
+            sincronizarPacientesConLaNube().catch(e => console.warn('Sync pacientes:', e));
+        }
+    }, 1000);
 });

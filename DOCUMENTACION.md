@@ -476,6 +476,37 @@ La regla es simple: **los `<input type="text">` sí, los `<textarea>` no.** Un d
 
 ---
 
+## Login real y reglas cerradas (octubre 2026)
+
+La base dejó de estar abierta. Las reglas de Firestore ahora son:
+
+```
+allow read, write: if request.auth != null;
+```
+
+Es decir: **sin sesión iniciada no se lee ni se escribe nada**. Antes la regla era `if true;` y cualquiera que conociera la dirección del proyecto podía leer todas las historias clínicas.
+
+El login dejó de ser decorativo: pide usuario y contraseña, y los valida **Firebase Authentication** (`firebaseLogin()` en `js/firebase-config.js`). El "usuario" que se escribe se convierte internamente en un mail técnico `usuario@odonpei.app`; la contraseña no está en el código, la valida Firebase. La sesión persiste en el dispositivo (`browserLocalPersistence`), así que no hay que escribirla cada vez.
+
+### El efecto secundario que hubo que arreglar
+
+Cerrar las reglas rompió algo que antes no se notaba: **`js/storage.js` empezaba a leer Firebase 1,5 segundos después de abrir la página**, con la pantalla de login todavía puesta. Con la base abierta no molestaba; con las reglas nuevas, esas lecturas se rechazan.
+
+Lo grave no era la lectura fallida sino el **escuchador en tiempo real de pacientes**: si `onSnapshot` arranca sin permiso, Firebase lo mata y **no se vuelve a levantar solo**. Resultado: se logueaban bien, trabajaban normal, y la lista de pacientes dejaba de sincronizarse entre la compu y la tablet en esa pestaña. Y fallaba de forma intermitente —si la sesión ya estaba recordada en ese dispositivo, a veces llegaba a tiempo—, que es la peor manera de fallar.
+
+**El arreglo:** `cuandoHayaLogin(cb)` en `js/firebase-config.js` avisa una sola vez, apenas hay sesión iniciada. Lo usan:
+
+| Dónde | Qué espera |
+|-------|-----------|
+| `js/storage.js` | La sincronización de pacientes y su escuchador en tiempo real |
+| `js/recordatorios.js` | Traer la plantilla compartida del mensaje de WhatsApp |
+
+Los turnos, la caja, el chat y el contador no lo necesitan: arrancan cuando se entra a esas secciones o desde `mostrarApp()`, y para entonces el login ya está hecho.
+
+> **Regla para el futuro:** con las reglas cerradas, **nada puede leer Firestore al cargar la página**. Si se agrega algo que lea al arrancar, tiene que ir dentro de `cuandoHayaLogin()`. Si no, va a fallar en silencio justo como pasó acá.
+
+---
+
 ## Caja — Comprobantes de Pago (`js/caja.js`)
 
 Permite entregarle al paciente un comprobante del pago. **No es una factura:** si el paciente necesita factura, la Dra. la emite aparte. El papel lo dice expresamente (*"Documento no válido como factura"*) para que nadie lo presente donde no corresponde.
@@ -636,7 +667,7 @@ service cloud.firestore {
 }
 ```
 
-`if true;` **no tiene fecha → nunca se vence**. Después de editar hay que apretar **Publicar**.
+> ⚠️ **Esto quedó viejo.** Desde octubre de 2026 la regla correcta ya NO es `if true;` sino `if request.auth != null;`, porque la app tiene login real. Ver la sección *"Login real y reglas cerradas"*. Un `permission-denied` ahora puede significar simplemente que todavía no se inició sesión.
 
 > **Cómo detectar este problema en el futuro:** abrir la consola del navegador (F12 → Console). Si aparecen errores rojos que dicen `permission-denied` o `Missing or insufficient permissions`, las reglas se vencieron → reemplazarlas por la regla de arriba.
 
