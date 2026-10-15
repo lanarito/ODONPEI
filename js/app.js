@@ -138,9 +138,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function verificarSesion() {
-    const usuario = sessionStorage.getItem('odonpei_usuario');
-    if (usuario) {
-        mostrarApp(usuario);
+    // La sesión ahora la maneja Firebase Auth (persiste en el dispositivo).
+    if (typeof onFirebaseAuthChange === 'function') {
+        onFirebaseAuthChange((user) => {
+            if (user) { mostrarApp('odonpei'); }
+            else { mostrarLogin(); }
+        });
     } else {
         mostrarLogin();
     }
@@ -183,28 +186,34 @@ function mostrarApp(usuario) {
     if (typeof initChat === 'function') initChat();
 }
 
-function hacerLogin() {
+async function hacerLogin() {
     const usuario = document.getElementById('login-usuario')?.value?.trim().toLowerCase();
+    const password = document.getElementById('login-password')?.value || '';
     const errorEl = document.getElementById('login-error');
 
-    if (!usuario) {
+    if (!usuario || !password) {
         errorEl.style.display = 'block';
-        errorEl.textContent = 'Ingresa tu usuario';
+        errorEl.textContent = 'Ingresá usuario y contraseña';
         return;
     }
-
-    if (USUARIOS_VALIDOS.includes(usuario)) {
-        errorEl.style.display = 'none';
-        sessionStorage.setItem('odonpei_usuario', usuario);
-        mostrarApp(usuario);
-    } else {
+    if (typeof window.firebaseLogin !== 'function') {
         errorEl.style.display = 'block';
-        errorEl.textContent = 'Usuario no encontrado. Usuarios válidos: ' + USUARIOS_VALIDOS.join(', ');
+        errorEl.textContent = 'No se pudo conectar con el servidor. Reintentá.';
+        return;
+    }
+    try {
+        await window.firebaseLogin(usuario, password);
+        errorEl.style.display = 'none';
+        mostrarApp(usuario);
+    } catch (e) {
+        errorEl.style.display = 'block';
+        errorEl.textContent = 'Usuario o contraseña incorrectos';
+        console.warn('Login fallido:', e.code || e.message);
     }
 }
 
 function cerrarSesion() {
-    sessionStorage.removeItem('odonpei_usuario');
+    if (typeof firebaseLogout === 'function') firebaseLogout();
     if (typeof chatOcultar === 'function') chatOcultar();
     mostrarLogin();
 }

@@ -2,6 +2,7 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB2tn3mNVocWkafcAH0KNG2sPaEFGyBZJs",
@@ -16,8 +17,25 @@ const firebaseConfig = {
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+setPersistence(auth, browserLocalPersistence).catch(() => {});
 
 console.log('✅ Firebase conectado a odonpei');
+
+// ========== AUTENTICACIÓN REAL (usuario + contraseña) ==========
+// El "usuario" se convierte en un mail técnico interno (no real, invisible para el usuario).
+// La contraseña NO está en el código: la valida Firebase Auth.
+async function firebaseLogin(usuario, password) {
+  const email = String(usuario || '').trim().toLowerCase() + '@odonpei.app';
+  const cred = await signInWithEmailAndPassword(auth, email, password);
+  return cred.user;
+}
+function firebaseLogout() { return signOut(auth); }
+function onFirebaseAuthChange(cb) { return onAuthStateChanged(auth, cb); }
+window.firebaseLogin = firebaseLogin;
+window.firebaseLogout = firebaseLogout;
+window.onFirebaseAuthChange = onFirebaseAuthChange;
+window.firebaseAuth = auth;
 
 // ========== FUNCIONES FIRESTORE ==========
 
