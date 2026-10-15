@@ -226,6 +226,67 @@ async function sincronizarDesdeFirebase() {
     return false;
 }
 
+// ========== EMPROLIJAR LOS NOMBRES VIEJOS ==========
+// Desde el 6/10/2026 todo lo que se carga queda en mayúscula solo. Pero lo que
+// ya estaba cargado antes se quedó como estaba: en los turnos, más de la mitad
+// tenían minúsculas ("lopez noemi", "Romina sarmiento").
+// Esto los empareja una sola vez. Toca SOLO los campos cortos: los textos
+// clínicos largos quedan como están, porque en mayúscula no se leen.
+
+const CAMPOS_CORTOS_PACIENTE = ['nombre', 'alias', 'domicilio', 'nombrePadre',
+                                'obraSocial', 'nAfiliado', 'dni', 'telefonoRef', 'telefono2Ref'];
+const FLAG_NOMBRES = 'ODONPEI_NOMBRES_NORMALIZADOS';
+
+function necesitaMayusculas(valor) {
+    return typeof valor === 'string' && valor.trim() && valor !== valor.toUpperCase();
+}
+
+async function normalizarNombresViejosAuto(pacientesYaLeidos) {
+    if (localStorage.getItem(FLAG_NOMBRES) === 'si') return;   // ya se hizo en este dispositivo
+
+    let pacientesArreglados = 0, turnosArreglados = 0, errores = 0;
+
+    // --- Pacientes (se reusa la lista que ya se leyó, para no pedirla de nuevo) ---
+    try {
+        const pacientes = pacientesYaLeidos || await obtenerDesdePacientesFirestore();
+        for (const p of pacientes) {
+            const dp = p.datosPersonales;
+            if (!dp) continue;
+            let cambio = false;
+            for (const campo of CAMPOS_CORTOS_PACIENTE) {
+                if (necesitaMayusculas(dp[campo])) { dp[campo] = dp[campo].toUpperCase(); cambio = true; }
+            }
+            if (!cambio) continue;
+            const docId = p.id || p.firebaseId;
+            if (!docId) continue;
+            // Solo datosPersonales: mandar la ficha entera con fotos puede pasarse del límite
+            const ok = await actualizarCamposPacienteEnFirestore(docId, { datosPersonales: dp });
+            if (ok) pacientesArreglados++; else errores++;
+        }
+    } catch (e) { console.warn('Normalizando nombres de pacientes:', e); errores++; }
+
+    // --- Turnos ---
+    try {
+        if (typeof obtenerTurnosDesdeFirestore === 'function') {
+            const turnos = await obtenerTurnosDesdeFirestore();
+            for (const t of turnos) {
+                if (!necesitaMayusculas(t.pacienteNombre)) continue;
+                t.pacienteNombre = t.pacienteNombre.toUpperCase();
+                const ok = await actualizarTurnoEnFirestore(t);
+                if (ok !== false) turnosArreglados++; else errores++;
+            }
+        }
+    } catch (e) { console.warn('Normalizando nombres de turnos:', e); errores++; }
+
+    if (!errores) localStorage.setItem(FLAG_NOMBRES, 'si');   // si falló algo, se reintenta la próxima
+
+    if (pacientesArreglados || turnosArreglados) {
+        console.log(`✅ Nombres emparejados a mayúscula: ${pacientesArreglados} paciente(s), ${turnosArreglados} turno(s)` +
+                    (errores ? ` · ${errores} error(es), se reintenta al volver a entrar` : ''));
+        if (typeof cargarPacientes === 'function') cargarPacientes();
+    }
+}
+
 // Todo lo que toca Firebase se hace DESPUÉS de que el login esté confirmado.
 // Antes esto corría 1,5 segundos después de abrir la página, con la pantalla de
 // login todavía puesta: con las reglas nuevas esas lecturas se rechazan y el
@@ -251,6 +312,11 @@ async function sincronizarPacientesConLaNube() {
         try {
             await deduplicarPacientesAuto();
         } catch (e) { console.warn('Deduplicando pacientes:', e); }
+
+        // Emparejar a mayúscula los nombres cargados antes del 6/10/2026
+        try {
+            await normalizarNombresViejosAuto();
+        } catch (e) { console.warn('Normalizando nombres:', e); }
 
         // 3. Escuchar en tiempo real — SOLO muestra, nunca sube (evita bucle/duplicados)
         if (typeof sincronizarEnTiempoReal === 'function') {

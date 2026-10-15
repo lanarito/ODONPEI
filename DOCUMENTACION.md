@@ -472,7 +472,15 @@ La regla es simple: **los `<input type="text">` sí, los `<textarea>` no.** Un d
 
 > **El WhatsApp no se ve afectado:** `formatearNombre()` en `js/recordatorios.js` convierte `MELANO ALFONSO` a `Melano Alfonso` antes de armar el mensaje, así al paciente no le llega un texto gritado. Las dos cosas conviven bien: adentro mayúscula, para afuera normal.
 
-**Los datos viejos quedaron como estaban.** Esto rige de acá en adelante. Casi todos los nombres ya estaban en mayúscula de antes.
+### Emparejar lo que quedó de antes
+
+La regla rige desde el 6/10/2026, así que lo cargado antes se quedó como estaba. En los pacientes eran pocos (4 de 77), pero **en los turnos era más de la mitad** (104 de 183): `lopez noemi`, `Romina sarmiento`, `GONZALEZ santiago`.
+
+`normalizarNombresViejosAuto()` en `js/storage.js` los empareja **una sola vez por dispositivo** (bandera `ODONPEI_NOMBRES_NORMALIZADOS` en localStorage), al abrir la app y con el login ya hecho. Toca solo los campos cortos de la lista `CAMPOS_CORTOS_PACIENTE` más el `pacienteNombre` de los turnos.
+
+Se probó sobre el backup real de agosto: 7 pacientes y 119 turnos corregidos, **sin tocar ningún otro campo** — historias clínicas, odontogramas y fotos quedaron idénticos. Si falla algo, no se marca la bandera y se reintenta la próxima vez.
+
+Para los pacientes reusa la lista que la sincronización ya trajo de la nube, así no se pide dos veces.
 
 ---
 
