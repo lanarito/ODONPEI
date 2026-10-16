@@ -133,7 +133,7 @@
     <p class="intro" style="margin:18px 0 4px; font-size:15.5px; color:#3B4A52;"><b>&iquest;Te gustar&iacute;a que te reservemos un turno?</b></p>
     <button class="btn" onclick="irA('p-horarios')">S&iacute;, ver horarios</button>
     <a class="btn btn-wsp" href="https://wa.me/5492966673798?text=Hola!%20Complete%20la%20ficha%20de%20bienvenida%20y%20queria%20hacerles%20una%20consulta" style="margin-top:10px;">&#128172; Prefiero hablar con ustedes</a>
-    <button class="volver" onclick="irA('p-ficha')">Volver</button>
+    <button class="volver" onclick="volver()">Volver</button>
   </div>
 </div>
 
@@ -144,7 +144,7 @@
     <p class="intro" style="font-size:13.5px; margin-bottom:18px;">Estos son los espacios que tenemos disponibles.</p>
     <div id="dias"></div>
     <button class="btn" id="btn-confirmar" onclick="confirmar()" style="display:none">Confirmar turno</button>
-    <button class="volver" onclick="irA('p-respuesta')">Volver</button>
+    <button class="volver" onclick="volver()">Volver</button>
   </div>
 </div>
 
@@ -168,12 +168,31 @@ var TEXTOS = {"bebe": "¡Qué bueno que consultes temprano! La primera visita de
 var ficha = { primera: null };
 var elegido = null;
 
-function irA(id) {
+// Cada pantalla queda anotada en el historial del navegador. Sin esto, el
+// boton "atras" del celular saca de la pagina en vez de volver un paso, y la
+// familia pierde todo lo que escribio.
+function mostrar(id) {
   var p = document.querySelectorAll('.pantalla');
   for (var i = 0; i < p.length; i++) p[i].classList.remove('visible');
   document.getElementById(id).classList.add('visible');
   window.scrollTo(0, 0);
 }
+
+function irA(id) {
+  mostrar(id);
+  try { history.pushState({ pantalla: id }, ''); } catch (e) { /* algunos navegadores con archivos locales */ }
+}
+
+function volver() {
+  if (history.state && history.state.pantalla) history.back();
+  else mostrar('p-ficha');
+}
+
+window.addEventListener('popstate', function (e) {
+  mostrar(e.state && e.state.pantalla ? e.state.pantalla : 'p-ficha');
+});
+
+try { history.replaceState({ pantalla: 'p-ficha' }, ''); } catch (e) {}
 
 function elegirPrimera(si) {
   ficha.primera = si;
