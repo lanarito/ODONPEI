@@ -293,16 +293,26 @@ async function normalizarNombresViejosAuto(pacientesYaLeidos) {
 // escuchador en tiempo real muere sin volver a levantarse, así que los pacientes
 // dejaban de sincronizarse entre la compu y la tablet.
 async function sincronizarPacientesConLaNube() {
-        // 1. Subir UNA SOLA VEZ los pacientes locales que aún no están en Firebase
-        //    (se comparan por el campo .id, así no se duplican los que ya están)
+        // 1. Subir los pacientes que se crearon acá y NUNCA llegaron a la nube.
+        //
+        //    OJO con la condición: antes decía solo "si no está en la nube, subilo",
+        //    y eso RESUCITABA todo lo borrado. El dispositivo no puede distinguir
+        //    entre "esto nunca se subió" y "esto lo borraron a propósito", así que
+        //    devolvía a la nube fichas eliminadas días o meses antes.
+        //    Pasó de verdad: una limpieza de 20 fichas duplicadas se deshizo sola
+        //    cuando alguien abrió la app.
+        //
+        //    La marca es `firebaseId`: se escribe cuando el paciente se sube bien.
+        //    Si lo tiene y no está en la nube, es porque lo borraron. No se sube.
+        //    Es el mismo criterio que ya usaban los turnos.
         if (typeof obtenerDesdePacientesFirestore === 'function' && typeof guardarEnFirestore === 'function') {
             try {
                 const remotos = await obtenerDesdePacientesFirestore();
                 const idsRemotos = new Set(remotos.map(p => p.id));
                 const locales = obtenerTodos();
-                for (const p of locales) {
-                    if (!idsRemotos.has(p.id)) await guardarEnFirestore(p);
-                }
+                const nuncaSubidos = locales.filter(p => !p.firebaseId && !idsRemotos.has(p.id));
+                for (const p of nuncaSubidos) await guardarEnFirestore(p);
+                if (nuncaSubidos.length) console.log(`⬆️ ${nuncaSubidos.length} paciente(s) que faltaban subir`);
             } catch (e) { console.warn('Subida inicial pacientes:', e); }
         }
         // 2. Mantenimiento automático, sin botones y sin preguntar nada:
@@ -323,7 +333,12 @@ async function sincronizarPacientesConLaNube() {
             sincronizarEnTiempoReal((pacientesRemotos) => {
                 const locales = obtenerTodos();
                 const idsRemotos = new Set(pacientesRemotos.map(p => p.id));
-                const soloLocales = locales.filter(p => !idsRemotos.has(p.id));
+                // Lo que no está en la nube solo sobrevive acá si NUNCA se subió.
+                // Si tiene firebaseId y ya no está arriba, lo borraron en otro
+                // dispositivo: hay que soltarlo, no conservarlo. Si no, cada
+                // máquina se queda con su propia copia de lo eliminado y lo
+                // vuelve a mostrar como si existiera.
+                const soloLocales = locales.filter(p => !idsRemotos.has(p.id) && !p.firebaseId);
 
                 // Mientras queden documentos duplicados en la nube, dejar UNA sola
                 // copia de cada paciente (la más completa). Si no, la lista muestra

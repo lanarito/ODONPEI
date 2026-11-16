@@ -518,6 +518,35 @@ Los turnos, la caja, el chat y el contador no lo necesitan: arrancan cuando se e
 
 ---
 
+## ⚠️ Fichas que resucitaban (noviembre 2026)
+
+Se limpiaron 20 fichas duplicadas y **al rato estaban todas de vuelta**. También volvió una ficha de prueba borrada un mes antes.
+
+**La causa** estaba en `js/storage.js`, al abrir la app:
+
+```js
+for (const p of locales) {
+    if (!idsRemotos.has(p.id)) await guardarEnFirestore(p);   // ← acá
+}
+```
+
+Traducido: *"si tengo un paciente que no está en la nube, lo subo"*. El dispositivo **no puede distinguir** entre *"esto nunca se subió"* y *"esto lo borraron a propósito"*. Entonces cualquier máquina cuya copia local todavía tuviera las fichas viejas las devolvía a la nube apenas abrían la app.
+
+Es el mismo bug que se arregló en **turnos** en julio de 2026 (`4309403`, *"borrar/modificar se refleja en todos lados y no reaparece"*) y que nunca se le había aplicado a pacientes.
+
+**El arreglo** es la marca `firebaseId`, que se escribe cuando el paciente se sube bien:
+
+| Estado local | Qué significa | Qué se hace |
+|--------------|---------------|-------------|
+| sin `firebaseId`, no está en la nube | nunca se subió | **se sube** |
+| con `firebaseId`, no está en la nube | lo borraron en otro lado | **se suelta** |
+
+El segundo caso se arregló en los dos lugares: ya no se re-sube, y además el listener deja de conservarlo en la copia local (si no, cada máquina seguía mostrando su propia versión de lo eliminado).
+
+> **Para tener en cuenta:** un borrado solo es definitivo cuando **todos** los dispositivos cargaron esta versión del código. Antes de hacer una limpieza grande conviene abrir y recargar la app en todas las máquinas.
+
+---
+
 ## Sugerencias de nombres (`js/autocompletar.js`)
 
 Al escribir un nombre se despliega una lista con los que el sistema ya conoce. Se elige uno en vez de escribirlo entero.
