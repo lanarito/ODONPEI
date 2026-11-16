@@ -108,8 +108,17 @@ const CAMPOS_SIN_MAYUSCULAS = [
     'chat-input'
 ];
 
+// Mayúsculas Y sin tildes. Lo segundo importa tanto como lo primero: con
+// acentos convivían "MELIÁN" y "MELIAN" como si fueran dos personas.
+// La Ñ se protege antes de sacar los acentos: no es una N con tilde, es otra
+// letra, y MUÑOZ no puede quedar MUNOZ.
 function aMayusculas(texto) {
-    return String(texto || '').toUpperCase();
+    return String(texto || '')
+        .toUpperCase()
+        .replace(/Ñ/g, '\u0001')
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .replace(/\u0001/g, 'Ñ');
 }
 
 document.addEventListener('input', (e) => {
@@ -119,7 +128,7 @@ document.addEventListener('input', (e) => {
     if (CAMPOS_SIN_MAYUSCULAS.includes(el.id)) return;
     if (el.closest && el.closest('#chat-panel')) return;
 
-    const enMayusculas = el.value.toUpperCase();
+    const enMayusculas = aMayusculas(el.value);
     if (enMayusculas === el.value) return;
 
     // Guardar dónde estaba el cursor: si no, salta al final y no se puede

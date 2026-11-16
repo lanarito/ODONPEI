@@ -453,7 +453,9 @@ Los nombres se cargan casi siempre en mayúsculas (`SARMIENTO ROMINA`). Mandar e
 
 ## Todo en mayúsculas
 
-Los datos se guardan **siempre en mayúsculas**, escriba como escriba quien los carga. El motivo es evitar que convivan `Melano`, `melano` y `MELANO` como si fueran personas distintas, que es lo que después ensucia las búsquedas y genera duplicados.
+Los datos se guardan **siempre en mayúsculas y sin tildes**, escriba como escriba quien los carga. El motivo es evitar que convivan `Melano`, `melano` y `MELANO` —o `MELIÁN` y `MELIAN`— como si fueran personas distintas, que es lo que después ensucia las búsquedas y genera duplicados.
+
+> **La Ñ se conserva.** No es una N con tilde, es otra letra: `MUÑOZ` no puede quedar `MUNOZ`. En `aMayusculas()` se la protege antes de sacar los acentos. El buscador sí la ignora, así que escribiendo `munoz` igual la encuentra.
 
 Funciona en dos niveles (`js/app.js`):
 - **Mientras se escribe:** un único `addEventListener('input')` en todo el documento pasa a mayúscula lo que se tipea, **conservando la posición del cursor** (si no, salta al final y no se puede corregir una letra en el medio de una palabra).
