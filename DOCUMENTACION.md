@@ -918,8 +918,9 @@ El guardado usaba `canvas.datosOdontograma` (propiedad inexistente) en lugar de 
 | `v2.3-caja` | Página Caja: comprobantes de pago con original y duplicado |
 | `v2.5-caja-y-mayusculas` | Caja completa (tilde de cobrado) + todos los datos en mayúsculas |
 | `v3.2-login-real` | Login con Firebase Auth, reglas cerradas y comprobante rediseñado |
+| `v4.0-pagos-y-datos-limpios` | Historial de pagos, actualización automática, sugerencias de nombres y base depurada |
 
-Para volver a un punto: `git checkout v3.2-login-real`
+Para volver a un punto: `git checkout v4.0-pagos-y-datos-limpios`
 
 ### Backups locales
 - `c:\Github repos\ODONPEI_backup_2026-05-21.zip` — v1.0
@@ -931,6 +932,7 @@ Para volver a un punto: `git checkout v3.2-login-real`
 - `c:\Github repos\ODONPEI_backup_2026-09-21_v2.2.zip` — v2.2 (Turnos por duración + fix del deploy de Pages)
 - `c:\Github repos\ODONPEI_backup_2026-10-06_v2.5.zip` — v2.5 (Caja + todo en mayúsculas)
 - `c:\Github repos\ODONPEI_backup_2026-10-15_v3.2.zip` — v3.2 (Login real + comprobante rediseñado)
+- `c:\Github repos\ODONPEI_backup_2026-11-16_v4.0.zip` — v4.0 (Pagos + datos limpios + actualización automática)
 
 ### Backup de la base en la nube
 - `c:\Github repos\ODONPEI_backup_firebase_2026-08-27.json` (9,4 MB) — copia cruda de Firestore (303 documentos de `pacientes` + 248 de `turnos`) tomada **antes** de la deduplicación automática.
