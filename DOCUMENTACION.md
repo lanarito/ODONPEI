@@ -679,9 +679,42 @@ Los pagos **sí** se guardan (colección `pagos` en Firebase, `setDoc` por id co
 
 > Se imprime **antes** de guardar, a propósito: si llegara a fallar el guardado, el papel igual salió y el paciente se va con su comprobante.
 
+### Historial de pagos
+
+Los comprobantes se pueden mirar de dos maneras, sobre los mismos datos.
+
+**Por paciente** — pestaña **💵 Pagos** en la ficha, al lado de Fotos y Archivos:
+
+```
+  3 pagos                                      $ 125.000
+  12/11/2026   TRATAMIENTO ODONTOLOGICO   Transferencia   $ 45.000  🖨️
+  28/10/2026   TRATAMIENTO ODONTOLOGICO   Transferencia   $ 40.000  🖨️
+  06/10/2026   TRATAMIENTO ODONTOLOGICO   Efectivo        $ 40.000  🖨️
+```
+
+**Todos los ingresos** — botón **📊** al pie de la Caja, agrupados por mes y plegables:
+
+```
+  🔍 Buscar paciente...
+  42 comprobante(s)                           $ 4.335.935
+  ▼ Noviembre 2026          20                $ 2.245.000
+     12/11  MELIAN EMMA        Transferencia   $ 45.000  🖨️
+     10/11  CARLOS HAIQUIL     Efectivo        $ 40.000  🖨️  sin ficha
+  ▶ Octubre 2026            22                $ 2.090.935
+```
+
+Está en la Caja porque ahí ya se mira el total del día: querer ver el mes es el paso siguiente desde el mismo lugar.
+
+### Pagos sin ficha
+
+Un pago se ata a su paciente por `pacienteId`. Pero hay gente que paga y **no tiene ficha**: primeras consultas, o quien vino una sola vez. Esos pagos no aparecen en ninguna historia clínica, y por eso existe el listado general: ahí salen todos, con la marca **sin ficha**.
+
+De los 42 comprobantes históricos, 37 quedaron atados a una ficha y 5 no.
+
+> Para los pagos viejos, cargados cuando el nombre era texto libre, hay una red de seguridad: si no tienen `pacienteId` se los busca por nombre normalizado. Los nuevos se atan directo.
+
 ### Lo que NO hace
 
-- No está vinculado a la ficha del paciente: el nombre es texto libre, igual que en los turnos. No hay "historial de pagos del paciente".
 - No maneja cuotas ni pagos a cuenta. Se definió que el pago es único.
 - No descuenta de un presupuesto.
 

@@ -660,6 +660,8 @@ function cambiarTab(tabName) {
         mostrarTratamientos();
     } else if (tabName === 'presupuesto') {
         mostrarPresupuesto();
+    } else if (tabName === 'pagos') {
+        mostrarPagosDelPaciente();
     }
 }
 

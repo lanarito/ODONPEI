@@ -233,6 +233,11 @@ function renderizarCaja() {
                 </div>`).join('')}
         </div>` : '';
 
+    // El listado general va siempre, aunque hoy no se haya cobrado nada:
+    // es donde aparecen los pagos de gente que no tiene ficha
+    const botonIngresos = `
+        <button class="caja-ingresos" onclick="abrirIngresos()">📊 Todos los ingresos</button>`;
+
     cont.innerHTML = `
         <div class="caja-fecha">${fechaLegible}</div>
 
@@ -269,7 +274,8 @@ function renderizarCaja() {
 
         <button class="caja-imprimir" onclick="emitirComprobante()">🖨️ IMPRIMIR COMPROBANTE</button>
 
-        ${listaHoy}`;
+        ${listaHoy}
+        ${botonIngresos}`;
 }
 
 function mostrarMontoEnLetras() {
@@ -515,4 +521,138 @@ function generarHTMLComprobante(pago) {
     </div>
 </body>
 </html>`;
+}
+
+// ========== HISTORIAL DE PAGOS ==========
+//
+// Dos vistas sobre los mismos comprobantes:
+//   - Los de UN paciente, en la pestaña Pagos de su ficha
+//   - TODOS los ingresos, agrupados por mes, desde la Caja
+//
+// Los pagos se atan a la ficha por `pacienteId`. Los que no tienen ficha
+// (primeras consultas, gente que vino una vez) igual aparecen en el listado
+// general: por eso existe, para que no se pierdan de vista.
+
+const MESES_NOMBRE = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+function pagosDelPaciente(paciente) {
+    if (!paciente) return [];
+    const id = paciente.id;
+    const porNombre = nombreNormalizado(paciente.datosPersonales?.nombre);
+    return obtenerPagos()
+        .filter(p => (p.pacienteId && p.pacienteId === id) ||
+                     (!p.pacienteId && nombreNormalizado(p.nombre) === porNombre))
+        .sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
+}
+
+function filaDePago(p, mostrarNombre) {
+    const f = p.fecha ? new Date(p.fecha + 'T12:00:00').toLocaleDateString('es-AR') : '';
+    return `
+        <div class="pago-fila">
+            <span class="pago-fecha">${f}</span>
+            ${mostrarNombre ? `<span class="pago-nombre">${p.nombre || ''}${p.pacienteId ? '' : ' <em class="pago-sinficha">sin ficha</em>'}</span>` : ''}
+            <span class="pago-concepto">${p.concepto || ''}</span>
+            <span class="pago-forma">${p.formaPago || ''}</span>
+            <span class="pago-importe">${formatearMonto(p.monto)}</span>
+            <button class="caja-link" onclick="reimprimirPago('${p.id}')" title="Volver a imprimir">🖨️</button>
+        </div>`;
+}
+
+// ---------- Pestaña Pagos de la ficha ----------
+function mostrarPagosDelPaciente() {
+    const cont = document.getElementById('pagos-del-paciente');
+    if (!cont) return;
+
+    const pagos = pagosDelPaciente(pacienteActual);
+    if (!pagos.length) {
+        cont.innerHTML = `<div class="pagos-vacio">Todavía no hay pagos registrados para este paciente.</div>`;
+        return;
+    }
+    const total = pagos.reduce((s, p) => s + Number(p.monto || 0), 0);
+
+    cont.innerHTML = `
+        <div class="pagos-resumen">
+            <span>${pagos.length} pago${pagos.length > 1 ? 's' : ''}</span>
+            <span class="pagos-total">${formatearMonto(total)}</span>
+        </div>
+        <div class="pagos-lista">${pagos.map(p => filaDePago(p, false)).join('')}</div>`;
+}
+
+// ---------- Todos los ingresos ----------
+let mesesPlegados = {};
+let filtroIngresos = '';
+
+function abrirIngresos() {
+    mesesPlegados = {};
+    filtroIngresos = '';
+    renderizarIngresos();
+}
+
+function filtrarIngresos(texto) {
+    filtroIngresos = texto;
+    renderizarIngresos(true);
+}
+
+function plegarMes(mes) {
+    mesesPlegados[mes] = !mesesPlegados[mes];
+    renderizarIngresos();
+}
+
+function renderizarIngresos(conservarFoco) {
+    const cont = document.getElementById('panel-recordatorios-container');
+    if (!cont) return;
+
+    const buscado = nombreNormalizado(filtroIngresos);
+    const pagos = obtenerPagos()
+        .filter(p => !buscado || nombreNormalizado(p.nombre).includes(buscado))
+        .sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
+
+    // Agrupar por mes, del más nuevo al más viejo
+    const porMes = new Map();
+    pagos.forEach(p => {
+        const mes = (p.fecha || '').slice(0, 7);
+        if (!porMes.has(mes)) porMes.set(mes, []);
+        porMes.get(mes).push(p);
+    });
+
+    const totalGeneral = pagos.reduce((s, p) => s + Number(p.monto || 0), 0);
+
+    const cuerpo = porMes.size ? [...porMes.entries()].map(([mes, lista]) => {
+        const total = lista.reduce((s, p) => s + Number(p.monto || 0), 0);
+        const [a, m] = mes.split('-');
+        const plegado = mesesPlegados[mes];
+        return `
+            <div class="ing-mes">
+                <button class="ing-mes-cabeza" onclick="plegarMes('${mes}')">
+                    <span class="ing-flecha">${plegado ? '▶' : '▼'}</span>
+                    <span class="ing-mes-nombre">${MESES_NOMBRE[parseInt(m, 10)] || mes} ${a}</span>
+                    <span class="ing-mes-cant">${lista.length}</span>
+                    <span class="ing-mes-total">${formatearMonto(total)}</span>
+                </button>
+                ${plegado ? '' : `<div class="pagos-lista">${lista.map(p => filaDePago(p, true)).join('')}</div>`}
+            </div>`;
+    }).join('') : `<div class="pagos-vacio">No hay pagos que coincidan.</div>`;
+
+    cont.innerHTML = `
+        <div class="modal-overlay" onclick="cerrarPanelRecordatorios()">
+            <div class="modal-content rec-modal" onclick="event.stopPropagation()">
+                <h3 style="margin-bottom:12px; color:#333;">📊 Todos los ingresos</h3>
+                <input type="text" id="buscador-ingresos" class="ing-buscador" placeholder="🔍 Buscar paciente..."
+                       value="${filtroIngresos}" oninput="filtrarIngresos(this.value)" autocomplete="off">
+                <div class="ing-total-general">
+                    <span>${pagos.length} comprobante(s)</span>
+                    <span class="pagos-total">${formatearMonto(totalGeneral)}</span>
+                </div>
+                ${cuerpo}
+                <div class="form-actions" style="margin-top:14px;">
+                    <button class="btn btn-outline" onclick="cerrarPanelRecordatorios()" style="width:100%;">Cerrar</button>
+                </div>
+            </div>
+        </div>`;
+
+    if (conservarFoco) {
+        const b = document.getElementById('buscador-ingresos');
+        if (b) { b.focus(); b.setSelectionRange(b.value.length, b.value.length); }
+    }
 }
