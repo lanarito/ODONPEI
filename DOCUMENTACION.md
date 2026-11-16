@@ -40,7 +40,8 @@ ODONPEI/
 │   ├── turnos.js           # Turnero digital con vista semanal + sync Firebase
 │   ├── chat.js             # Chat interno en tiempo real entre estaciones (Firebase)
 │   ├── recordatorios.js    # Recordatorios de turnos por WhatsApp (un clic)
-│   └── caja.js             # Comprobantes de pago (página Caja)
+│   ├── caja.js             # Comprobantes de pago (página Caja)
+│   └── autocompletar.js    # Sugerencias de nombres ya cargados
 ├── ODONPEI 2.png           # Logo principal (puzzle de dientes coloridos)
 ├── Muela.png               # Imagen de muela (usada en bienvenida y marca de agua)
 └── DOCUMENTACION.md        # Este archivo
@@ -512,6 +513,47 @@ Lo grave no era la lectura fallida sino el **escuchador en tiempo real de pacien
 Los turnos, la caja, el chat y el contador no lo necesitan: arrancan cuando se entra a esas secciones o desde `mostrarApp()`, y para entonces el login ya está hecho.
 
 > **Regla para el futuro:** con las reglas cerradas, **nada puede leer Firestore al cargar la página**. Si se agrega algo que lea al arrancar, tiene que ir dentro de `cuandoHayaLogin()`. Si no, va a fallar en silencio justo como pasó acá.
+
+---
+
+## Sugerencias de nombres (`js/autocompletar.js`)
+
+Al escribir un nombre se despliega una lista con los que el sistema ya conoce. Se elige uno en vez de escribirlo entero.
+
+**Por qué existe:** cada vez que alguien escribía un nombre a mano inventaba una variante nueva. Así convivían `GONZALES` y `GONZALEZ`, `MELIAM` y `MELIAN`, y se crearon **18 fichas duplicadas** del mismo paciente. Limpiar los datos sin esto es secar el piso con la canilla abierta.
+
+### Cómo busca
+
+Sin tildes y **sin importar el orden de las palabras**: cada palabra escrita tiene que ser el comienzo de alguna palabra del nombre.
+
+| Se escribe | Encuentra |
+|------------|-----------|
+| `iker` | QUIROGA IKER *(el apellido va primero)* |
+| `munoz` | MUÑOZ LUCA MATEO *(la Ñ se ignora al buscar)* |
+| `shiara` | RAMOS MARTINEZ LOPEZ SHIARA |
+| `vitto` | BENINI VITTORIA ISABELLA |
+| `gonz sant` | GONZALEZ SANTIAGO |
+| `munoz mia` | MUÑOZ GENE MIA *(descarta al hermano)* |
+
+Muestra la **edad** al lado, que es lo que permite distinguir hermanos con el mismo apellido. Los nombres que solo existen en turnos (gente sin ficha) aparecen marcados **sin ficha**.
+
+> **La Ñ se conserva al guardar** — no es un acento, es otra letra: `MUÑOZ` no debe quedar `MUNOZ`. Pero el buscador la ignora, así que escribiendo `munoz` igual la encuentra.
+
+### Dónde está
+
+| Campo | Qué hace |
+|-------|----------|
+| Nombre del turno | completa el campo |
+| Nombre en Caja | completa el campo |
+| **Apellido y Nombre** (Nuevo Paciente) | **no completa: avisa** |
+
+En Nuevo Paciente, si lo que se escribe se parece a una ficha existente aparece *"⚠️ Ya existe una ficha parecida"* con un botón para abrirla. Es lo que evita seguir creando duplicados.
+
+### Detalles de implementación
+
+Los formularios se arman en el momento (modales, pestañas), así que no se puede enganchar al cargar la página: hay un único `addEventListener('input')` sobre todo el documento que mira si el campo está en `CAMPOS_CON_SUGERENCIAS`.
+
+El desplegable se cuelga del contenedor del propio campo, para que funcione dentro de los modales. Los ítems responden a `mousedown` y no a `click`, porque el click llega después del `blur` y para entonces la lista ya se cerró.
 
 ---
 
