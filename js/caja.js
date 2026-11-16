@@ -44,33 +44,61 @@ function guardarPagosStorage(pagos) {
     }
 }
 
+// Mientras no lleguen los pagos de la nube hay que poder distinguir
+// "este paciente no pagó nunca" de "todavía no los traje"
+let pagosYaLlegaron = false;
+
+// Refresca TODAS las pantallas que muestran pagos, no solo la de Caja.
+// Antes solo se refrescaba Caja, y el listado de ingresos abierto se quedaba
+// vacío para siempre si lo abrían antes de que llegaran los datos.
+function refrescarPantallasDePagos() {
+    renderizarCaja();
+    // el buscador solo existe si el listado esta en pantalla
+    if (document.getElementById('buscador-ingresos')) renderizarIngresos();
+    const tabPagos = document.getElementById('tab-pagos');
+    if (tabPagos && tabPagos.style.display !== 'none') mostrarPagosDelPaciente();
+}
+
+// Los pagos se traen al ARRANCAR la app, no al entrar a Caja.
+// Si se trajeran solo en Caja, la pestaña Pagos de una ficha aparecería
+// vacía para quien nunca pasó por ahí.
+async function sincronizarPagosConLaNube() {
+    if (typeof obtenerPagosDesdeFirestore !== 'function') return;
+    try {
+        const remotos = await obtenerPagosDesdeFirestore();
+        const idsRemotos = new Set(remotos.map(p => p.id));
+        // Subir solo los que se emitieron sin conexión y nunca llegaron
+        const nuevos = obtenerPagos().filter(p => !p.firebaseId && !idsRemotos.has(p.id));
+        for (const p of nuevos) await guardarPagoEnFirestore(p);
+        const finales = nuevos.length ? await obtenerPagosDesdeFirestore() : remotos;
+        guardarPagosStorage(finales);
+        pagosYaLlegaron = true;
+        refrescarPantallasDePagos();
+    } catch (e) { console.warn('Carga pagos:', e); }
+
+    if (!cajaListenerActivo && typeof sincronizarPagosEnTiempoReal === 'function') {
+        cajaListenerActivo = true;
+        sincronizarPagosEnTiempoReal((remotos) => {
+            guardarPagosStorage(remotos);
+            pagosYaLlegaron = true;
+            refrescarPantallasDePagos();
+        });
+    }
+}
+
 function cargarCaja() {
     cajaFormaPago = 'Efectivo';
     renderizarCaja();
-
-    setTimeout(async () => {
-        if (typeof obtenerPagosDesdeFirestore === 'function') {
-            try {
-                const remotos = await obtenerPagosDesdeFirestore();
-                const idsRemotos = new Set(remotos.map(p => p.id));
-                // Subir solo los que se emitieron sin conexión y nunca llegaron
-                const nuevos = obtenerPagos().filter(p => !p.firebaseId && !idsRemotos.has(p.id));
-                for (const p of nuevos) await guardarPagoEnFirestore(p);
-                const finales = nuevos.length ? await obtenerPagosDesdeFirestore() : remotos;
-                guardarPagosStorage(finales);
-                renderizarCaja();
-            } catch (e) { console.warn('Carga pagos:', e); }
-        }
-
-        if (!cajaListenerActivo && typeof sincronizarPagosEnTiempoReal === 'function') {
-            cajaListenerActivo = true;
-            sincronizarPagosEnTiempoReal((remotos) => {
-                guardarPagosStorage(remotos);
-                renderizarCaja();
-            });
-        }
-    }, 800);
+    if (!pagosYaLlegaron) sincronizarPagosConLaNube();
 }
+
+// Apenas hay sesión iniciada se traen los pagos, sin esperar a que alguien
+// entre a Caja (ver la regla en la documentación: nada lee Firestore antes
+// del login, y lo que lee al arrancar va dentro de cuandoHayaLogin)
+setTimeout(() => {
+    if (typeof cuandoHayaLogin === 'function') cuandoHayaLogin(sincronizarPagosConLaNube);
+    else sincronizarPagosConLaNube();
+}, 1200);
 
 // ---------- Número del comprobante ----------
 // Formato 06102026-01: fecha + el número que va ese día. No es numeración
@@ -579,7 +607,9 @@ function mostrarPagosDelPaciente() {
 
     const pagos = pagosDelPaciente(pacienteActual);
     if (!pagos.length) {
-        cont.innerHTML = `<div class="pagos-vacio">Todavía no hay pagos registrados para este paciente.</div>`;
+        cont.innerHTML = `<div class="pagos-vacio">${pagosYaLlegaron
+            ? 'Todavía no hay pagos registrados para este paciente.'
+            : '⏳ Buscando los pagos...'}</div>`;
         return;
     }
     const total = pagos.reduce((s, p) => s + Number(p.monto || 0), 0);
@@ -645,7 +675,7 @@ function renderizarIngresos(conservarFoco) {
                 </button>
                 ${plegado ? '' : `<div class="pagos-lista">${lista.map(p => filaDePago(p, true)).join('')}</div>`}
             </div>`;
-    }).join('') : `<div class="pagos-vacio">No hay pagos que coincidan.</div>`;
+    }).join('') : `<div class="pagos-vacio">${pagosYaLlegaron ? 'No hay pagos que coincidan.' : '⏳ Buscando los pagos...'}</div>`;
 
     cont.innerHTML = `
         <div class="modal-overlay" onclick="cerrarPanelRecordatorios()">

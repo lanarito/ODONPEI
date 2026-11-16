@@ -741,6 +741,12 @@ Los comprobantes se pueden mirar de dos maneras, sobre los mismos datos.
 
 Está en la Caja porque ahí ya se mira el total del día: querer ver el mes es el paso siguiente desde el mismo lugar.
 
+> **Los pagos se traen al arrancar la app, no al entrar a Caja.** Al principio se traían solo en Caja, y eso dejaba la pestaña Pagos de las fichas vacía para cualquiera que no hubiera pasado por ahí. Van dentro de `cuandoHayaLogin()`, como todo lo que lee Firestore al arrancar.
+>
+> Y cuando llegan, se refrescan **todas** las pantallas que muestran pagos (`refrescarPantallasDePagos()`), no solo la de Caja: si el listado de ingresos está abierto esperando, se llena solo. Antes se quedaba vacío para siempre si lo abrían antes de que llegaran los datos.
+>
+> Mientras no llegaron, dice **"⏳ Buscando los pagos..."** en vez de *"no hay pagos"*. No es lo mismo no tener pagos que no haberlos recibido todavía, y mostrar lo segundo como lo primero hace que parezca que se perdió la plata.
+
 ### Pagos sin ficha
 
 Un pago se ata a su paciente por `pacienteId`. Pero hay gente que paga y **no tiene ficha**: primeras consultas, o quien vino una sola vez. Esos pagos no aparecen en ninguna historia clínica, y por eso existe el listado general: ahí salen todos, con la marca **sin ficha**.
