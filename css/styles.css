@@ -2160,3 +2160,18 @@ body {
     .pago-concepto { display: none; }
     .pago-nombre { min-width: 100%; }
 }
+
+/* Cartelito al actualizarse solo */
+.aviso-actualizando {
+    position: fixed;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99999;
+    background: #333;
+    color: #fff;
+    font-size: 14px;
+    padding: 12px 22px;
+    border-radius: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}

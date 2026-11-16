@@ -285,6 +285,17 @@ function mostrarMontoEnLetras() {
     el.textContent = (monto > 0) ? montoEnLetras(monto) : '';
 }
 
+// Busca la ficha que corresponde a ese nombre. Solo ata si hay UNA sola
+// coincidencia exacta: si hay dos parecidas, prefiere dejarlo suelto antes
+// que meterle el pago a la ficha equivocada.
+function fichaDeEsteNombre(nombre) {
+    if (typeof obtenerTodos !== 'function') return null;
+    const buscado = nombreNormalizado(nombre);
+    if (!buscado) return null;
+    const iguales = obtenerTodos().filter(p => nombreNormalizado(p.datosPersonales?.nombre) === buscado);
+    return iguales.length === 1 ? iguales[0] : null;
+}
+
 // ---------- Emitir ----------
 function emitirComprobante() {
     const nombre = aMayusculas(document.getElementById('caja-nombre')?.value.trim());
@@ -317,8 +328,10 @@ function emitirComprobante() {
 
     const ahora = new Date();
     const fecha = fechaStr(ahora);
+    const ficha = fichaDeEsteNombre(nombre);
     const pago = {
         id: Date.now().toString(),
+        pacienteId: ficha ? ficha.id : '',       // vacio = pago sin ficha, sale en el listado general
         numero: proximoNumero(fecha),
         fecha: fecha,
         hora: ahora.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false }),

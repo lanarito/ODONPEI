@@ -41,7 +41,8 @@ ODONPEI/
 │   ├── chat.js             # Chat interno en tiempo real entre estaciones (Firebase)
 │   ├── recordatorios.js    # Recordatorios de turnos por WhatsApp (un clic)
 │   ├── caja.js             # Comprobantes de pago (página Caja)
-│   └── autocompletar.js    # Sugerencias de nombres ya cargados
+│   ├── autocompletar.js    # Sugerencias de nombres ya cargados
+│   └── actualizacion.js    # Se actualiza sola cuando hay version nueva
 ├── ODONPEI 2.png           # Logo principal (puzzle de dientes coloridos)
 ├── Muela.png               # Imagen de muela (usada en bienvenida y marca de agua)
 └── DOCUMENTACION.md        # Este archivo
@@ -544,6 +545,41 @@ Es el mismo bug que se arregló en **turnos** en julio de 2026 (`4309403`, *"bor
 El segundo caso se arregló en los dos lugares: ya no se re-sube, y además el listener deja de conservarlo en la copia local (si no, cada máquina seguía mostrando su propia versión de lo eliminado).
 
 > **Para tener en cuenta:** un borrado solo es definitivo cuando **todos** los dispositivos cargaron esta versión del código. Antes de hacer una limpieza grande conviene abrir y recargar la app en todas las máquinas.
+
+---
+
+## Actualización automática (`js/actualizacion.js`)
+
+En el consultorio **nadie va a apretar Ctrl+F5**, y con razón: están atendiendo. Pero quedarse con código viejo tiene consecuencias reales — una tablet desactualizada llegó a resucitar fichas que ya se habían borrado.
+
+La app se fija sola si hay una versión nueva publicada y **se recarga cuando nadie la está usando**.
+
+### Cómo sabe que hay una versión nueva
+
+Compara el `?v=` que ya usan los archivos en `index.html` contra el que está publicado, pidiéndolo con `cache: 'no-store'` para saltear el caché. No hace falta mantener un segundo archivo de versión, así que tampoco hay uno que se pueda desincronizar.
+
+### Cuándo mira
+
+| Momento | Por qué |
+|---------|---------|
+| 30 segundos después de abrir | un equipo que estuvo días prendido se pone al día enseguida |
+| Cada 15 minutos | revisión de rutina |
+| Al volver a la pestaña | prendieron la tablet o cambiaron de app |
+| Al recuperar internet | estaba sin red cuando se publicó |
+
+### Cuándo NO recarga
+
+Recargar en el medio de una carga sería peor que no actualizar nunca, así que espera si:
+
+- Hay un **modal abierto** (turno, comprobante, recordatorios)
+- Están en la pantalla de **cargar o editar un paciente**
+- Hay **algo escrito** en cualquier campo visible sin guardar
+- El **chat está abierto** (puede haber un mensaje a medio escribir)
+- Tocaron algo hace **menos de 90 segundos**
+
+Si está ocupada, vuelve a mirar cada minuto hasta que se libere. Cuando por fin recarga, muestra un cartelito *"🔄 Actualizando el sistema..."* un segundo antes, para que no parezca que la pantalla parpadeó sola.
+
+> **Esto no reemplaza subir el `?v=`** al tocar un `.css` o `.js`: es justamente el número que mira para darse cuenta. Si no se sube, la actualización automática tampoco se entera.
 
 ---
 
