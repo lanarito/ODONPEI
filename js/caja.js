@@ -626,6 +626,24 @@ function mostrarPagosDelPaciente() {
 let mesesPlegados = {};
 let filtroIngresos = '';
 
+// Contenedor propio, colgado del body. No sirve reusar el de recordatorios:
+// ese vive dentro de la pagina de Turnos, y cuando estas en Caja esa pagina
+// esta oculta, asi que el listado se dibujaba donde nadie lo podia ver.
+function contenedorIngresos() {
+    let c = document.getElementById('panel-ingresos-container');
+    if (!c) {
+        c = document.createElement('div');
+        c.id = 'panel-ingresos-container';
+        document.body.appendChild(c);
+    }
+    return c;
+}
+
+function cerrarIngresos() {
+    const c = document.getElementById('panel-ingresos-container');
+    if (c) c.innerHTML = '';
+}
+
 function abrirIngresos() {
     mesesPlegados = {};
     filtroIngresos = '';
@@ -643,8 +661,7 @@ function plegarMes(mes) {
 }
 
 function renderizarIngresos(conservarFoco) {
-    const cont = document.getElementById('panel-recordatorios-container');
-    if (!cont) return;
+    const cont = contenedorIngresos();
 
     const buscado = nombreNormalizado(filtroIngresos);
     const pagos = obtenerPagos()
@@ -678,7 +695,7 @@ function renderizarIngresos(conservarFoco) {
     }).join('') : `<div class="pagos-vacio">${pagosYaLlegaron ? 'No hay pagos que coincidan.' : '⏳ Buscando los pagos...'}</div>`;
 
     cont.innerHTML = `
-        <div class="modal-overlay" onclick="cerrarPanelRecordatorios()">
+        <div class="modal-overlay" onclick="cerrarIngresos()">
             <div class="modal-content rec-modal" onclick="event.stopPropagation()">
                 <h3 style="margin-bottom:12px; color:#333;">📊 Todos los ingresos</h3>
                 <input type="text" id="buscador-ingresos" class="ing-buscador" placeholder="🔍 Buscar paciente..."
@@ -689,7 +706,7 @@ function renderizarIngresos(conservarFoco) {
                 </div>
                 ${cuerpo}
                 <div class="form-actions" style="margin-top:14px;">
-                    <button class="btn btn-outline" onclick="cerrarPanelRecordatorios()" style="width:100%;">Cerrar</button>
+                    <button class="btn btn-outline" onclick="cerrarIngresos()" style="width:100%;">Cerrar</button>
                 </div>
             </div>
         </div>`;

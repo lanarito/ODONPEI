@@ -745,7 +745,9 @@ Está en la Caja porque ahí ya se mira el total del día: querer ver el mes es 
 >
 > Y cuando llegan, se refrescan **todas** las pantallas que muestran pagos (`refrescarPantallasDePagos()`), no solo la de Caja: si el listado de ingresos está abierto esperando, se llena solo. Antes se quedaba vacío para siempre si lo abrían antes de que llegaran los datos.
 >
-> Mientras no llegaron, dice **"⏳ Buscando los pagos..."** en vez de *"no hay pagos"*. No es lo mismo no tener pagos que no haberlos recibido todavía, y mostrar lo segundo como lo primero hace que parezca que se perdió la plata.
+> **El listado tiene su propio contenedor colgado del `<body>`** (`panel-ingresos-container`). No se puede reusar el de recordatorios: ese vive **dentro de la página de Turnos**, que está oculta cuando se está en Caja, así que el modal se dibujaba bien pero donde nadie podía verlo. Un modal que se abre desde cualquier página no puede colgar de una página en particular.
+>
+> Mientras no llegaron, dice **"⏳ Buscando los pagos..." en vez de *"no hay pagos"*. No es lo mismo no tener pagos que no haberlos recibido todavía, y mostrar lo segundo como lo primero hace que parezca que se perdió la plata.
 
 ### Pagos sin ficha
 
