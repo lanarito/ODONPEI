@@ -1,0 +1,3953 @@
+{
+ "fecha": "2026-10-15T18:06:50.875594",
+ "ficha_borrada": {
+  "name": "projects/odonpei/databases/(default)/documents/pacientes/1779390223377",
+  "fields": {
+   "datosPersonales": {
+    "mapValue": {
+     "fields": {
+      "alias": {
+       "stringValue": "dsa"
+      },
+      "nAfiliado": {
+       "stringValue": ""
+      },
+      "nombrePadre": {
+       "stringValue": "dd"
+      },
+      "dni": {
+       "stringValue": ""
+      },
+      "obraSocial": {
+       "stringValue": "css"
+      },
+      "nombre": {
+       "stringValue": "nestor kirchner"
+      },
+      "telefonoOriginal": {
+       "stringValue": "+54 9 2966 67-3798"
+      },
+      "domicilio": {
+       "stringValue": "asda asas 336"
+      },
+      "edad": {
+       "stringValue": "23"
+      },
+      "telefono": {
+       "stringValue": "+54 9 2966 67-3798"
+      },
+      "fechaNacimiento": {
+       "stringValue": "2026-05-06"
+      }
+     }
+    }
+   },
+   "odontograma": {
+    "mapValue": {}
+   },
+   "fechaCreacion": {
+    "stringValue": "2026-05-21T19:03:43.377Z"
+   },
+   "caracteristicas": {
+    "mapValue": {
+     "fields": {
+      "observaciones": {
+       "stringValue": ""
+      }
+     }
+    }
+   },
+   "id": {
+    "stringValue": "1779390223377"
+   },
+   "firebaseId": {
+    "stringValue": "1779390223377"
+   },
+   "fotos": {
+    "arrayValue": {}
+   },
+   "tipoHistoria": {
+    "stringValue": "odontopediatrica"
+   },
+   "archivos": {
+    "arrayValue": {}
+   },
+   "tratamientos": {
+    "mapValue": {
+     "fields": {
+      "realizados": {
+       "stringValue": ""
+      },
+      "propuesta": {
+       "stringValue": ""
+      }
+     }
+    }
+   }
+  },
+  "createTime": "2026-08-27T19:06:30.328385Z",
+  "updateTime": "2026-08-27T19:06:30.328385Z"
+ },
+ "nombres_antes": [
+  {
+   "col": "pacientes",
+   "doc": "1779319428321",
+   "datosPersonales": {
+    "nombrePadre": "",
+    "obraSocial": "",
+    "dni": "546788999",
+    "alias": "",
+    "telefono": "",
+    "nombre": "Lujan Diaz",
+    "nAfiliado": "",
+    "fechaNacimiento": "2015-05-19",
+    "edad": "10",
+    "domicilio": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1779390223377",
+   "datosPersonales": {
+    "dni": "",
+    "telefonoOriginal": "+54 9 2966 67-3798",
+    "fechaNacimiento": "2026-05-06",
+    "telefono": "+54 9 2966 67-3798",
+    "nAfiliado": "",
+    "nombrePadre": "dd",
+    "obraSocial": "css",
+    "edad": "23",
+    "domicilio": "asda asas 336",
+    "alias": "dsa",
+    "nombre": "nestor kirchner"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1779824879644",
+   "datosPersonales": {
+    "nombre": "FIGUEROA TOBIAS",
+    "alias": "TOBIAS",
+    "nombrePadre": "OLGA",
+    "dni": "",
+    "edad": "19",
+    "nAfiliado": "",
+    "fechaNacimiento": "2006-07-04",
+    "telefonoOriginal": "+54 9 2966 35-0842",
+    "obraSocial": "CSS",
+    "telefono": "+54 9 2966 35-0842",
+    "domicilio": "GERMAN VIDAL 916"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1779826622505",
+   "datosPersonales": {
+    "alias": "BERNARDO",
+    "edad": "9",
+    "fechaNacimiento": "2016-08-29",
+    "telefono": "+54 9 2966 22-7343",
+    "domicilio": "ISMAEL  VIÑA 516 b° 27 VIVIENDAS",
+    "nAfiliado": "8000060903285021006 SMG20",
+    "nombrePadre": "MELISA",
+    "nombre": "SHEGNFET PARKER BERNARDO NOEL",
+    "obraSocial": "SWISS MEDICAL",
+    "dni": "55539849",
+    "telefonoOriginal": "+54 9 2966 22-7343"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1779827145615",
+   "datosPersonales": {
+    "alias": "PIA",
+    "edad": "4",
+    "nombrePadre": "",
+    "telefono": "+54 9 2966 51-8502",
+    "nombre": "COLOE ANTONELA PIA",
+    "telefonoOriginal": "+54 9 2966 51-8502",
+    "nAfiliado": "0535405/01",
+    "domicilio": "SOLEDAD CONSTANZO 38 B° FARO",
+    "obraSocial": "SANCOR 3000",
+    "fechaNacimiento": "2021-12-29",
+    "dni": "58919914"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1779827628422",
+   "datosPersonales": {
+    "telefono": "+54 9 2966 21-6775",
+    "telefonoOriginal": "+54 9 2966 21-6775",
+    "alias": "GUILLE",
+    "nombrePadre": "TATIANA",
+    "dni": "",
+    "edad": "4",
+    "nombre": "DURE FIGUEROA GUILLERMINA",
+    "fechaNacimiento": "2021-11-09",
+    "nAfiliado": "8000060508267030006",
+    "obraSocial": "SWISS MEDICAL  SMG30C",
+    "domicilio": "INOSENCIA TUBIO 3265"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1779828058446",
+   "datosPersonales": {
+    "fechaNacimiento": "2015-07-14",
+    "alias": "LUANA",
+    "dni": "",
+    "edad": "10",
+    "nAfiliado": "",
+    "nombre": "ANGELINO LUANA",
+    "nombrePadre": "ANGELA",
+    "obraSocial": "OSPE",
+    "domicilio": "LAS HERAS 561 EDIF 3 2DO PISO",
+    "telefono": "+54 9 2966 47-2177",
+    "telefonoOriginal": "+54 9 2966 47-2177"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1779828726379",
+   "datosPersonales": {
+    "obraSocial": "OSPE",
+    "dni": "",
+    "alias": "GIU",
+    "domicilio": "LAS HERAS 561 EDIF 3 2DO PISO",
+    "telefono": "+54 9 2966 47-2177",
+    "telefonoOriginal": "+54 9 2966 47-2177",
+    "nombre": "ANGELINO GIULIANA",
+    "fechaNacimiento": "2015-07-14",
+    "nombrePadre": "ANGELA",
+    "edad": "10",
+    "nAfiliado": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1779829127935",
+   "datosPersonales": {
+    "dni": "",
+    "fechaNacimiento": "2024-08-21",
+    "nombrePadre": "VALERIA INFANTE",
+    "telefono": "+54 9 2966 50-8774",
+    "domicilio": "ITALIA 120",
+    "obraSocial": "",
+    "telefonoOriginal": "+54 9 2966 50-8774",
+    "nombre": "FIGUEROA AGUSTIN",
+    "edad": "",
+    "nAfiliado": "",
+    "alias": "AGUS"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1779829413548",
+   "datosPersonales": {
+    "obraSocial": "CSS",
+    "telefono": "+54 9 2966 63-9384",
+    "dni": "",
+    "fechaNacimiento": "1983-05-12",
+    "alias": "ROMINA",
+    "domicilio": "COMODORO RIVADAVIAQ 386",
+    "nombre": "SARMIENTO NADIA ROMINA",
+    "telefonoOriginal": "+54 9 2966 63-9384",
+    "edad": "43",
+    "nombrePadre": "MIRIAM AYRNDES",
+    "nAfiliado": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1779829895999",
+   "datosPersonales": {
+    "nombre": "RAMOS MARTINEZ LOPEZ  SHIARA",
+    "nombrePadre": "BELLA RAMOS",
+    "telefonoOriginal": "+54 9 2966 67-4061",
+    "alias": "SHIARI",
+    "dni": "56520689",
+    "edad": "8",
+    "nAfiliado": "",
+    "obraSocial": "",
+    "telefono": "+54 9 2966 67-4061",
+    "domicilio": "PJE BARTOLOME  D LAS CASAS 691",
+    "fechaNacimiento": "2017-12-27"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780437549678",
+   "datosPersonales": {
+    "fechaNacimiento": "2014-09-25",
+    "alias": "ALFONSO",
+    "nombrePadre": "JULIO-LORENA",
+    "edad": "11",
+    "nAfiliado": "",
+    "telefono": "+54 9 2966 21-8832",
+    "domicilio": "CHILE 555",
+    "nombre": "MELANOA ALFONSO",
+    "telefonoOriginal": "+54 9 2966 21-8832",
+    "obraSocial": "",
+    "dni": "54043721"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780437723028",
+   "datosPersonales": {
+    "dni": "",
+    "fechaNacimiento": "2018-07-20",
+    "telefono": "+54 9 2966 41-9140",
+    "domicilio": "JUAN DE GARAY 1881",
+    "obraSocial": "",
+    "nombrePadre": "VANESA",
+    "telefonoOriginal": "+54 9 2966 41-9140",
+    "edad": "7",
+    "nombre": "CHAVEZ LOAN",
+    "alias": "LOLO",
+    "nAfiliado": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780438166136",
+   "datosPersonales": {
+    "obraSocial": "",
+    "telefono": "",
+    "nombre": "NOVOA TONIA",
+    "alias": "",
+    "edad": "7",
+    "domicilio": "B° AIRES ARGENTINOS M2 136 LOTE 10",
+    "fechaNacimiento": "2018-11-23",
+    "dni": "57.055.829",
+    "nAfiliado": "",
+    "nombrePadre": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780438519896",
+   "datosPersonales": {
+    "edad": "8",
+    "alias": "LULU",
+    "nombre": "ANDRADE LUCIA",
+    "telefonoOriginal": "+54 9 2966 56-7242",
+    "dni": "",
+    "domicilio": "JOSE AMADOR OJEDA 2454",
+    "obraSocial": "OSDE",
+    "nombrePadre": "VANESA GARAY",
+    "nAfiliado": "PLAN 210",
+    "fechaNacimiento": "2017-08-23",
+    "telefono": "+54 9 2966 56-7242"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780597297662",
+   "datosPersonales": {
+    "fechaNacimiento": "2015-03-27",
+    "nombrePadre": "ANALIA ARAVENA",
+    "nAfiliado": "",
+    "domicilio": "JHON RUTH N° 1155",
+    "dni": "",
+    "telefonoOriginal": "+54 9 2966 21-0283",
+    "edad": "10",
+    "alias": "LUCA",
+    "telefono": "+54 9 2966 21-0283",
+    "obraSocial": "",
+    "nombre": "MUÑOZ LUCA MATEO"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780597710651",
+   "datosPersonales": {
+    "nombre": "CRETTON FRANCISCO",
+    "telefonoOriginal": "+54 9 2966 23-5909",
+    "nAfiliado": "",
+    "alias": "FRAN",
+    "telefono": "+54 9 2966 23-5909",
+    "edad": "8",
+    "domicilio": "CURUPAITY 932",
+    "dni": "",
+    "fechaNacimiento": "2017-12-18",
+    "obraSocial": "",
+    "nombrePadre": "LUCAS"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780598154120",
+   "datosPersonales": {
+    "telefonoOriginal": "+54 9 2966 60-7305",
+    "obraSocial": "SWISS MEDICAL",
+    "telefono": "+54 9 2966 60-7305",
+    "alias": "GONZA",
+    "fechaNacimiento": "2018-12-17",
+    "edad": "7",
+    "dni": "26.665.790",
+    "domicilio": "FITZ ROY N° 247",
+    "nombre": "HAEDO GONZALO",
+    "nombrePadre": "CARINA",
+    "nAfiliado": "80000671640100418"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780598420501",
+   "datosPersonales": {
+    "obraSocial": "",
+    "alias": "LUCHI",
+    "edad": "8",
+    "nombre": "TORRES LUDOVICO",
+    "nombrePadre": "ANDREA",
+    "telefono": "",
+    "domicilio": "MIGUEL SEGOVIA 485 1B",
+    "dni": "",
+    "fechaNacimiento": "",
+    "nAfiliado": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780599315800",
+   "datosPersonales": {
+    "nAfiliado": "",
+    "fechaNacimiento": "2020-06-05",
+    "dni": "",
+    "obraSocial": "CSS",
+    "nombre": "MORENO GAEL",
+    "domicilio": "SUNINO 613",
+    "telefonoOriginal": "+54 9 2966 53-1401",
+    "edad": "5",
+    "telefono": "+54 9 2966 53-1401",
+    "nombrePadre": "ADRIANA",
+    "alias": "GAEL"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780603967000",
+   "datosPersonales": {
+    "fechaNacimiento": "2016-01-21",
+    "dni": "",
+    "nombrePadre": "JUAN",
+    "nombre": "GONZALEZ SANTIAGO",
+    "alias": "SANTIAGO",
+    "domicilio": "LA PAZ 1160",
+    "edad": "10",
+    "telefonoOriginal": "+54 9 2966 30-7191",
+    "nAfiliado": "",
+    "obraSocial": "",
+    "telefono": "+54 9 2966 30-7191"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780609370078",
+   "datosPersonales": {
+    "telefonoOriginal": "+54 9 2966 40-7401",
+    "fechaNacimiento": "2023-10-31",
+    "telefono": "+54 9 2966 40-7401",
+    "nombrePadre": "MANSILLA YAMILA",
+    "nombre": "MANAVELLA NOHA",
+    "edad": "2",
+    "dni": "59.999.341",
+    "domicilio": "GERMAN VIDAL N° 940",
+    "obraSocial": "SANCOR 3000",
+    "alias": "NOHA",
+    "nAfiliado": "1199104/02"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780610517419",
+   "datosPersonales": {
+    "alias": "ALMA",
+    "edad": "3",
+    "obraSocial": "",
+    "nombrePadre": "LOURDES-BRUNO",
+    "fechaNacimiento": "2022-10-05",
+    "telefonoOriginal": "+54 9 2966 76-6385",
+    "nombre": "ARAMAYO ALMA NOEMI",
+    "dni": "",
+    "nAfiliado": "",
+    "telefono": "+54 9 2966 76-6385",
+    "domicilio": "J.J BARABE BAYAEIA 867"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780610667425",
+   "datosPersonales": {
+    "telefono": "+54 9 2966 21-3508",
+    "fechaNacimiento": "2021-01-16",
+    "alias": "SALVI",
+    "nombre": "SALVADOR ALLENDE",
+    "edad": "4",
+    "obraSocial": "",
+    "nAfiliado": "",
+    "telefonoOriginal": "+54 9 2966 21-3508",
+    "dni": "",
+    "domicilio": "PJE. FENTON N° 849",
+    "nombrePadre": "AMELIA"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780858920139",
+   "datosPersonales": {
+    "obraSocial": "",
+    "alias": "NATACHA",
+    "dni": "",
+    "telefono": "+54 9 2966 22-1226",
+    "edad": "11",
+    "nombre": "YANCOVICH",
+    "nAfiliado": "",
+    "nombrePadre": "CLAUDIA",
+    "domicilio": "AMEGHINO 566",
+    "fechaNacimiento": "2014-03-13",
+    "telefonoOriginal": "+54 9 2966 22-1226"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780861653791",
+   "datosPersonales": {
+    "obraSocial": "CSS",
+    "nAfiliado": "1132815658202",
+    "telefonoOriginal": "+54 9 2966 55-0258",
+    "domicilio": "MZA 31 CASA 17 JORGE NEWBWRY",
+    "edad": "15",
+    "dni": "",
+    "alias": "TIZIANO",
+    "nombrePadre": "ZURA KATHERINA",
+    "telefono": "+54 9 2966 55-0258",
+    "fechaNacimiento": "2010-09-03",
+    "nombre": "ABALOS ZURA TIZIANO AGSUTIN"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780945926673",
+   "datosPersonales": {
+    "telefonoOriginal": "2966783010",
+    "nAfiliado": "",
+    "fechaNacimiento": "2012-10-25",
+    "alias": "JERE",
+    "domicilio": "Bº BICENTENARIO MZA 420 LOTE3",
+    "edad": "13",
+    "dni": "52796037",
+    "nombre": "ZELYA DURAN JEREMIAS RUBEN",
+    "telefono": "+54 9 2966 78-3010",
+    "obraSocial": "",
+    "nombrePadre": "HILDA DURAN"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780948745716",
+   "datosPersonales": {
+    "dni": "",
+    "obraSocial": "OSPE",
+    "fechaNacimiento": "2021-08-06",
+    "telefono": "+54 9 2966 31-1915",
+    "nAfiliado": "",
+    "domicilio": "CALLE 42 MZA. 433 PARCELA 2",
+    "edad": "4",
+    "telefonoOriginal": "+54 9 2966 31-1915",
+    "nombre": "SANCHEZ RUIZ ORIANA JAZMIN",
+    "alias": "ORI",
+    "nombrePadre": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780948870973",
+   "datosPersonales": {
+    "obraSocial": "",
+    "nombre": "VIDAL ABRIL",
+    "dni": "",
+    "edad": "5",
+    "nombrePadre": "GABRIELA",
+    "nAfiliado": "",
+    "alias": "ABRIL",
+    "telefonoOriginal": "+54 9 2966 30-5824",
+    "fechaNacimiento": "2020-07-09",
+    "telefono": "+54 9 2966 30-5824",
+    "domicilio": "CAPITAN PALABER 1015"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780953376002",
+   "datosPersonales": {
+    "fechaNacimiento": "2019-02-12",
+    "nombre": "RIQUELME NOAH",
+    "telefonoOriginal": "2966753694",
+    "domicilio": "BERUTTI N° 1354",
+    "nombrePadre": "JENIMA RIQUELME",
+    "edad": "7",
+    "telefono": "+54 9 2966 75-3694",
+    "dni": "",
+    "alias": "NOAH",
+    "nAfiliado": "",
+    "obraSocial": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1780956369446",
+   "datosPersonales": {
+    "nAfiliado": "",
+    "edad": "15",
+    "nombrePadre": "CARLOS DIAZ",
+    "domicilio": "JUAN B. JUSTO N° 783",
+    "alias": "TIZI",
+    "telefono": "+54 9 2966 56-7242",
+    "obraSocial": "OSPE",
+    "fechaNacimiento": "2010-09-02",
+    "nombre": "DIAZ TIZIANO AGUSTIN",
+    "telefonoOriginal": "+54 9 2966 56-7242",
+    "dni": "50.462.660"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1781030555846",
+   "datosPersonales": {
+    "nAfiliado": "",
+    "fechaNacimiento": "2017-05-17",
+    "obraSocial": "",
+    "domicilio": "B° SAB BENITO CALLE 17",
+    "dni": "",
+    "nombre": "AGUILA CIANA MARTINA",
+    "nombrePadre": "ANA",
+    "telefono": "+54 9 2966 46-6540",
+    "edad": "8",
+    "telefonoOriginal": "+54 9 2966 46-6540",
+    "alias": "CIANA"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1781030740757",
+   "datosPersonales": {
+    "fechaNacimiento": "2018-06-14",
+    "nombre": "ASENCIO LUCAS",
+    "dni": "",
+    "alias": "LUCAS",
+    "domicilio": "MZA. L - CASA 13",
+    "edad": "7",
+    "nAfiliado": "",
+    "nombrePadre": "DAIANA",
+    "telefono": "+54 9 2966 26-5559",
+    "obraSocial": "OSPE",
+    "telefonoOriginal": "+54 9 2966 26-5559"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1781030929429",
+   "datosPersonales": {
+    "fechaNacimiento": "2019-10-05",
+    "nAfiliado": "",
+    "domicilio": "DOMINGO RIVETA N° 992",
+    "alias": "",
+    "telefonoOriginal": "+54 9 2966 59-2296",
+    "obraSocial": "",
+    "telefono": "+54 9 2966 59-2296",
+    "nombrePadre": "ANGEL",
+    "edad": "6",
+    "nombre": "ANGEL ALANCAY CONTRERAS ",
+    "dni": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1781031322921",
+   "datosPersonales": {
+    "nAfiliado": "",
+    "dni": "",
+    "telefono": "+54 9 2966 50-2540",
+    "domicilio": "CURUPAITTY N° 48",
+    "fechaNacimiento": "2019-02-06",
+    "nombrePadre": "SALVA ROMINA",
+    "obraSocial": "CSS",
+    "nombre": "AGUILAR ISABELLA",
+    "alias": "ISA",
+    "edad": "7",
+    "telefonoOriginal": "+54 9 2966 50-2540"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1781039924555",
+   "datosPersonales": {
+    "nombre": "BARRIENTOS BENICIO ROMAN",
+    "nombrePadre": "",
+    "edad": "5",
+    "dni": "",
+    "nAfiliado": "",
+    "telefono": "",
+    "fechaNacimiento": "",
+    "obraSocial": "",
+    "alias": "BENI",
+    "domicilio": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1781040191825",
+   "datosPersonales": {
+    "nombrePadre": "LAURA",
+    "domicilio": "MONTE AYMOND N° 225",
+    "telefono": "+54 9 2966 21-9062",
+    "nAfiliado": "",
+    "fechaNacimiento": "2020-07-13",
+    "edad": "5",
+    "telefonoOriginal": "+54 9 2966 21-9062",
+    "alias": "VITO",
+    "dni": "",
+    "obraSocial": "css",
+    "nombre": "BENINI VITTORIA ISABELLA"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1781206309597",
+   "datosPersonales": {
+    "telefono": "+54 9 2966 78-4176",
+    "nombre": "ALVARADO MAVIE",
+    "telefonoOriginal": "+54 9 2966 78-4176",
+    "fechaNacimiento": "2024-10-06",
+    "dni": "70.322.686",
+    "alias": "MAVIE",
+    "nAfiliado": "",
+    "nombrePadre": "ESEQUIEL-SELENA",
+    "obraSocial": "",
+    "edad": "1",
+    "domicilio": "CIUDAD CORDIAL N° 781"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1781207679227",
+   "datosPersonales": {
+    "telefono": "+54 9 2966 59-6440",
+    "nAfiliado": "",
+    "dni": "",
+    "nombrePadre": "ELIO",
+    "domicilio": "PJE. CANTARUTTI N° 1376",
+    "fechaNacimiento": "2019-08-16",
+    "alias": "FRAN",
+    "nombre": "FRANCISCO PISTAN MOLINA",
+    "obraSocial": "",
+    "edad": "6",
+    "telefonoOriginal": "+54 9 2966 59-6440"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1781210554888",
+   "datosPersonales": {
+    "telefonoOriginal": "+54 9 2966 21-0207",
+    "telefono": "+54 9 2966 21-0207",
+    "dni": "",
+    "domicilio": "ALVERDI N° 1095",
+    "fechaNacimiento": "2017-09-14",
+    "nombrePadre": "GASPAR",
+    "nAfiliado": "",
+    "nombre": "GORAN CALFUQUIR",
+    "obraSocial": "",
+    "alias": "GORI",
+    "edad": "8"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1781634010046",
+   "datosPersonales": {
+    "edad": "11",
+    "obraSocial": "CSS",
+    "telefonoOriginal": "+54 9 2966 65-6650",
+    "fechaNacimiento": "2014-04-03",
+    "alias": "ISA",
+    "nombrePadre": "BELEN",
+    "telefono": "+54 9 2966 65-6650",
+    "nAfiliado": "",
+    "dni": "",
+    "domicilio": "B° LOS ALAMOS MZA.41 PARCELA 1",
+    "nombre": "BELASQUEZ ISABELLA"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1781634382557",
+   "datosPersonales": {
+    "nAfiliado": "",
+    "edad": "9",
+    "fechaNacimiento": "2016-05-06",
+    "nombre": "BRACAMONTE ALMA VALENTINA",
+    "nombrePadre": "ANDREA VEGA",
+    "domicilio": "CEPEDA N° 341",
+    "alias": "",
+    "obraSocial": "CSS",
+    "dni": "",
+    "telefono": "+54 9 2966 41-7510",
+    "telefonoOriginal": "+54 9 2966 41-7510"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1781634583904",
+   "datosPersonales": {
+    "dni": "",
+    "nombre": "BERRIOS ALANA",
+    "nombrePadre": "CECILIA QUIRICONI",
+    "edad": "6",
+    "telefono": "+54 9 2966 50-5717",
+    "alias": "ALANA",
+    "telefonoOriginal": "+54 9 2966 50-5717",
+    "domicilio": "B° PTO. ARGENTINO N° 1078",
+    "obraSocial": "",
+    "fechaNacimiento": "2019-02-10",
+    "nAfiliado": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1781635236691",
+   "datosPersonales": {
+    "fechaNacimiento": "2019-10-06",
+    "telefono": "+54 9 2966 47-0216",
+    "nombrePadre": "GONZALO-ANGELICA",
+    "nAfiliado": "",
+    "edad": "6",
+    "obraSocial": "",
+    "domicilio": "ECUADOR N° 105",
+    "alias": "LEANDRO",
+    "dni": "",
+    "telefonoOriginal": "+54 9 2966 47-0216",
+    "nombre": "CORRALES LEANDRO"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1781635638393",
+   "datosPersonales": {
+    "alias": "SAO",
+    "telefonoOriginal": "+54 9 3549 46-3611",
+    "telefono": "+54 9 3549 46-3611",
+    "edad": "6",
+    "obraSocial": "",
+    "nombre": "SAORI CHIULLI CANDOLI",
+    "domicilio": "ANTONIO RIVERA N° 1370",
+    "dni": "",
+    "fechaNacimiento": "2019-03-09",
+    "nAfiliado": "",
+    "nombrePadre": "GERALDINA"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1781816559440",
+   "datosPersonales": {
+    "obraSocial": "EGECTIVO",
+    "domicilio": "B° FAVALORO MZA. 78 PARCELA 15",
+    "telefono": "+54 9 2966 31-5261",
+    "nombre": "RUIZ COASSOLO",
+    "edad": "3",
+    "nAfiliado": "",
+    "dni": "59.730.950",
+    "telefonoOriginal": "+54 9 2966 31-5261",
+    "nombrePadre": "CAROLINA",
+    "alias": "ELIAS",
+    "fechaNacimiento": "2023-06-04"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1782244435886",
+   "datosPersonales": {
+    "telefonoOriginal": "+54 9 2966 76-2410",
+    "obraSocial": "",
+    "nombre": "MELIAN EMMA",
+    "nombrePadre": "",
+    "nAfiliado": "",
+    "edad": "",
+    "dni": "",
+    "alias": "EMMA",
+    "domicilio": "",
+    "telefono": "+54 9 2966 76-2410",
+    "fechaNacimiento": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1782245213300",
+   "datosPersonales": {
+    "domicilio": "HERALDO DEL SUR",
+    "alias": "FRAN",
+    "nAfiliado": "",
+    "dni": "52.868.027",
+    "telefonoOriginal": "+54 9 2966 75-0807",
+    "nombrePadre": "NAVARRO MA. DE LOS ANGELES",
+    "obraSocial": "",
+    "fechaNacimiento": "2013-04-03",
+    "edad": "12",
+    "nombre": "CAÑETE FRANCISCO",
+    "telefono": "+54 9 2966 75-0807"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783456632026",
+   "datosPersonales": {
+    "edad": "8",
+    "telefono": "+54 9 2966 35-0913",
+    "nombre": "Aguil Ziomara",
+    "alias": "",
+    "obraSocial": "",
+    "dni": "",
+    "telefonoOriginal": "2966 350913",
+    "fechaNacimiento": "2018-02-13",
+    "domicilio": "Avellaneda 886",
+    "nombrePadre": "natalia",
+    "nAfiliado": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783458938574",
+   "datosPersonales": {
+    "telefonoOriginal": "2966-638306",
+    "fechaNacimiento": "2018-07-18",
+    "alias": "LOAN",
+    "dni": "57.054.359",
+    "edad": "7",
+    "nombrePadre": "KATIA MARICOY",
+    "nombre": "GARAY LOAN NAHUEL",
+    "obraSocial": "C.S.S",
+    "nAfiliado": "1133080128302",
+    "telefono": "+54 9 2966 63-8306",
+    "domicilio": "B° BICENTENARIO 2 MZA. 442 PARCELA 12"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783459990540",
+   "datosPersonales": {
+    "nombrePadre": "MUÑOZ MELISA",
+    "obraSocial": "SWISS MEDICAL",
+    "nombre": "OYARZO MUÑOZ LAUTARO NICOLAS",
+    "alias": "LAU",
+    "fechaNacimiento": "2012-11-23",
+    "domicilio": "DR. PUGLIESE 2423",
+    "edad": "13",
+    "telefono": "+54 9 2966 41-5232",
+    "telefonoOriginal": "2966-415232",
+    "nAfiliado": "PLAN 210",
+    "dni": "52.796.703"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783460221174",
+   "datosPersonales": {
+    "nAfiliado": "1233472649905",
+    "fechaNacimiento": "2020-07-08",
+    "telefono": "+54 9 2966 70-1252",
+    "obraSocial": "CSS",
+    "domicilio": "B° 499 CASA 308",
+    "edad": "5",
+    "dni": "",
+    "alias": "BRI",
+    "nombre": "RUARTE BRIANA",
+    "telefonoOriginal": "2966-701252",
+    "nombrePadre": "CARINA MANSILLA"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783460323301",
+   "datosPersonales": {
+    "domicilio": "PJE. MAILLO BLANCO 281",
+    "telefono": "+54 9 2964 35-0416",
+    "fechaNacimiento": "2017-06-24",
+    "dni": "",
+    "telefonoOriginal": "2964-350416",
+    "nAfiliado": "",
+    "edad": "8",
+    "nombrePadre": "AGATA",
+    "obraSocial": "",
+    "alias": "MILI",
+    "nombre": "MILAGROS VERA"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783464002877",
+   "datosPersonales": {
+    "nAfiliado": "1233704889802",
+    "nombre": "GIGNOLI RIQUELME LUANA",
+    "domicilio": "SAN BENITO PARCELA 19 MZA 107",
+    "dni": "",
+    "telefono": "+54 9 2966 41-6718",
+    "telefonoOriginal": "2966-416718",
+    "alias": "LUANA",
+    "obraSocial": "CSS",
+    "nombrePadre": "MACARENA-ANGELO",
+    "fechaNacimiento": "2017-08-18",
+    "edad": "8"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783619800318",
+   "datosPersonales": {
+    "edad": "2",
+    "alias": "AGOS",
+    "fechaNacimiento": "2023-04-19",
+    "nombrePadre": "YESICA",
+    "telefonoOriginal": "3525531858",
+    "obraSocial": "",
+    "nombre": "CABELLO MARIA AGOSTINA",
+    "nAfiliado": "",
+    "dni": "",
+    "telefono": "+54 9 3525 53-1858",
+    "domicilio": "CALLE CARLOS STON N° 349 B° DOCENTE"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783619893180",
+   "datosPersonales": {
+    "telefonoOriginal": "2966-617708",
+    "alias": "MARTI",
+    "edad": "6",
+    "nombrePadre": "JORGE",
+    "nombre": "MIA MARTINA CABEZUELO",
+    "domicilio": "GOBERNADOR GREGORES",
+    "obraSocial": "",
+    "telefono": "+54 9 2966 61-7708",
+    "fechaNacimiento": "2019-06-18",
+    "dni": "",
+    "nAfiliado": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783620108810",
+   "datosPersonales": {
+    "telefonoOriginal": "2966-707594",
+    "nombre": "CONSTANZO IGNACIO JULIAN",
+    "dni": "",
+    "edad": "9",
+    "obraSocial": "",
+    "nAfiliado": "",
+    "alias": "NACHO",
+    "nombrePadre": "CARLOS",
+    "telefono": "+54 9 2966 70-7594",
+    "domicilio": "B° VIRGEN DEL VALLE LOS SORSALES",
+    "fechaNacimiento": "2015-11-27"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783620228710",
+   "datosPersonales": {
+    "telefono": "+54 9 2966 30-8141",
+    "nombrePadre": "FLORENCIA RIOS",
+    "nombre": "CAÑETE RIOS LIRIA",
+    "telefonoOriginal": "2966-308141",
+    "obraSocial": "",
+    "alias": "LIRIA",
+    "dni": "",
+    "edad": "6",
+    "fechaNacimiento": "2018-11-15",
+    "domicilio": "MITRE N° 715",
+    "nAfiliado": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783620399746",
+   "datosPersonales": {
+    "edad": "5",
+    "nAfiliado": "",
+    "nombrePadre": "EMILIA Y ANGEL",
+    "nombre": "ANGEL ALANCAY CONTRERAS",
+    "telefono": "",
+    "domicilio": "DOMINGO MUNOBE Y DAVID VIÑA",
+    "alias": "ANGEL",
+    "dni": "",
+    "fechaNacimiento": "2019-11-05",
+    "obraSocial": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783620765400",
+   "datosPersonales": {
+    "dni": "",
+    "nombre": "DIAZ LOLA",
+    "fechaNacimiento": "2018-03-11",
+    "alias": "LOLA",
+    "domicilio": "MAIPU 183",
+    "edad": "7",
+    "telefono": "+54 9 2966 53-6704",
+    "nAfiliado": "",
+    "telefonoOriginal": "2966-536704",
+    "nombrePadre": "CASAR - VERONICA",
+    "obraSocial": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783621214461",
+   "datosPersonales": {
+    "nombrePadre": "MARISA CACERES",
+    "telefonoOriginal": "2966-626240",
+    "fechaNacimiento": "1985-07-31",
+    "obraSocial": "",
+    "edad": "40",
+    "nAfiliado": "",
+    "alias": "FER",
+    "telefono": "+54 9 2966 62-6240",
+    "domicilio": "GOTTI Y RODRIGUEZ CASA 8",
+    "dni": "",
+    "nombre": "DEL BUOO FERNANDA"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783621413639",
+   "datosPersonales": {
+    "edad": "7",
+    "nAfiliado": "1133393973202",
+    "nombrePadre": "FLORES DAYANA",
+    "nombre": "FERREIRA AGUSTIN",
+    "domicilio": "MANUEL CARRILLO 1578",
+    "alias": "AGUS",
+    "dni": "",
+    "telefonoOriginal": "2966-671229",
+    "obraSocial": "CSS",
+    "fechaNacimiento": "2018-06-03",
+    "telefono": "+54 9 2966 67-1229"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783621517522",
+   "datosPersonales": {
+    "nombrePadre": "RAQUEL",
+    "telefonoOriginal": "2966-541341",
+    "alias": "MALE",
+    "telefono": "+54 9 2966 54-1341",
+    "dni": "",
+    "edad": "6",
+    "nombre": "FIERRO MEDINA MALENA SOFIA",
+    "domicilio": "DIAZ VELEZ 36",
+    "obraSocial": "CSS",
+    "fechaNacimiento": "2019-10-31",
+    "nAfiliado": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783629615214",
+   "datosPersonales": {
+    "nombrePadre": " Melina",
+    "edad": "3",
+    "telefonoOriginal": "3512114163",
+    "telefono": "+54 9 351 211-4163",
+    "nAfiliado": "",
+    "domicilio": "Pje E.E.U.U n54",
+    "alias": "Iker",
+    "fechaNacimiento": "2023-10-08",
+    "dni": "",
+    "obraSocial": "",
+    "nombre": "Quiroga Iker"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783967400370",
+   "datosPersonales": {
+    "obraSocial": "",
+    "nombre": "ALMA NOEMI ARAMAYO",
+    "alias": "ALMA",
+    "fechaNacimiento": "2022-10-05",
+    "edad": "3",
+    "telefono": "+54 9 2966 76-6385",
+    "nAfiliado": "",
+    "telefonoOriginal": "2966766385",
+    "dni": "",
+    "nombrePadre": "KOURDES - BRUNO",
+    "domicilio": "J.J BAYAELIA"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1783967621287",
+   "datosPersonales": {
+    "nombrePadre": "YAMILE",
+    "domicilio": "FAGNEANO 179 - DPTO. 2do. C",
+    "telefono": "+54 9 2966 32-1117",
+    "nombre": "VIDAURRIA VICENTE",
+    "nAfiliado": "8000062010218040000",
+    "dni": "70.184.858",
+    "fechaNacimiento": "2024-08-24",
+    "telefonoOriginal": "2966-321117",
+    "edad": "2",
+    "alias": "VICENTE",
+    "obraSocial": "SWISS MEDICAL"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1784578144731",
+   "datosPersonales": {
+    "domicilio": "COMODORO RIVADAVIA 386",
+    "telefonoOriginal": "2966639384",
+    "nAfiliado": "123301556600",
+    "telefono": "+54 9 2966 63-9384",
+    "fechaNacimiento": "1957-05-12",
+    "nombre": "ALLENDE MIRIAM",
+    "edad": "68",
+    "nombrePadre": "",
+    "alias": "MIRIAM",
+    "dni": "13.015..566",
+    "obraSocial": "CSS"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1784579881571",
+   "datosPersonales": {
+    "alias": "RAMI",
+    "edad": "5",
+    "telefono": "+54 9 2966 47-1981",
+    "fechaNacimiento": "2021-01-14",
+    "obraSocial": "",
+    "nombre": "RAMIRO SILVA",
+    "dni": "58.564.616",
+    "nAfiliado": "",
+    "telefonoOriginal": "2966-471981",
+    "domicilio": "DR. MARCELO CASARO 4416",
+    "nombrePadre": "LORENA"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1784659659757",
+   "datosPersonales": {
+    "dni": "43.806.471",
+    "alias": "JUAMPI",
+    "nombre": "LEGUIA JUAN PABLO",
+    "nAfiliado": "80000600297089031034",
+    "nombrePadre": "",
+    "obraSocial": "SWISS MEDICAL",
+    "edad": "24",
+    "telefono": "43.80671",
+    "fechaNacimiento": "2002-03-22",
+    "domicilio": "BELGRANO 757"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1784660250245",
+   "datosPersonales": {
+    "telefono": "+54 9 2966 32-0509",
+    "obraSocial": "",
+    "nAfiliado": "",
+    "alias": "COCO",
+    "nombrePadre": "JUAN - FLORENCIA",
+    "domicilio": "MARADONA 828",
+    "edad": "11",
+    "fechaNacimiento": "2015-02-04",
+    "telefonoOriginal": "2966-320509",
+    "dni": "54.642.122",
+    "nombre": "CONSTANTINO CORTI"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1785269877016",
+   "datosPersonales": {
+    "telefono": "+54 9 2966 32-1117",
+    "telefonoOriginal": "2966-321117",
+    "obraSocial": "SWISS MEDICAL",
+    "nombrePadre": "BELEN",
+    "nombre": "VIDAURRIA GEMA",
+    "alias": "GEMA",
+    "dni": "58.566.260",
+    "nAfiliado": "800006201021830001",
+    "domicilio": "FAGNEANO 179 DPTO.2DO. C",
+    "edad": "5",
+    "fechaNacimiento": "2021-07-25"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1785794847572",
+   "datosPersonales": {
+    "telefono": "+54 9 297 593-6749",
+    "nombre": "ABREGU ASIA",
+    "domicilio": "CALLE 33 MZA. 268 PARCELA 3",
+    "fechaNacimiento": "2024-04-18",
+    "alias": "ASIA",
+    "obraSocial": "",
+    "nAfiliado": "",
+    "nombrePadre": "NATALIA",
+    "edad": "2",
+    "telefonoOriginal": "2975-936749",
+    "dni": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1785867965678",
+   "datosPersonales": {
+    "fechaNacimiento": "2019-04-05",
+    "obraSocial": "SANCOR 1000",
+    "telefono": "+54 9 2966 52-0309",
+    "nombrePadre": "GIULIANA",
+    "edad": "6",
+    "nAfiliado": "127376102",
+    "alias": "BENI",
+    "dni": "57.348.488",
+    "domicilio": "LA PAZ 281",
+    "telefonoOriginal": "2966-520309",
+    "nombre": "VERGARA BENICIO"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1785868214336",
+   "datosPersonales": {
+    "telefono": "+54 9 2966 66-9549",
+    "obraSocial": "SANCOR 3000",
+    "dni": "56.967.671",
+    "fechaNacimiento": "2018-07-03",
+    "domicilio": "PILOTO LERO RIVERA N° 1368",
+    "nombrePadre": "CATERINA",
+    "edad": "7",
+    "nAfiliado": "0837762-02",
+    "alias": "SILVESTRE",
+    "nombre": "TOLEDO SILVESTRE",
+    "telefonoOriginal": "2966-669549"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1786653532989",
+   "datosPersonales": {
+    "obraSocial": "",
+    "fechaNacimiento": "2020-11-14",
+    "telefono": "+54 9 2966 22-3281",
+    "nAfiliado": "",
+    "edad": "5",
+    "domicilio": "PJE. 21 DE DICIEMBRE CASA 11",
+    "telefonoOriginal": "2966-223281",
+    "dni": "58.564.034",
+    "alias": "ARTURO",
+    "nombrePadre": "VILMA - BENICIO",
+    "nombre": "MAMANI ARTURO"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1787090778954",
+   "datosPersonales": {
+    "telefono": "+54 9 351 625-5655",
+    "edad": "25",
+    "fechaNacimiento": "2001-01-03",
+    "telefonoOriginal": "351.6255655",
+    "domicilio": "LOS ALAMOS MZA. 89 LOTE 3 ",
+    "nombrePadre": "DIAZ SANDRA",
+    "alias": "ISRAEL",
+    "obraSocial": "",
+    "nombre": "MOSCOSO ISRAEL",
+    "nAfiliado": "",
+    "dni": "43.074.507"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1787090986563",
+   "datosPersonales": {
+    "domicilio": "PELLEGRINI 932",
+    "alias": "ALMA",
+    "edad": "4",
+    "nAfiliado": "",
+    "telefono": "+54 9 2966 40-1312",
+    "obraSocial": "OSDE",
+    "fechaNacimiento": "2021-12-24",
+    "nombre": "CHAVERRI ARGUELLES ALMA LUCIA",
+    "telefonoOriginal": "2966-401312",
+    "dni": "59.125.280",
+    "nombrePadre": "LORENA ARGUELLES"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1788806808284",
+   "datosPersonales": {
+    "telefono": "+54 9 2966 46-6540",
+    "nombrePadre": "ANA",
+    "dni": "",
+    "alias": "CIANA",
+    "nAfiliado": "",
+    "telefono2Ref": "",
+    "edad": "8",
+    "domicilio": "B° SAN BENITO CALLE 17",
+    "telefono2": "",
+    "nombre": "AGUILA CIANA MARTINA",
+    "telefonoRef": "",
+    "obraSocial": "",
+    "fechaNacimiento": "2017-05-17"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1788813022177",
+   "datosPersonales": {
+    "fechaNacimiento": "2019-02-06",
+    "telefonoRef": "",
+    "obraSocial": "",
+    "alias": "ISA",
+    "telefono2Ref": "",
+    "telefono2": "",
+    "domicilio": "CURUPAITY N° 48",
+    "nombrePadre": "SALVA ROINA",
+    "telefono": "+54 9 2966 46-6540",
+    "nAfiliado": "",
+    "edad": "7",
+    "nombre": "AGUILAR ISABELLA",
+    "dni": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1788813178480",
+   "datosPersonales": {
+    "nAfiliado": "",
+    "obraSocial": "",
+    "telefono2": "",
+    "dni": "",
+    "nombre": "ARAMAYO ALMA NOEMI",
+    "domicilio": "J.J BARABJ BAYAELIA 867",
+    "nombrePadre": "LOYRDES - BRUNO",
+    "fechaNacimiento": "2022-10-05",
+    "edad": "3",
+    "telefono": "+54 9 2966 76-6385",
+    "telefono2Ref": "",
+    "telefonoRef": "",
+    "alias": "ALMA"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1788813294360",
+   "datosPersonales": {
+    "telefono": "+54 9 2966 35-0913",
+    "dni": "",
+    "alias": "ZIO",
+    "telefono2Ref": "",
+    "telefonoRef": "",
+    "edad": "8",
+    "nombre": "AGUIL ZIOMARA ",
+    "domicilio": "AVELLANEDA 886",
+    "telefono2": "",
+    "nAfiliado": "",
+    "obraSocial": "",
+    "nombrePadre": "NATALIA",
+    "fechaNacimiento": "2018-02-13"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1788813404850",
+   "datosPersonales": {
+    "alias": "ASIA",
+    "telefono2Ref": "",
+    "edad": "2",
+    "telefonoRef": "",
+    "telefono": "+54 9 297 593-6749",
+    "dni": "70.302.686",
+    "obraSocial": "",
+    "nombrePadre": "NATALIA",
+    "nombre": "ABREGU ASIA",
+    "nAfiliado": "",
+    "fechaNacimiento": "2024-04-18",
+    "telefono2": "",
+    "domicilio": "CALLE 33 MZA. 268 PARCELA 3"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1788814084153",
+   "datosPersonales": {
+    "telefono": "+54 9 2966 56-7242",
+    "nombre": "ANDRADE LUCIA",
+    "alias": "LULU",
+    "nombrePadre": "VANESA GARAY",
+    "telefono2Ref": "",
+    "edad": "8",
+    "dni": "",
+    "fechaNacimiento": "2017-08-23",
+    "domicilio": "JOSE AMADOR OJEDA N° 2454",
+    "telefono2": "",
+    "nAfiliado": "",
+    "obraSocial": "OSDE",
+    "telefonoRef": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1788814242210",
+   "datosPersonales": {
+    "nombrePadre": "ESEQUIEL - SELENA",
+    "nAfiliado": "",
+    "domicilio": "CIUDAD CORDIAL N° 781",
+    "telefono2": "",
+    "alias": "MAVIE",
+    "edad": "1",
+    "dni": "70.322.686",
+    "telefonoRef": "",
+    "telefono2Ref": "",
+    "telefono": "+54 9 2966 78-4176",
+    "obraSocial": "",
+    "fechaNacimiento": "2024-10-06",
+    "nombre": "ALVARADO MAVIE"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1788814464238",
+   "datosPersonales": {
+    "nAfiliado": "",
+    "fechaNacimiento": "2015-07-14",
+    "domicilio": "LAS HERAS N° 561 EDIF. 3 SEGUNDO B",
+    "telefono2": "",
+    "nombre": "ANGELINO GIULIANA",
+    "nombrePadre": "ANGELA",
+    "edad": "10",
+    "telefono": "+54 9 2966 47-2177",
+    "obraSocial": "OSPE",
+    "telefono2Ref": "",
+    "dni": "",
+    "telefonoRef": "",
+    "alias": "GIU, GU"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1788818111257",
+   "datosPersonales": {
+    "telefonoRef": "",
+    "telefono": "+54 9 2966 50-9802",
+    "edad": "6",
+    "obraSocial": "SWISS MEDICAL  SB02",
+    "alias": "EVA",
+    "telefono2Ref": "",
+    "dni": "",
+    "nombre": "ANDREONI EVANGELINA",
+    "domicilio": "SPILIMBERGO N° 1868",
+    "telefono2": "",
+    "fechaNacimiento": "2020-05-28",
+    "nAfiliado": "8000060014150040012",
+    "nombrePadre": "VIVIANA Y NESTOR"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1788891021081",
+   "datosPersonales": {
+    "dni": "",
+    "fechaNacimiento": "2019-07-16",
+    "domicilio": "ELSA BARBERIC CASA 01",
+    "telefono2": "",
+    "nAfiliado": "",
+    "edad": "7",
+    "telefonoRef": "",
+    "alias": "MIA",
+    "obraSocial": "",
+    "telefono": "",
+    "nombre": "GONZALEZ MIA",
+    "telefono2Ref": "",
+    "nombrePadre": "BAZAN SOLEDAD"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1788891138465",
+   "datosPersonales": {
+    "telefonoRef": "",
+    "nAfiliado": "",
+    "telefono2": "",
+    "dni": "",
+    "domicilio": "",
+    "telefono": "",
+    "obraSocial": "",
+    "nombre": "ARMANI ISA",
+    "fechaNacimiento": "",
+    "nombrePadre": "DANIELA",
+    "alias": "ISA",
+    "telefono2Ref": "",
+    "edad": "12"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1788891628256",
+   "datosPersonales": {
+    "telefono": "+54 9 2966 55-0258",
+    "obraSocial": "C.S.S.",
+    "alias": "",
+    "edad": "15",
+    "nombrePadre": "KATHERINA ZURA",
+    "domicilio": "B° JORGE NEWBERY MZA.31 CASA 17",
+    "nombre": "ABALOS ZURA TIZIANO AGUSTIN",
+    "telefono2": "+54 9 2966 48-8666",
+    "nAfiliado": "1132815658202",
+    "fechaNacimiento": "2010-09-03",
+    "telefonoRef": "",
+    "telefono2Ref": "",
+    "dni": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1788892025686",
+   "datosPersonales": {
+    "dni": "",
+    "telefono2Ref": "",
+    "domicilio": "LAS HERAS 561 EDIF. 3 SEGUNDO B",
+    "telefonoRef": "",
+    "telefono2": "",
+    "nAfiliado": "",
+    "alias": "LULU",
+    "nombre": "ANGELINO LUANA",
+    "fechaNacimiento": "2015-07-14",
+    "obraSocial": "OSPE",
+    "telefono": "+54 9 2966 47-2177",
+    "nombrePadre": "ANGELA",
+    "edad": "10"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1788892135275",
+   "datosPersonales": {
+    "edad": "4",
+    "fechaNacimiento": "2021-01-16",
+    "telefono2Ref": "",
+    "telefono2": "",
+    "nombrePadre": "AMELIA",
+    "domicilio": "PJE FENTON N° 849",
+    "telefono": "+54 9 2966 21-3508",
+    "nAfiliado": "",
+    "dni": "",
+    "alias": "SALVI",
+    "nombre": "ALLENDE SALVADOR",
+    "obraSocial": "",
+    "telefonoRef": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1788896101877",
+   "datosPersonales": {
+    "nombre": "SAORI CHIULLI CANDOLI",
+    "nombrePadre": "GERALDINA",
+    "dni": "",
+    "telefono": "+54 9 3549 46-3611",
+    "telefonoRef": "",
+    "fechaNacimiento": "2019-03-09",
+    "nAfiliado": "",
+    "telefono2Ref": "",
+    "domicilio": "ANTONIO RIVERO N° 1370",
+    "obraSocial": "",
+    "edad": "6",
+    "alias": "SAO",
+    "telefono2": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1789064490507",
+   "datosPersonales": {
+    "telefonoRef": "",
+    "obraSocial": "",
+    "alias": "MATI",
+    "fechaNacimiento": "2018-06-29",
+    "dni": "",
+    "domicilio": "PASCUAL PEREZ N° 1412",
+    "telefono": "",
+    "nombre": "GIMENEZ MATIAS",
+    "telefono2": "",
+    "nAfiliado": "",
+    "nombrePadre": "GABRIELA",
+    "telefono2Ref": "",
+    "edad": "7"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1789064712474",
+   "datosPersonales": {
+    "nombrePadre": "KARINA",
+    "nombre": "BRUNT AUGUSTO",
+    "telefono": "+54 9 2966 66-3655",
+    "obraSocial": "C.S.S.",
+    "telefonoRef": "",
+    "alias": "AUGUS",
+    "telefono2Ref": "",
+    "telefono2": "",
+    "dni": "59.110.504",
+    "edad": "4",
+    "domicilio": "AMEGHINO N° 199",
+    "fechaNacimiento": "2022-01-27",
+    "nAfiliado": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1789065104796",
+   "datosPersonales": {
+    "alias": "MARTIN",
+    "dni": "56.157.202",
+    "telefono": "+54 9 2966 69-2398",
+    "telefonoRef": "",
+    "fechaNacimiento": "2017-08-28",
+    "telefono2Ref": "",
+    "edad": "8",
+    "nombre": "LAMAS WALTER MARTIN",
+    "domicilio": "TUCUMAN N° 150 (28 de Noviembre)",
+    "telefono2": "+54 9 2902 48-4829",
+    "obraSocial": "",
+    "nombrePadre": "TITO JAVIER LAMAS",
+    "nAfiliado": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1789066880240",
+   "datosPersonales": {
+    "telefono2Ref": "",
+    "nombre": "ACOSTA VENECIA GIOVANA",
+    "dni": "70.797.363",
+    "nombrePadre": "CANDELA",
+    "telefono": "+54 9 2966 21-8268",
+    "nAfiliado": "",
+    "fechaNacimiento": "2025-09-05",
+    "obraSocial": "",
+    "domicilio": "SARGENTO RIQUELME N° 2144",
+    "telefonoRef": "",
+    "edad": "1",
+    "telefono2": "",
+    "alias": "PEPA"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1789584270410",
+   "datosPersonales": {
+    "nombrePadre": "BELLA RAMOS",
+    "fechaNacimiento": "2017-12-27",
+    "telefono": "+54 9 2966 67-4061",
+    "telefono2Ref": "",
+    "nombre": "SHIARA RAMOS MARTINEZ LOPEZ",
+    "edad": "8",
+    "dni": "56.20.689",
+    "alias": "SHIARI",
+    "telefonoRef": "",
+    "obraSocial": "",
+    "nAfiliado": "",
+    "telefono2": "",
+    "domicilio": "PASAJE BARTOLOME DE LAS CASAS N° 691"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1789584451462",
+   "datosPersonales": {
+    "nombre": "OLIVERA THIAGO",
+    "obraSocial": "",
+    "edad": "5",
+    "dni": "",
+    "telefono2Ref": "",
+    "nombrePadre": "SOÑA",
+    "fechaNacimiento": "2020-10-12",
+    "telefono2": "",
+    "domicilio": "AYOHUMA N° 1140",
+    "alias": "THIAGO",
+    "telefono": "",
+    "nAfiliado": "",
+    "telefonoRef": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1789584569332",
+   "datosPersonales": {
+    "obraSocial": "",
+    "alias": "ALMA",
+    "edad": "1",
+    "telefono2Ref": "",
+    "telefonoRef": "",
+    "dni": "",
+    "telefono": "+54 9 388 404-5419",
+    "nombre": "ALMA VALENTINA MAMANI",
+    "telefono2": "",
+    "domicilio": "POSADAS N° 436",
+    "nombrePadre": "MARIA",
+    "nAfiliado": "",
+    "fechaNacimiento": "2024-11-29"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1789666935540",
+   "datosPersonales": {
+    "telefonoRef": "",
+    "nAfiliado": "",
+    "nombre": "PIO GIANNI GADIEL",
+    "telefono2": "",
+    "alias": "GIANI",
+    "telefono2Ref": "",
+    "domicilio": "AV. SAN MARTIN N° 1950",
+    "dni": "59.999.322",
+    "obraSocial": "PARTICULAR",
+    "nombrePadre": "ANTONELLA",
+    "fechaNacimiento": "2023-10-25",
+    "edad": "2",
+    "telefono": "+54 9 2966 21-2425"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1789667333214",
+   "datosPersonales": {
+    "obraSocial": "",
+    "nombrePadre": "VILMA  BENICIO",
+    "nombre": "MAMANI ARTURO",
+    "domicilio": "PJE. 21 DE DICIEMBRE CASA 11",
+    "telefono2": "",
+    "nAfiliado": "",
+    "telefono2Ref": "",
+    "dni": "58.564.034",
+    "telefonoRef": "",
+    "edad": "4",
+    "telefono": "+54 9 2966 22-3281",
+    "alias": "ARTURO",
+    "fechaNacimiento": "2020-11-14"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1789667635860",
+   "datosPersonales": {
+    "domicilio": "TOMAS FERNANDEZ N° 141",
+    "obraSocial": "SWISS MEDICAL  4125",
+    "telefono2": "",
+    "nAfiliado": "8000067259041040001",
+    "alias": "DEMI",
+    "telefonoRef": "",
+    "edad": "6",
+    "telefono": "+54 9 2966 57-7679",
+    "nombre": "CADIZ DEMIAN NICOLAS",
+    "dni": "58.242.981",
+    "telefono2Ref": "",
+    "fechaNacimiento": "2020-06-15",
+    "nombrePadre": "RUTH Y JAVIER"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1789667869693",
+   "datosPersonales": {
+    "telefono2Ref": "",
+    "obraSocial": "",
+    "nombrePadre": "",
+    "fechaNacimiento": "",
+    "telefonoRef": "",
+    "domicilio": "",
+    "telefono": "+54 9 2966 21-3508",
+    "dni": "",
+    "telefono2": "",
+    "nAfiliado": "",
+    "alias": "DANTE",
+    "nombre": "SOCAÑO DANTE",
+    "edad": "8"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1789668146576",
+   "datosPersonales": {
+    "nombrePadre": "JEMIMA ",
+    "nombre": "RIQUELME NOAH",
+    "alias": "NOAH",
+    "dni": "",
+    "telefono2Ref": "",
+    "fechaNacimiento": "2019-02-12",
+    "nAfiliado": "",
+    "telefono": "+54 9 2966 75-3694",
+    "telefonoRef": "",
+    "obraSocial": "",
+    "domicilio": "BERUTTI N° 1354",
+    "telefono2": "",
+    "edad": "7"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1790013837373",
+   "datosPersonales": {
+    "domicilio": "COMODORO RIVADAVIA 386",
+    "telefono2": "",
+    "nAfiliado": "1231301556602",
+    "fechaNacimiento": "0083-05-12",
+    "telefonoRef": "",
+    "telefono": "+54 9 2966 63-9384",
+    "obraSocial": "C.S.S.",
+    "telefono2Ref": "",
+    "nombre": "SARMIENTO ROMINA",
+    "edad": "43",
+    "nombrePadre": "MIRIAM AYENDES",
+    "alias": "ROMI",
+    "dni": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1790013983630",
+   "datosPersonales": {
+    "nombrePadre": "",
+    "nombre": "AYENDE MIRIAM",
+    "obraSocial": "C.S.S.",
+    "telefonoRef": "",
+    "edad": "68",
+    "dni": "13.015.566",
+    "fechaNacimiento": "1957-05-12",
+    "telefono2Ref": "",
+    "nAfiliado": "1231301556600",
+    "alias": "MIRIAM",
+    "telefono2": "",
+    "domicilio": "COMODORO RIVADAVIA 386",
+    "telefono": "+54 9 2966 63-9384"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1790014238811",
+   "datosPersonales": {
+    "telefono2Ref": "",
+    "telefono": "+54 9 2966 21-9062",
+    "fechaNacimiento": "2020-07-13",
+    "telefono2": "",
+    "domicilio": "MONTE AYMOND N° 225",
+    "nombrePadre": "",
+    "nAfiliado": "",
+    "nombre": "BENINI VITTORIA ISABELLA",
+    "alias": "VITO",
+    "obraSocial": "",
+    "telefonoRef": "",
+    "edad": "6",
+    "dni": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1790025170627",
+   "datosPersonales": {
+    "nAfiliado": "",
+    "telefono2": "",
+    "domicilio": "MIGUEL ARISTIZABAL N° 2105",
+    "telefonoRef": "",
+    "dni": "59.437.884",
+    "fechaNacimiento": "2022-11-07",
+    "alias": "YAHIR",
+    "obraSocial": "PARTICULAR",
+    "nombrePadre": "",
+    "telefono": "+54 9 2966 53-6431",
+    "edad": "3",
+    "nombre": "HARO YAHIR BENJAMIN",
+    "telefono2Ref": ""
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1790025298742",
+   "datosPersonales": {
+    "telefono": "+54 9 2966 21-3404",
+    "nombre": "HARO ROMINA VALENTINA",
+    "telefonoRef": "",
+    "telefono2Ref": "",
+    "edad": "3",
+    "obraSocial": "",
+    "dni": "",
+    "nombrePadre": "ANABELLA",
+    "alias": "ROMA",
+    "domicilio": "DALMACIA CEJAS N° 1374",
+    "telefono2": "",
+    "nAfiliado": "",
+    "fechaNacimiento": "2023-01-16"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1790101404318",
+   "datosPersonales": {
+    "nombrePadre": "LORENA ARGUELLES",
+    "edad": "4",
+    "dni": "59.125.280",
+    "telefonoRef": "",
+    "telefono2Ref": "",
+    "nombre": "CHAVERRI ALMA ",
+    "nAfiliado": "",
+    "fechaNacimiento": "2021-12-24",
+    "alias": "ALMA",
+    "telefono2": "",
+    "obraSocial": "OSDE / C.S.S.",
+    "domicilio": "PELLEGRINI N° 932",
+    "telefono": "+54 9 2966 40-1312"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1790101579370",
+   "datosPersonales": {
+    "fechaNacimiento": "2018-10-07",
+    "obraSocial": "SWISS MEDICAL SB04",
+    "nombrePadre": "MARIA LUJAN ",
+    "telefono2Ref": "",
+    "telefono": "+54 9 2966 21-3848",
+    "edad": "7",
+    "domicilio": "B° LOS ALAMOS MZA. 19 PARC. 10",
+    "telefonoRef": "",
+    "telefono2": "",
+    "nAfiliado": "8000060179382041003",
+    "alias": "NACHO",
+    "dni": "57.055.122",
+    "nombre": "FERNANDEZ IGNACIO"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1790101788383",
+   "datosPersonales": {
+    "telefono2Ref": "",
+    "nAfiliado": "8000061478060041007",
+    "telefonoRef": "",
+    "domicilio": "PRIMERA JUNTA CASA 10",
+    "telefono2": "",
+    "telefono": "+54 9 351 315-7333",
+    "obraSocial": "SWISS MEDICAL  SMG20",
+    "nombre": "BRAIN ALINA",
+    "nombrePadre": "FACUNDO",
+    "edad": "7",
+    "dni": "",
+    "alias": "ALINA",
+    "fechaNacimiento": "2018-12-13"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1790102012355",
+   "datosPersonales": {
+    "telefono2Ref": "",
+    "nombre": "BURGOS AMADEO",
+    "telefonoRef": "",
+    "nAfiliado": "1133233759203",
+    "nombrePadre": "ORNELLA",
+    "dni": "59.110.664",
+    "telefono2": "",
+    "domicilio": "CRISTO REDENTOR N° 3348",
+    "alias": "AMA",
+    "fechaNacimiento": "2022-03-22",
+    "obraSocial": "C.S.S.",
+    "telefono": "+54 9 2966 27-0312",
+    "edad": "4"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1790102136180",
+   "datosPersonales": {
+    "obraSocial": "C.S.S.",
+    "nombre": "BURGOS VICENTE",
+    "nAfiliado": "1133233759204",
+    "telefono2": "",
+    "fechaNacimiento": "2022-03-22",
+    "domicilio": "CRISTO REDENTOR N° 3348",
+    "edad": "4",
+    "nombrePadre": "ORNELLA",
+    "telefono": "+54 9 2966 27-0312",
+    "alias": "VICEN",
+    "telefono2Ref": "",
+    "telefonoRef": "",
+    "dni": "59.110665"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1790102302867",
+   "datosPersonales": {
+    "telefono": "+54 9 2966 32-1991",
+    "nAfiliado": "",
+    "telefono2": "",
+    "domicilio": "ALBERTO GRILLO N° 337",
+    "obraSocial": "C.S.S.",
+    "alias": "CONSTA",
+    "telefonoRef": "",
+    "edad": "9",
+    "fechaNacimiento": "2017-06-29",
+    "dni": "",
+    "nombrePadre": "DAIANA",
+    "telefono2Ref": "",
+    "nombre": "GALARZA CONSTANTINO"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1790102390505",
+   "datosPersonales": {
+    "nAfiliado": "",
+    "telefono2": "",
+    "nombrePadre": "YOHANA",
+    "domicilio": "",
+    "obraSocial": "",
+    "fechaNacimiento": "2020-01-12",
+    "telefono2Ref": "",
+    "nombre": "RUIZ LIONEL ROMAN",
+    "telefonoRef": "",
+    "edad": "6",
+    "telefono": "+54 9 2966 56-8673",
+    "dni": "57.800.280",
+    "alias": "ROMAN"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1790108971639",
+   "datosPersonales": {
+    "obraSocial": "",
+    "nombrePadre": "SELENA",
+    "nAfiliado": "",
+    "telefono2Ref": "",
+    "domicilio": "AMADOR GONZALEZ N° 360",
+    "telefono2": "",
+    "nombre": "RODRIGUEZ SANTINO",
+    "fechaNacimiento": "2022-12-19",
+    "edad": "3",
+    "alias": "SANTI",
+    "telefonoRef": "",
+    "dni": "59.437.987",
+    "telefono": "+54 9 2966 22-5296"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1790111907972",
+   "datosPersonales": {
+    "domicilio": "AYOHUMA N° 995",
+    "telefono2": "",
+    "telefono": "+54 9 2966 71-7869",
+    "nAfiliado": "",
+    "telefono2Ref": "",
+    "dni": "57.799.793",
+    "obraSocial": "",
+    "nombrePadre": "MARIANA",
+    "alias": "VALU",
+    "edad": "6",
+    "telefonoRef": "",
+    "nombre": "VARGAS VALENTIN",
+    "fechaNacimiento": "2020-03-21"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1790281601165",
+   "datosPersonales": {
+    "dni": "",
+    "nombrePadre": "",
+    "telefono2Ref": "",
+    "edad": "33",
+    "domicilio": "JOSE INGENIEROS N° 2590",
+    "telefono2": "",
+    "alias": "",
+    "fechaNacimiento": "1993-01-06",
+    "nAfiliado": "1917588-00",
+    "telefonoRef": "",
+    "obraSocial": "SANCOR 3000",
+    "telefono": "+54 9 2966 30-7047",
+    "nombre": "OYARZO VANINA"
+   }
+  },
+  {
+   "col": "pacientes",
+   "doc": "1790282009690",
+   "datosPersonales": {
+    "alias": "",
+    "fechaNacimiento": "2018-07-23",
+    "telefono": "+54 9 11 2637-2581",
+    "telefono2Ref": "",
+    "telefono2": "",
+    "nombrePadre": "",
+    "domicilio": "ARRIBEÑOS 1611 BENAVIDEZ (BS.AS)",
+    "nAfiliado": "",
+    "edad": "7",
+    "nombre": "VALDIVIESO JUAQUINA ",
+    "telefonoRef": "",
+    "dni": "",
+    "obraSocial": "SWISS MEDICAL"
+   }
+  },
+  {
+   "col": "turnos",
+   "doc": "1779379577743",
+   "pacienteNombre": "HAEDO GONZALO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779379977085",
+   "pacienteNombre": "FIGUEROA AGUSTIN"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779380067874",
+   "pacienteNombre": "DIAZ OYARZO LOLA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779380129537",
+   "pacienteNombre": "NOVOA TANIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779380272462",
+   "pacienteNombre": "ANGELINO LUANA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779380342926",
+   "pacienteNombre": "ANGELINO GIULIANA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779380441987",
+   "pacienteNombre": "SARMIENTO ROMINA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779380507683",
+   "pacienteNombre": "LLANCALAUEN MAILEN"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779380657629",
+   "pacienteNombre": "GONZALEZ MATIAS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779380680432",
+   "pacienteNombre": "ACTO MILAGROS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779381089212",
+   "pacienteNombre": "FERIADO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382116850",
+   "pacienteNombre": "FERIADO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382125273",
+   "pacienteNombre": "FERIADO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382132200",
+   "pacienteNombre": "FERIADO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382146635",
+   "pacienteNombre": "FERIADO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382152860",
+   "pacienteNombre": "FERIADO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382158284",
+   "pacienteNombre": "FERIADO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382455383",
+   "pacienteNombre": "FIGUEROA TOBIAS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382531114",
+   "pacienteNombre": "CRETTON FRANCESCO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382603116",
+   "pacienteNombre": "ANDRADE LUCIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382651099",
+   "pacienteNombre": "SIHARA RAMOS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382675628",
+   "pacienteNombre": "CONGRESO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382682061",
+   "pacienteNombre": "CONGRESO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382688137",
+   "pacienteNombre": "CONGRESO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382697547",
+   "pacienteNombre": "CONGRESO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382744397",
+   "pacienteNombre": "CHAVES LOAN"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382807992",
+   "pacienteNombre": "MUÑOZ  LUCA MATEO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382841743",
+   "pacienteNombre": "SANCHEZ RUIZ ORIANA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382880769",
+   "pacienteNombre": "AGUIL ZIOMARA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382923661",
+   "pacienteNombre": "VIDAL ABRIL"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779382970205",
+   "pacienteNombre": "GORAN CALFUIR"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779389857307",
+   "pacienteNombre": "SARMIENTO ROMINA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779390005291",
+   "pacienteNombre": "lopez noemi"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779813760793",
+   "pacienteNombre": "Gonzalo haedo"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779813848333",
+   "pacienteNombre": "GONZALEZ santiago"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779814010901",
+   "pacienteNombre": "Romina sarmiento"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779814057043",
+   "pacienteNombre": "NOVOA Tania"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779814154982",
+   "pacienteNombre": "SIHARA RAMOS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779824174874",
+   "pacienteNombre": "FIGUEROA TOBIAS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779829975576",
+   "pacienteNombre": "LOAN CHAVEZ"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779830000432",
+   "pacienteNombre": "FIGUEROA TOBIAS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779830916620",
+   "pacienteNombre": "HAEDO GONZALO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779830997064",
+   "pacienteNombre": "ANDRADE LUCIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779834992898",
+   "pacienteNombre": "Melani alfonso"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779835065894",
+   "pacienteNombre": "Melano Alfonso"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779931646959",
+   "pacienteNombre": "Torre ludovico"
+  },
+  {
+   "col": "turnos",
+   "doc": "1779977729080",
+   "pacienteNombre": "Mana ella noah"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780423816195",
+   "pacienteNombre": "ABALOS zura Tiziano"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780439018139",
+   "pacienteNombre": "VITTO (MAMA)"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780439155471",
+   "pacienteNombre": "CHAVES LOAN"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780439324553",
+   "pacienteNombre": "SARMENTO ROMINA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780439367623",
+   "pacienteNombre": "ANDRADE LUCIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780439415728",
+   "pacienteNombre": "RAMOS SIHARA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780439467872",
+   "pacienteNombre": "NOVOA TANIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780497344316",
+   "pacienteNombre": "Francisco pista Molia"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780517449406",
+   "pacienteNombre": "Zelaya Duran jeremías Ruben Nicolas"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780518498273",
+   "pacienteNombre": "Yancovich Natasha"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780521347322",
+   "pacienteNombre": "Riquelme Noah"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780526104246",
+   "pacienteNombre": "Mavie Alvarado"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780535680448",
+   "pacienteNombre": "FERIADO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780535704548",
+   "pacienteNombre": "NO DAR TURNOS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780602547769",
+   "pacienteNombre": "FIGUEROA TOBIAS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780602660473",
+   "pacienteNombre": "FIGUEROA TOBIAS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780604989414",
+   "pacienteNombre": "VITTO BENINI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780607275587",
+   "pacienteNombre": "LUDOVICO TORRES"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780695912027",
+   "pacienteNombre": "Tiziano Diaz"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780918986298",
+   "pacienteNombre": "Quintero mateo"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780961185257",
+   "pacienteNombre": "TIZIANO DIAZ"
+  },
+  {
+   "col": "turnos",
+   "doc": "1780961198122",
+   "pacienteNombre": "TIZIANO DIAZ"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781031551645",
+   "pacienteNombre": "ABALOS ZURA TIZXIANO AGUSTIN"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781031613065",
+   "pacienteNombre": "VIDAL ABRIL"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781031672710",
+   "pacienteNombre": "ZIOMARA AGUIL"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781037497272",
+   "pacienteNombre": "SARMIENTO NADIA ROMINA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781037550823",
+   "pacienteNombre": "MUÑOZ LUCA MATEO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781040464033",
+   "pacienteNombre": "ANDRADE LUCIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781116883809",
+   "pacienteNombre": "Reunion con teo consul"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781125127319",
+   "pacienteNombre": "Gonzales satiago"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781125831493",
+   "pacienteNombre": "Elias Ruiz Coassolo"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781217907424",
+   "pacienteNombre": "LUDOVICO TORRES"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781645164610",
+   "pacienteNombre": "GALA LUCERO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781646787440",
+   "pacienteNombre": "VITTO BENINI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781646835545",
+   "pacienteNombre": "ROMINA SARMIENTO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781718062370",
+   "pacienteNombre": "Melian Emma"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781733857285",
+   "pacienteNombre": "Cañete Francisco"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781812870738",
+   "pacienteNombre": "SIHARA RAMOS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781816759902",
+   "pacienteNombre": "FENELLI AUGUSTO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1781825430589",
+   "pacienteNombre": "Garay loan"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782243248150",
+   "pacienteNombre": "garay loan"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782243322648",
+   "pacienteNombre": "ANDRADE LUCIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782254387023",
+   "pacienteNombre": "ANDRADE LUCIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782254439015",
+   "pacienteNombre": "VITTO BENINI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782760750501",
+   "pacienteNombre": "SARMIENTO ROMINA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782762561915",
+   "pacienteNombre": "ROMINA SARMIENTO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782762868565",
+   "pacienteNombre": "BRIANA RUARTE"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782786455950",
+   "pacienteNombre": "Andrade Lucia"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782786519870",
+   "pacienteNombre": "Oyarzo lautaro"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782786597106",
+   "pacienteNombre": "Juarez  rivadeneira Helam"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782786662122",
+   "pacienteNombre": "Ilker Ali  quiroga"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782786716918",
+   "pacienteNombre": "Briana Ruarte"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782786779335",
+   "pacienteNombre": "Sarmiento romina"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782939228516",
+   "pacienteNombre": "Sandoval ignacio"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782939317156",
+   "pacienteNombre": "CORTI CONSTANTINO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782939400291",
+   "pacienteNombre": "RIQUELME NOAH"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782939591015",
+   "pacienteNombre": "BASANTA IGNACIO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1782939672574",
+   "pacienteNombre": "Luana GIGNOLI RIQUELME"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783108663481",
+   "pacienteNombre": "Sandoval  Geronimo"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783108766358",
+   "pacienteNombre": "CORTI CONSTANTINO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783108822470",
+   "pacienteNombre": "Ilker Ali quiroga"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783108860612",
+   "pacienteNombre": "Briana Ruarte"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783179791426",
+   "pacienteNombre": "Vicente vidaurria"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783364336712",
+   "pacienteNombre": "CAÑETE FRANCISCO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783368674197",
+   "pacienteNombre": "ROMINA SARMIENTO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783368709417",
+   "pacienteNombre": "VICENTE VIDAURRIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783373373267",
+   "pacienteNombre": "ABALOS  ZURA TIZIANO AGUSTIN"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783384075663",
+   "pacienteNombre": "14hs.  Abril vidal"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783384153755",
+   "pacienteNombre": "14:30 Shiara ramos"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783629646766",
+   "pacienteNombre": "NOEMI ARAMAYO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783629689991",
+   "pacienteNombre": "CORTI CONSTANZO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783710994675",
+   "pacienteNombre": "Iker quiroga"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783711226060",
+   "pacienteNombre": "Tiziano abalos"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783711299842",
+   "pacienteNombre": "Sandoval geronimo"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783711880379",
+   "pacienteNombre": "Diaz sandra"
+  },
+  {
+   "col": "turnos",
+   "doc": "1783720989920",
+   "pacienteNombre": "Noah riquelme"
+  },
+  {
+   "col": "turnos",
+   "doc": "1784227747705",
+   "pacienteNombre": "vicente vidurria"
+  },
+  {
+   "col": "turnos",
+   "doc": "1784228293511",
+   "pacienteNombre": "15 hs cañete francisco"
+  },
+  {
+   "col": "turnos",
+   "doc": "1784228343724",
+   "pacienteNombre": "15:30 lara lam mothe  tesler"
+  },
+  {
+   "col": "turnos",
+   "doc": "1784228378459",
+   "pacienteNombre": "16 hs romina sarmiento"
+  },
+  {
+   "col": "turnos",
+   "doc": "1784228405909",
+   "pacienteNombre": "vicente vidurria"
+  },
+  {
+   "col": "turnos",
+   "doc": "1784228455751",
+   "pacienteNombre": "corti constatino"
+  },
+  {
+   "col": "turnos",
+   "doc": "1784228504302",
+   "pacienteNombre": "iker quiroga"
+  },
+  {
+   "col": "turnos",
+   "doc": "1784228537486",
+   "pacienteNombre": "laguia juan pablo"
+  },
+  {
+   "col": "turnos",
+   "doc": "1784228574929",
+   "pacienteNombre": "abalos tiziano"
+  },
+  {
+   "col": "turnos",
+   "doc": "1784574437423",
+   "pacienteNombre": "MIRIAM ALLENDE"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785168289680",
+   "pacienteNombre": "Lola alma Diaz"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785168331396",
+   "pacienteNombre": "Romina sarmiento"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785168368326",
+   "pacienteNombre": "Allende Miriam"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785168423320",
+   "pacienteNombre": "Sandoval geronimo"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785168463955",
+   "pacienteNombre": "Leguía Juan pablo"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785168522553",
+   "pacienteNombre": "Contreras carlos"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785168679679",
+   "pacienteNombre": "18:15 Briana Lujan garcia"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785168723111",
+   "pacienteNombre": "Vidriería vicente"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785168752628",
+   "pacienteNombre": "Shiara ramos"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785168791790",
+   "pacienteNombre": "Vidurría gema"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785168847676",
+   "pacienteNombre": "Abalos tiziano"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785168886469",
+   "pacienteNombre": "Iker quiroga"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785168939707",
+   "pacienteNombre": "Toledo silvestre"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785168984282",
+   "pacienteNombre": "Noah riquelme"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785168997900",
+   "pacienteNombre": "Noah riquelme"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785169025484",
+   "pacienteNombre": "Giménez matias"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785191702188",
+   "pacienteNombre": "ROMINA SARMIENTO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785192224441",
+   "pacienteNombre": "MIRIAM ALLENDE"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785192255454",
+   "pacienteNombre": "LOLA ALMA DIAZ"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785192303659",
+   "pacienteNombre": "VICENTE VIDAURRIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785264850953",
+   "pacienteNombre": "lola"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785264883263",
+   "pacienteNombre": "briana Lujan garcia"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785264909465",
+   "pacienteNombre": "juan pablo laguie"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785272950913",
+   "pacienteNombre": "IKER QUIROGA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785273093835",
+   "pacienteNombre": "GEMA VIDAURRIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785274543172",
+   "pacienteNombre": "TOLEDO SILVESTRE"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785778005621",
+   "pacienteNombre": "Armani Isabella"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785778069113",
+   "pacienteNombre": "18:15. Urgencia asia abregu"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785778099606",
+   "pacienteNombre": "Vitto Benini urgencia"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785778171059",
+   "pacienteNombre": "Vergara benicio"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785791450817",
+   "pacienteNombre": "ROMINA SARMIENTO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785791477469",
+   "pacienteNombre": "MIRIAM ALLENDE"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785791526897",
+   "pacienteNombre": "BAUTISTA MUÑOZ"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785791554041",
+   "pacienteNombre": "LOLA DIAZ"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785791568938",
+   "pacienteNombre": "LOLA DIAZ"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785791648138",
+   "pacienteNombre": "AGUIL ZIOMARA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785791701891",
+   "pacienteNombre": "GIMENEZ MATIAS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785791744214",
+   "pacienteNombre": "NOAH RIQUELME"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785791807387",
+   "pacienteNombre": "CHAVARRIA ALMA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785794627445",
+   "pacienteNombre": "ABREGU ASIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785795297702",
+   "pacienteNombre": "VITTO BENINI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785796802117",
+   "pacienteNombre": "VIDAURRIA VICENTE"
+  },
+  {
+   "col": "turnos",
+   "doc": "1785870540599",
+   "pacienteNombre": "VILLACORTA DELFINA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786042742394",
+   "pacienteNombre": "Lamas  walter martin"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786042794479",
+   "pacienteNombre": "Benicio vergara"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786042822359",
+   "pacienteNombre": "Vidal abril"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786042873837",
+   "pacienteNombre": "Toledo silvestre"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786042920975",
+   "pacienteNombre": "Vidurria gema"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786042942850",
+   "pacienteNombre": "feriado"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786042990194",
+   "pacienteNombre": "Shiara Ramoss"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786043031503",
+   "pacienteNombre": "Iker quiroga"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786051271503",
+   "pacienteNombre": "Andreoli Evangelina"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786051373531",
+   "pacienteNombre": "GIMENEZ MATIAS (45 MINUTOS)"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786051466311",
+   "pacienteNombre": "GIMENEZ MATIAS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786051630689",
+   "pacienteNombre": "URIBE FRANCHESKA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786052379389",
+   "pacienteNombre": "ALMA CHAVARRIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786054104683",
+   "pacienteNombre": "ABREGU ASIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786361895521",
+   "pacienteNombre": "Mamani arturo"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786362015194",
+   "pacienteNombre": "Ziomara Aguil"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786362053366",
+   "pacienteNombre": "Vidal abril"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786373914382",
+   "pacienteNombre": "alma Noemí aramayo"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786376858710",
+   "pacienteNombre": "Moscoso Israel"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786380493254",
+   "pacienteNombre": "Joaquina valdivieso"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786387818374",
+   "pacienteNombre": "ROMINA SARMIENTO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786387845798",
+   "pacienteNombre": "MIRIAM ALLENDE"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786460912892",
+   "pacienteNombre": "Noah riquelme"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786465610957",
+   "pacienteNombre": "Vieyra nicolas"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786484711557",
+   "pacienteNombre": "ALMA CHAVARRI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786484869414",
+   "pacienteNombre": "VITTO BENINI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786485960521",
+   "pacienteNombre": "SILVESTRE TOLEDO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786488424663",
+   "pacienteNombre": "Vicente vidurria"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786488587874",
+   "pacienteNombre": "Uribe franchesca"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786567306659",
+   "pacienteNombre": "Gema Venecia soto alberti"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786567375725",
+   "pacienteNombre": "Millalonco Franchesco"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786568615625",
+   "pacienteNombre": "Salva isabela"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786570607994",
+   "pacienteNombre": "Evangelina andreoli"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786590719510",
+   "pacienteNombre": "Villacorta Delfina"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786653180438",
+   "pacienteNombre": "MAMANI ARTURO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786655761106",
+   "pacienteNombre": "BENICIO VERGARA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786658164082",
+   "pacienteNombre": "ASIA ABREGU"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786659376549",
+   "pacienteNombre": "AGUSTIN VIDAURRIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786736292759",
+   "pacienteNombre": "Lara lamothe"
+  },
+  {
+   "col": "turnos",
+   "doc": "1786736689681",
+   "pacienteNombre": "Ciana aguila"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787019319092",
+   "pacienteNombre": "Fernández Ignacio"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787079605600",
+   "pacienteNombre": "Costa gimenez lucas"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787090860030",
+   "pacienteNombre": "ALMA CHAVARRI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787092631662",
+   "pacienteNombre": "VITTO BENINI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787165405207",
+   "pacienteNombre": "Augusto Brunt"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787261945602",
+   "pacienteNombre": "SHIARA RAMOS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787262009279",
+   "pacienteNombre": "GEMA VENECIA SOTO ALBERTI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787262048617",
+   "pacienteNombre": "TOLEDO SILVESTRE"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787595126646",
+   "pacienteNombre": "Gonzalez Mia"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787595147400",
+   "pacienteNombre": "Vicente vidurria"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787595229071",
+   "pacienteNombre": "Braian careglio alina"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787595286247",
+   "pacienteNombre": "Israel moscoso"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787595335073",
+   "pacienteNombre": "Gianni pio"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787675694419",
+   "pacienteNombre": "Alma Valentina mamani"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787675763279",
+   "pacienteNombre": "Millalonco franchesco"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787675777515",
+   "pacienteNombre": "Julio palacio"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787675878984",
+   "pacienteNombre": "Romina sarmiento"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787675906319",
+   "pacienteNombre": "Miriam Allende"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787675925168",
+   "pacienteNombre": "Vicente vidurria"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787675959445",
+   "pacienteNombre": "Thiago olivera"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787675996672",
+   "pacienteNombre": "Fernández ignacio"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787676099141",
+   "pacienteNombre": "Andreoli Evangelina"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787690844614",
+   "pacienteNombre": "ISRAEL MOSCOSO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787690975423",
+   "pacienteNombre": "PIO GIANNI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787855903200",
+   "pacienteNombre": "VENECIA GIOVANNA ACOSTA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787855940668",
+   "pacienteNombre": "LIONEL ROMAN RUIZ"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787855998607",
+   "pacienteNombre": "MAMAMNI ARTURO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787856046003",
+   "pacienteNombre": "ULLOA MATHEO AGUSTIN"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787856085302",
+   "pacienteNombre": "BERGARA VENICIO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787858716016",
+   "pacienteNombre": "ALMA  MAMANI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787862553524",
+   "pacienteNombre": "JULIO PALACIOS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787863505390",
+   "pacienteNombre": "MARIA LUJAN DIAZ"
+  },
+  {
+   "col": "turnos",
+   "doc": "1787864756687",
+   "pacienteNombre": "MARIA LUJAN DIAZ"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788178805035",
+   "pacienteNombre": "Augusto brunt"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788178897575",
+   "pacienteNombre": "Gema soto alberti"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788178977759",
+   "pacienteNombre": "Braian Alina"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788206222768",
+   "pacienteNombre": "ROMINA SARMIENTO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788206248355",
+   "pacienteNombre": "MIRIAM ALLENDE"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788207833056",
+   "pacienteNombre": "VALDIVIESO JOAQUINA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788207916119",
+   "pacienteNombre": "MATIAS GIMENEZ"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788213929444",
+   "pacienteNombre": "VICENTE VIDAURRIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788290303831",
+   "pacienteNombre": "TADEO SILVA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788290415973",
+   "pacienteNombre": "GONZALEZ MIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788290468126",
+   "pacienteNombre": "CONSTANTINO GALARZA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788290537514",
+   "pacienteNombre": "AMATISTA SILVA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788290572282",
+   "pacienteNombre": "VICENTE VIDURRIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788296134808",
+   "pacienteNombre": "julio palacio"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788302534752",
+   "pacienteNombre": "OYARZO Vidal Vanina"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788302581244",
+   "pacienteNombre": "Olivera Thiago"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788302657965",
+   "pacienteNombre": "Saori  Chiulli"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788464444048",
+   "pacienteNombre": "DAMIAN NICOLAS CADIZ QUEVEDO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788469432295",
+   "pacienteNombre": "LUCIANO MOYANO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788469459599",
+   "pacienteNombre": "PIO GIOVANI GADIEL"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788469531644",
+   "pacienteNombre": "ALMA VALENTINA MAMANI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788819152046",
+   "pacienteNombre": "ARTURO MAMANI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788895913627",
+   "pacienteNombre": "ROMINA SARMIENTO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788895938355",
+   "pacienteNombre": "NIRIAM ALLENDE"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788903367511",
+   "pacienteNombre": "IGNACIO FERNANDEZ"
+  },
+  {
+   "col": "turnos",
+   "doc": "1788994781141",
+   "pacienteNombre": "Walter lamas"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789067301513",
+   "pacienteNombre": "YAHIR BENJAMIN HARO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789075499201",
+   "pacienteNombre": "GIMENEZ MATIAS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789082303929",
+   "pacienteNombre": "WALTER LAMAS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789514262072",
+   "pacienteNombre": "Pio  Gianni Gadiel"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789514709918",
+   "pacienteNombre": "Sihara Ramos"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789514801117",
+   "pacienteNombre": "Damián Nicolás Cadiz"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789514847425",
+   "pacienteNombre": "Roma Valentina Haro"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789514925325",
+   "pacienteNombre": "Socaño Dante"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789514951922",
+   "pacienteNombre": "Noah Riquelme"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789515131703",
+   "pacienteNombre": "Lionel Román Ruiz"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789515220622",
+   "pacienteNombre": "Santino Rodriguez"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789515377795",
+   "pacienteNombre": "Valentín vargas"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789515413630",
+   "pacienteNombre": "ANDREOLI EVANGELINA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789515456129",
+   "pacienteNombre": "Chavarria alma"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789515533167",
+   "pacienteNombre": "Alina Brain"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789515656396",
+   "pacienteNombre": "Luciano moyano"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789515673265",
+   "pacienteNombre": "Curso"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789515678709",
+   "pacienteNombre": "Curso"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789515685083",
+   "pacienteNombre": "Curso"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789591755908",
+   "pacienteNombre": "VURGOS AMADEO Y VICENTE"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789591806765",
+   "pacienteNombre": "Rodríguez santino"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789591838737",
+   "pacienteNombre": "SHIARA RAMOS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789592694986",
+   "pacienteNombre": "AUGUSTO BRUNT"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789592750873",
+   "pacienteNombre": "ALMA MAMANI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789592808981",
+   "pacienteNombre": "Angelino giuliana"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789597595240",
+   "pacienteNombre": "OYARZO VANINA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789672340908",
+   "pacienteNombre": "NOAH ROQUELME"
+  },
+  {
+   "col": "turnos",
+   "doc": "1789672396282",
+   "pacienteNombre": "PIO GIANI GADIEL"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790004716307",
+   "pacienteNombre": "Benjamin lescano"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790005023117",
+   "pacienteNombre": "Saori chiulli"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790006088155",
+   "pacienteNombre": "Melián emma"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790006118739",
+   "pacienteNombre": "Vicente vidurria"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790031527301",
+   "pacienteNombre": "THIAGO OLIVERA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790105168574",
+   "pacienteNombre": "ROMINA SARMIENTO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790105189658",
+   "pacienteNombre": "MIRIAM ALLENDE"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790105268490",
+   "pacienteNombre": "VITTO BENINI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790105712173",
+   "pacienteNombre": "NOHA RIQUELME"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790105789531",
+   "pacienteNombre": "BLASCO BASTIAN"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790105837235",
+   "pacienteNombre": "ZIOMARA AGUIL"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790105868314",
+   "pacienteNombre": "THIAGO OLIVERA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790204423419",
+   "pacienteNombre": "Román Ruiz"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790599250238",
+   "pacienteNombre": "Gonzales santiago"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790599362049",
+   "pacienteNombre": "Alma chavarria"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790599446651",
+   "pacienteNombre": "Mamani alma"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790599467477",
+   "pacienteNombre": "Brunt august"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790599527187",
+   "pacienteNombre": "Pio gianni"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790599570499",
+   "pacienteNombre": "Mia gonzales"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790599626018",
+   "pacienteNombre": "Vargas valentin"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790599657784",
+   "pacienteNombre": "BRAIAN ALINA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790891094369",
+   "pacienteNombre": "GIMENEZ MATIAS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790891123306",
+   "pacienteNombre": "SHIARA RAMOS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790891188984",
+   "pacienteNombre": "SAORI CHIULLI CANDOLI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790891226880",
+   "pacienteNombre": "ALMA CHAVARRIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790891297977",
+   "pacienteNombre": "THEO PEREZ"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790891545800",
+   "pacienteNombre": "VITTO BENINI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790891624980",
+   "pacienteNombre": "EMMA MELIAM"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790891683428",
+   "pacienteNombre": "ARTURO MAMANI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790891783223",
+   "pacienteNombre": "LIONEL ROMAN RUIZ"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790891886483",
+   "pacienteNombre": "SAORI CHIULLI CANOLI"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790891940940",
+   "pacienteNombre": "GALARZA CONSTANTINO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790892045870",
+   "pacienteNombre": "RIMINA SARMIENTO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1790892072245",
+   "pacienteNombre": "ALLENDE MIRIAM"
+  },
+  {
+   "col": "turnos",
+   "doc": "1791232200745",
+   "pacienteNombre": "Riquelme  luisana"
+  },
+  {
+   "col": "turnos",
+   "doc": "1791232339571",
+   "pacienteNombre": "vitto benini"
+  },
+  {
+   "col": "turnos",
+   "doc": "1791232437338",
+   "pacienteNombre": "videla naira"
+  },
+  {
+   "col": "turnos",
+   "doc": "1791232668607",
+   "pacienteNombre": "romero sion yamile"
+  },
+  {
+   "col": "turnos",
+   "doc": "1791232767991",
+   "pacienteNombre": "theo perez"
+  },
+  {
+   "col": "turnos",
+   "doc": "1791309123341",
+   "pacienteNombre": "FERIADO"
+  },
+  {
+   "col": "turnos",
+   "doc": "1791309166906",
+   "pacienteNombre": "BASTIAN BOTIK RIOS"
+  },
+  {
+   "col": "turnos",
+   "doc": "1792010938391",
+   "pacienteNombre": "SUBIABRE ESTEFANIA"
+  },
+  {
+   "col": "turnos",
+   "doc": "1792011124112",
+   "pacienteNombre": "LIONEL ROMÁN RUIZ"
+  },
+  {
+   "col": "turnos",
+   "doc": "1792011160160",
+   "pacienteNombre": "ALINA BRAIN"
+  },
+  {
+   "col": "turnos",
+   "doc": "1792011212089",
+   "pacienteNombre": "GALARZA CONSTANTINO"
+  }
+ ]
+}

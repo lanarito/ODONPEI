@@ -1,0 +1,1823 @@
+{
+ "fecha": "2026-11-16T16:20:21.974581",
+ "turnos": [
+  {
+   "doc": "1779379577743",
+   "nombre": "HAEDO GONZALO"
+  },
+  {
+   "doc": "1779379977085",
+   "nombre": "FIGUEROA AGUSTIN"
+  },
+  {
+   "doc": "1779380067874",
+   "nombre": "DIAZ OYARZO LOLA"
+  },
+  {
+   "doc": "1779380129537",
+   "nombre": "NOVOA TANIA"
+  },
+  {
+   "doc": "1779380272462",
+   "nombre": "ANGELINO LUANA"
+  },
+  {
+   "doc": "1779380342926",
+   "nombre": "ANGELINO GIULIANA"
+  },
+  {
+   "doc": "1779380441987",
+   "nombre": "SARMIENTO ROMINA"
+  },
+  {
+   "doc": "1779380507683",
+   "nombre": "LLANCALAUEN MAILEN"
+  },
+  {
+   "doc": "1779380657629",
+   "nombre": "GONZALEZ MATIAS"
+  },
+  {
+   "doc": "1779380680432",
+   "nombre": "ACTO MILAGROS"
+  },
+  {
+   "doc": "1779381089212",
+   "nombre": "FERIADO"
+  },
+  {
+   "doc": "1779382116850",
+   "nombre": "FERIADO"
+  },
+  {
+   "doc": "1779382125273",
+   "nombre": "FERIADO"
+  },
+  {
+   "doc": "1779382132200",
+   "nombre": "FERIADO"
+  },
+  {
+   "doc": "1779382146635",
+   "nombre": "FERIADO"
+  },
+  {
+   "doc": "1779382152860",
+   "nombre": "FERIADO"
+  },
+  {
+   "doc": "1779382158284",
+   "nombre": "FERIADO"
+  },
+  {
+   "doc": "1779382455383",
+   "nombre": "FIGUEROA TOBIAS"
+  },
+  {
+   "doc": "1779382531114",
+   "nombre": "CRETTON FRANCESCO"
+  },
+  {
+   "doc": "1779382603116",
+   "nombre": "ANDRADE LUCIA"
+  },
+  {
+   "doc": "1779382651099",
+   "nombre": "SIHARA RAMOS"
+  },
+  {
+   "doc": "1779382675628",
+   "nombre": "CONGRESO"
+  },
+  {
+   "doc": "1779382682061",
+   "nombre": "CONGRESO"
+  },
+  {
+   "doc": "1779382688137",
+   "nombre": "CONGRESO"
+  },
+  {
+   "doc": "1779382697547",
+   "nombre": "CONGRESO"
+  },
+  {
+   "doc": "1779382744397",
+   "nombre": "CHAVES LOAN"
+  },
+  {
+   "doc": "1779382807992",
+   "nombre": "MUÑOZ  LUCA MATEO"
+  },
+  {
+   "doc": "1779382841743",
+   "nombre": "SANCHEZ RUIZ ORIANA"
+  },
+  {
+   "doc": "1779382880769",
+   "nombre": "AGUIL ZIOMARA"
+  },
+  {
+   "doc": "1779382923661",
+   "nombre": "VIDAL ABRIL"
+  },
+  {
+   "doc": "1779382970205",
+   "nombre": "GORAN CALFUIR"
+  },
+  {
+   "doc": "1779389857307",
+   "nombre": "SARMIENTO ROMINA"
+  },
+  {
+   "doc": "1779390005291",
+   "nombre": "LOPEZ NOEMI"
+  },
+  {
+   "doc": "1779813760793",
+   "nombre": "GONZALO HAEDO"
+  },
+  {
+   "doc": "1779813848333",
+   "nombre": "GONZALEZ SANTIAGO"
+  },
+  {
+   "doc": "1779814010901",
+   "nombre": "ROMINA SARMIENTO"
+  },
+  {
+   "doc": "1779814057043",
+   "nombre": "NOVOA TANIA"
+  },
+  {
+   "doc": "1779814154982",
+   "nombre": "SIHARA RAMOS"
+  },
+  {
+   "doc": "1779824174874",
+   "nombre": "FIGUEROA TOBIAS"
+  },
+  {
+   "doc": "1779829975576",
+   "nombre": "LOAN CHAVEZ"
+  },
+  {
+   "doc": "1779830000432",
+   "nombre": "FIGUEROA TOBIAS"
+  },
+  {
+   "doc": "1779830916620",
+   "nombre": "HAEDO GONZALO"
+  },
+  {
+   "doc": "1779830997064",
+   "nombre": "ANDRADE LUCIA"
+  },
+  {
+   "doc": "1779834992898",
+   "nombre": "MELANI ALFONSO"
+  },
+  {
+   "doc": "1779835065894",
+   "nombre": "MELANO ALFONSO"
+  },
+  {
+   "doc": "1779931646959",
+   "nombre": "TORRE LUDOVICO"
+  },
+  {
+   "doc": "1779977729080",
+   "nombre": "MANA ELLA NOAH"
+  },
+  {
+   "doc": "1780423816195",
+   "nombre": "ABALOS ZURA TIZIANO"
+  },
+  {
+   "doc": "1780439018139",
+   "nombre": "VITTO (MAMA)"
+  },
+  {
+   "doc": "1780439155471",
+   "nombre": "CHAVES LOAN"
+  },
+  {
+   "doc": "1780439324553",
+   "nombre": "SARMENTO ROMINA"
+  },
+  {
+   "doc": "1780439367623",
+   "nombre": "ANDRADE LUCIA"
+  },
+  {
+   "doc": "1780439415728",
+   "nombre": "RAMOS SIHARA"
+  },
+  {
+   "doc": "1780439467872",
+   "nombre": "NOVOA TANIA"
+  },
+  {
+   "doc": "1780497344316",
+   "nombre": "FRANCISCO PISTA MOLIA"
+  },
+  {
+   "doc": "1780517449406",
+   "nombre": "ZELAYA DURAN JEREMIAS RUBEN NICOLAS"
+  },
+  {
+   "doc": "1780518498273",
+   "nombre": "YANCOVICH NATASHA"
+  },
+  {
+   "doc": "1780521347322",
+   "nombre": "RIQUELME NOAH"
+  },
+  {
+   "doc": "1780526104246",
+   "nombre": "MAVIE ALVARADO"
+  },
+  {
+   "doc": "1780535680448",
+   "nombre": "FERIADO"
+  },
+  {
+   "doc": "1780535704548",
+   "nombre": "NO DAR TURNOS"
+  },
+  {
+   "doc": "1780602547769",
+   "nombre": "FIGUEROA TOBIAS"
+  },
+  {
+   "doc": "1780602660473",
+   "nombre": "FIGUEROA TOBIAS"
+  },
+  {
+   "doc": "1780604989414",
+   "nombre": "VITTO BENINI"
+  },
+  {
+   "doc": "1780607275587",
+   "nombre": "LUDOVICO TORRES"
+  },
+  {
+   "doc": "1780695912027",
+   "nombre": "TIZIANO DIAZ"
+  },
+  {
+   "doc": "1780918986298",
+   "nombre": "QUINTERO MATEO"
+  },
+  {
+   "doc": "1780961185257",
+   "nombre": "TIZIANO DIAZ"
+  },
+  {
+   "doc": "1780961198122",
+   "nombre": "TIZIANO DIAZ"
+  },
+  {
+   "doc": "1781031551645",
+   "nombre": "ABALOS ZURA TIZXIANO AGUSTIN"
+  },
+  {
+   "doc": "1781031613065",
+   "nombre": "VIDAL ABRIL"
+  },
+  {
+   "doc": "1781031672710",
+   "nombre": "ZIOMARA AGUIL"
+  },
+  {
+   "doc": "1781037497272",
+   "nombre": "SARMIENTO NADIA ROMINA"
+  },
+  {
+   "doc": "1781037550823",
+   "nombre": "MUÑOZ LUCA MATEO"
+  },
+  {
+   "doc": "1781040464033",
+   "nombre": "ANDRADE LUCIA"
+  },
+  {
+   "doc": "1781116883809",
+   "nombre": "REUNION CON TEO CONSUL"
+  },
+  {
+   "doc": "1781125127319",
+   "nombre": "GONZALES SATIAGO"
+  },
+  {
+   "doc": "1781125831493",
+   "nombre": "ELIAS RUIZ COASSOLO"
+  },
+  {
+   "doc": "1781217907424",
+   "nombre": "LUDOVICO TORRES"
+  },
+  {
+   "doc": "1781645164610",
+   "nombre": "GALA LUCERO"
+  },
+  {
+   "doc": "1781646787440",
+   "nombre": "VITTO BENINI"
+  },
+  {
+   "doc": "1781646835545",
+   "nombre": "ROMINA SARMIENTO"
+  },
+  {
+   "doc": "1781718062370",
+   "nombre": "MELIAN EMMA"
+  },
+  {
+   "doc": "1781733857285",
+   "nombre": "CAÑETE FRANCISCO"
+  },
+  {
+   "doc": "1781812870738",
+   "nombre": "SIHARA RAMOS"
+  },
+  {
+   "doc": "1781816759902",
+   "nombre": "FENELLI AUGUSTO"
+  },
+  {
+   "doc": "1781825430589",
+   "nombre": "GARAY LOAN"
+  },
+  {
+   "doc": "1782243248150",
+   "nombre": "GARAY LOAN"
+  },
+  {
+   "doc": "1782243322648",
+   "nombre": "ANDRADE LUCIA"
+  },
+  {
+   "doc": "1782254387023",
+   "nombre": "ANDRADE LUCIA"
+  },
+  {
+   "doc": "1782254439015",
+   "nombre": "VITTO BENINI"
+  },
+  {
+   "doc": "1782760750501",
+   "nombre": "SARMIENTO ROMINA"
+  },
+  {
+   "doc": "1782762561915",
+   "nombre": "ROMINA SARMIENTO"
+  },
+  {
+   "doc": "1782762868565",
+   "nombre": "BRIANA RUARTE"
+  },
+  {
+   "doc": "1782786455950",
+   "nombre": "ANDRADE LUCIA"
+  },
+  {
+   "doc": "1782786519870",
+   "nombre": "OYARZO LAUTARO"
+  },
+  {
+   "doc": "1782786597106",
+   "nombre": "JUAREZ  RIVADENEIRA HELAM"
+  },
+  {
+   "doc": "1782786662122",
+   "nombre": "ILKER ALI  QUIROGA"
+  },
+  {
+   "doc": "1782786716918",
+   "nombre": "BRIANA RUARTE"
+  },
+  {
+   "doc": "1782786779335",
+   "nombre": "SARMIENTO ROMINA"
+  },
+  {
+   "doc": "1782939228516",
+   "nombre": "SANDOVAL IGNACIO"
+  },
+  {
+   "doc": "1782939317156",
+   "nombre": "CORTI CONSTANTINO"
+  },
+  {
+   "doc": "1782939400291",
+   "nombre": "RIQUELME NOAH"
+  },
+  {
+   "doc": "1782939591015",
+   "nombre": "BASANTA IGNACIO"
+  },
+  {
+   "doc": "1782939672574",
+   "nombre": "LUANA GIGNOLI RIQUELME"
+  },
+  {
+   "doc": "1783108663481",
+   "nombre": "SANDOVAL  GERONIMO"
+  },
+  {
+   "doc": "1783108766358",
+   "nombre": "CORTI CONSTANTINO"
+  },
+  {
+   "doc": "1783108822470",
+   "nombre": "ILKER ALI QUIROGA"
+  },
+  {
+   "doc": "1783108860612",
+   "nombre": "BRIANA RUARTE"
+  },
+  {
+   "doc": "1783179791426",
+   "nombre": "VICENTE VIDAURRIA"
+  },
+  {
+   "doc": "1783364336712",
+   "nombre": "CAÑETE FRANCISCO"
+  },
+  {
+   "doc": "1783368674197",
+   "nombre": "ROMINA SARMIENTO"
+  },
+  {
+   "doc": "1783368709417",
+   "nombre": "VICENTE VIDAURRIA"
+  },
+  {
+   "doc": "1783373373267",
+   "nombre": "ABALOS  ZURA TIZIANO AGUSTIN"
+  },
+  {
+   "doc": "1783384075663",
+   "nombre": "14HS.  ABRIL VIDAL"
+  },
+  {
+   "doc": "1783384153755",
+   "nombre": "14:30 SHIARA RAMOS"
+  },
+  {
+   "doc": "1783629646766",
+   "nombre": "NOEMI ARAMAYO"
+  },
+  {
+   "doc": "1783629689991",
+   "nombre": "CORTI CONSTANZO"
+  },
+  {
+   "doc": "1783710994675",
+   "nombre": "IKER QUIROGA"
+  },
+  {
+   "doc": "1783711226060",
+   "nombre": "TIZIANO ABALOS"
+  },
+  {
+   "doc": "1783711299842",
+   "nombre": "SANDOVAL GERONIMO"
+  },
+  {
+   "doc": "1783711880379",
+   "nombre": "DIAZ SANDRA"
+  },
+  {
+   "doc": "1783720989920",
+   "nombre": "NOAH RIQUELME"
+  },
+  {
+   "doc": "1784227747705",
+   "nombre": "VICENTE VIDURRIA"
+  },
+  {
+   "doc": "1784228293511",
+   "nombre": "15 HS CAÑETE FRANCISCO"
+  },
+  {
+   "doc": "1784228343724",
+   "nombre": "15:30 LARA LAM MOTHE  TESLER"
+  },
+  {
+   "doc": "1784228378459",
+   "nombre": "16 HS ROMINA SARMIENTO"
+  },
+  {
+   "doc": "1784228405909",
+   "nombre": "VICENTE VIDURRIA"
+  },
+  {
+   "doc": "1784228455751",
+   "nombre": "CORTI CONSTATINO"
+  },
+  {
+   "doc": "1784228504302",
+   "nombre": "IKER QUIROGA"
+  },
+  {
+   "doc": "1784228537486",
+   "nombre": "LAGUIA JUAN PABLO"
+  },
+  {
+   "doc": "1784228574929",
+   "nombre": "ABALOS TIZIANO"
+  },
+  {
+   "doc": "1784574437423",
+   "nombre": "MIRIAM ALLENDE"
+  },
+  {
+   "doc": "1785168289680",
+   "nombre": "LOLA ALMA DIAZ"
+  },
+  {
+   "doc": "1785168331396",
+   "nombre": "ROMINA SARMIENTO"
+  },
+  {
+   "doc": "1785168368326",
+   "nombre": "ALLENDE MIRIAM"
+  },
+  {
+   "doc": "1785168423320",
+   "nombre": "SANDOVAL GERONIMO"
+  },
+  {
+   "doc": "1785168463955",
+   "nombre": "LEGUIA JUAN PABLO"
+  },
+  {
+   "doc": "1785168522553",
+   "nombre": "CONTRERAS CARLOS"
+  },
+  {
+   "doc": "1785168679679",
+   "nombre": "18:15 BRIANA LUJAN GARCIA"
+  },
+  {
+   "doc": "1785168723111",
+   "nombre": "VIDRIERIA VICENTE"
+  },
+  {
+   "doc": "1785168752628",
+   "nombre": "SHIARA RAMOS"
+  },
+  {
+   "doc": "1785168791790",
+   "nombre": "VIDURRIA GEMA"
+  },
+  {
+   "doc": "1785168847676",
+   "nombre": "ABALOS TIZIANO"
+  },
+  {
+   "doc": "1785168886469",
+   "nombre": "IKER QUIROGA"
+  },
+  {
+   "doc": "1785168939707",
+   "nombre": "TOLEDO SILVESTRE"
+  },
+  {
+   "doc": "1785168984282",
+   "nombre": "NOAH RIQUELME"
+  },
+  {
+   "doc": "1785168997900",
+   "nombre": "NOAH RIQUELME"
+  },
+  {
+   "doc": "1785169025484",
+   "nombre": "GIMENEZ MATIAS"
+  },
+  {
+   "doc": "1785191702188",
+   "nombre": "ROMINA SARMIENTO"
+  },
+  {
+   "doc": "1785192224441",
+   "nombre": "MIRIAM ALLENDE"
+  },
+  {
+   "doc": "1785192255454",
+   "nombre": "LOLA ALMA DIAZ"
+  },
+  {
+   "doc": "1785192303659",
+   "nombre": "VICENTE VIDAURRIA"
+  },
+  {
+   "doc": "1785264850953",
+   "nombre": "LOLA"
+  },
+  {
+   "doc": "1785264883263",
+   "nombre": "BRIANA LUJAN GARCIA"
+  },
+  {
+   "doc": "1785264909465",
+   "nombre": "JUAN PABLO LAGUIE"
+  },
+  {
+   "doc": "1785272950913",
+   "nombre": "IKER QUIROGA"
+  },
+  {
+   "doc": "1785273093835",
+   "nombre": "GEMA VIDAURRIA"
+  },
+  {
+   "doc": "1785274543172",
+   "nombre": "TOLEDO SILVESTRE"
+  },
+  {
+   "doc": "1785778005621",
+   "nombre": "ARMANI ISABELLA"
+  },
+  {
+   "doc": "1785778069113",
+   "nombre": "18:15. URGENCIA ASIA ABREGU"
+  },
+  {
+   "doc": "1785778099606",
+   "nombre": "VITTO BENINI URGENCIA"
+  },
+  {
+   "doc": "1785778171059",
+   "nombre": "VERGARA BENICIO"
+  },
+  {
+   "doc": "1785791450817",
+   "nombre": "ROMINA SARMIENTO"
+  },
+  {
+   "doc": "1785791477469",
+   "nombre": "MIRIAM ALLENDE"
+  },
+  {
+   "doc": "1785791526897",
+   "nombre": "BAUTISTA MUÑOZ"
+  },
+  {
+   "doc": "1785791554041",
+   "nombre": "LOLA DIAZ"
+  },
+  {
+   "doc": "1785791568938",
+   "nombre": "LOLA DIAZ"
+  },
+  {
+   "doc": "1785791648138",
+   "nombre": "AGUIL ZIOMARA"
+  },
+  {
+   "doc": "1785791701891",
+   "nombre": "GIMENEZ MATIAS"
+  },
+  {
+   "doc": "1785791744214",
+   "nombre": "NOAH RIQUELME"
+  },
+  {
+   "doc": "1785791807387",
+   "nombre": "CHAVARRIA ALMA"
+  },
+  {
+   "doc": "1785794627445",
+   "nombre": "ABREGU ASIA"
+  },
+  {
+   "doc": "1785795297702",
+   "nombre": "VITTO BENINI"
+  },
+  {
+   "doc": "1785796802117",
+   "nombre": "VIDAURRIA VICENTE"
+  },
+  {
+   "doc": "1785870540599",
+   "nombre": "VILLACORTA DELFINA"
+  },
+  {
+   "doc": "1786042742394",
+   "nombre": "LAMAS  WALTER MARTIN"
+  },
+  {
+   "doc": "1786042794479",
+   "nombre": "BENICIO VERGARA"
+  },
+  {
+   "doc": "1786042822359",
+   "nombre": "VIDAL ABRIL"
+  },
+  {
+   "doc": "1786042873837",
+   "nombre": "TOLEDO SILVESTRE"
+  },
+  {
+   "doc": "1786042920975",
+   "nombre": "VIDURRIA GEMA"
+  },
+  {
+   "doc": "1786042942850",
+   "nombre": "FERIADO"
+  },
+  {
+   "doc": "1786042990194",
+   "nombre": "SHIARA RAMOSS"
+  },
+  {
+   "doc": "1786043031503",
+   "nombre": "IKER QUIROGA"
+  },
+  {
+   "doc": "1786051271503",
+   "nombre": "ANDREOLI EVANGELINA"
+  },
+  {
+   "doc": "1786051373531",
+   "nombre": "GIMENEZ MATIAS (45 MINUTOS)"
+  },
+  {
+   "doc": "1786051466311",
+   "nombre": "GIMENEZ MATIAS"
+  },
+  {
+   "doc": "1786051630689",
+   "nombre": "URIBE FRANCHESKA"
+  },
+  {
+   "doc": "1786052379389",
+   "nombre": "ALMA CHAVARRIA"
+  },
+  {
+   "doc": "1786054104683",
+   "nombre": "ABREGU ASIA"
+  },
+  {
+   "doc": "1786361895521",
+   "nombre": "MAMANI ARTURO"
+  },
+  {
+   "doc": "1786362015194",
+   "nombre": "ZIOMARA AGUIL"
+  },
+  {
+   "doc": "1786362053366",
+   "nombre": "VIDAL ABRIL"
+  },
+  {
+   "doc": "1786373914382",
+   "nombre": "ALMA NOEMI ARAMAYO"
+  },
+  {
+   "doc": "1786376858710",
+   "nombre": "MOSCOSO ISRAEL"
+  },
+  {
+   "doc": "1786380493254",
+   "nombre": "JOAQUINA VALDIVIESO"
+  },
+  {
+   "doc": "1786387818374",
+   "nombre": "ROMINA SARMIENTO"
+  },
+  {
+   "doc": "1786387845798",
+   "nombre": "MIRIAM ALLENDE"
+  },
+  {
+   "doc": "1786460912892",
+   "nombre": "NOAH RIQUELME"
+  },
+  {
+   "doc": "1786465610957",
+   "nombre": "VIEYRA NICOLAS"
+  },
+  {
+   "doc": "1786484711557",
+   "nombre": "ALMA CHAVARRI"
+  },
+  {
+   "doc": "1786484869414",
+   "nombre": "VITTO BENINI"
+  },
+  {
+   "doc": "1786485960521",
+   "nombre": "SILVESTRE TOLEDO"
+  },
+  {
+   "doc": "1786488424663",
+   "nombre": "VICENTE VIDURRIA"
+  },
+  {
+   "doc": "1786488587874",
+   "nombre": "URIBE FRANCHESCA"
+  },
+  {
+   "doc": "1786567306659",
+   "nombre": "GEMA VENECIA SOTO ALBERTI"
+  },
+  {
+   "doc": "1786567375725",
+   "nombre": "MILLALONCO FRANCHESCO"
+  },
+  {
+   "doc": "1786568615625",
+   "nombre": "SALVA ISABELA"
+  },
+  {
+   "doc": "1786570607994",
+   "nombre": "EVANGELINA ANDREOLI"
+  },
+  {
+   "doc": "1786590719510",
+   "nombre": "VILLACORTA DELFINA"
+  },
+  {
+   "doc": "1786653180438",
+   "nombre": "MAMANI ARTURO"
+  },
+  {
+   "doc": "1786655761106",
+   "nombre": "BENICIO VERGARA"
+  },
+  {
+   "doc": "1786658164082",
+   "nombre": "ASIA ABREGU"
+  },
+  {
+   "doc": "1786659376549",
+   "nombre": "AGUSTIN VIDAURRIA"
+  },
+  {
+   "doc": "1786736292759",
+   "nombre": "LARA LAMOTHE"
+  },
+  {
+   "doc": "1786736689681",
+   "nombre": "CIANA AGUILA"
+  },
+  {
+   "doc": "1787019319092",
+   "nombre": "FERNANDEZ IGNACIO"
+  },
+  {
+   "doc": "1787079605600",
+   "nombre": "COSTA GIMENEZ LUCAS"
+  },
+  {
+   "doc": "1787090860030",
+   "nombre": "ALMA CHAVARRI"
+  },
+  {
+   "doc": "1787092631662",
+   "nombre": "VITTO BENINI"
+  },
+  {
+   "doc": "1787165405207",
+   "nombre": "AUGUSTO BRUNT"
+  },
+  {
+   "doc": "1787261945602",
+   "nombre": "SHIARA RAMOS"
+  },
+  {
+   "doc": "1787262009279",
+   "nombre": "GEMA VENECIA SOTO ALBERTI"
+  },
+  {
+   "doc": "1787262048617",
+   "nombre": "TOLEDO SILVESTRE"
+  },
+  {
+   "doc": "1787595126646",
+   "nombre": "GONZALEZ MIA"
+  },
+  {
+   "doc": "1787595147400",
+   "nombre": "VICENTE VIDURRIA"
+  },
+  {
+   "doc": "1787595229071",
+   "nombre": "BRAIAN CAREGLIO ALINA"
+  },
+  {
+   "doc": "1787595286247",
+   "nombre": "ISRAEL MOSCOSO"
+  },
+  {
+   "doc": "1787595335073",
+   "nombre": "GIANNI PIO"
+  },
+  {
+   "doc": "1787675694419",
+   "nombre": "ALMA VALENTINA MAMANI"
+  },
+  {
+   "doc": "1787675763279",
+   "nombre": "MILLALONCO FRANCHESCO"
+  },
+  {
+   "doc": "1787675777515",
+   "nombre": "JULIO PALACIO"
+  },
+  {
+   "doc": "1787675878984",
+   "nombre": "ROMINA SARMIENTO"
+  },
+  {
+   "doc": "1787675906319",
+   "nombre": "MIRIAM ALLENDE"
+  },
+  {
+   "doc": "1787675925168",
+   "nombre": "VICENTE VIDURRIA"
+  },
+  {
+   "doc": "1787675959445",
+   "nombre": "THIAGO OLIVERA"
+  },
+  {
+   "doc": "1787675996672",
+   "nombre": "FERNANDEZ IGNACIO"
+  },
+  {
+   "doc": "1787676099141",
+   "nombre": "ANDREOLI EVANGELINA"
+  },
+  {
+   "doc": "1787690844614",
+   "nombre": "ISRAEL MOSCOSO"
+  },
+  {
+   "doc": "1787690975423",
+   "nombre": "PIO GIANNI"
+  },
+  {
+   "doc": "1787855903200",
+   "nombre": "VENECIA GIOVANNA ACOSTA"
+  },
+  {
+   "doc": "1787855940668",
+   "nombre": "LIONEL ROMAN RUIZ"
+  },
+  {
+   "doc": "1787855998607",
+   "nombre": "MAMAMNI ARTURO"
+  },
+  {
+   "doc": "1787856046003",
+   "nombre": "ULLOA MATHEO AGUSTIN"
+  },
+  {
+   "doc": "1787856085302",
+   "nombre": "BERGARA VENICIO"
+  },
+  {
+   "doc": "1787858716016",
+   "nombre": "ALMA  MAMANI"
+  },
+  {
+   "doc": "1787862553524",
+   "nombre": "JULIO PALACIOS"
+  },
+  {
+   "doc": "1787863505390",
+   "nombre": "MARIA LUJAN DIAZ"
+  },
+  {
+   "doc": "1787864756687",
+   "nombre": "MARIA LUJAN DIAZ"
+  },
+  {
+   "doc": "1788178805035",
+   "nombre": "AUGUSTO BRUNT"
+  },
+  {
+   "doc": "1788178897575",
+   "nombre": "GEMA SOTO ALBERTI"
+  },
+  {
+   "doc": "1788178977759",
+   "nombre": "BRAIAN ALINA"
+  },
+  {
+   "doc": "1788206222768",
+   "nombre": "ROMINA SARMIENTO"
+  },
+  {
+   "doc": "1788206248355",
+   "nombre": "MIRIAM ALLENDE"
+  },
+  {
+   "doc": "1788207833056",
+   "nombre": "VALDIVIESO JOAQUINA"
+  },
+  {
+   "doc": "1788207916119",
+   "nombre": "MATIAS GIMENEZ"
+  },
+  {
+   "doc": "1788213929444",
+   "nombre": "VICENTE VIDAURRIA"
+  },
+  {
+   "doc": "1788290303831",
+   "nombre": "TADEO SILVA"
+  },
+  {
+   "doc": "1788290415973",
+   "nombre": "GONZALEZ MIA"
+  },
+  {
+   "doc": "1788290468126",
+   "nombre": "CONSTANTINO GALARZA"
+  },
+  {
+   "doc": "1788290537514",
+   "nombre": "AMATISTA SILVA"
+  },
+  {
+   "doc": "1788290572282",
+   "nombre": "VICENTE VIDURRIA"
+  },
+  {
+   "doc": "1788296134808",
+   "nombre": "JULIO PALACIO"
+  },
+  {
+   "doc": "1788302534752",
+   "nombre": "OYARZO VIDAL VANINA"
+  },
+  {
+   "doc": "1788302581244",
+   "nombre": "OLIVERA THIAGO"
+  },
+  {
+   "doc": "1788302657965",
+   "nombre": "SAORI  CHIULLI"
+  },
+  {
+   "doc": "1788464444048",
+   "nombre": "DAMIAN NICOLAS CADIZ QUEVEDO"
+  },
+  {
+   "doc": "1788469432295",
+   "nombre": "LUCIANO MOYANO"
+  },
+  {
+   "doc": "1788469459599",
+   "nombre": "PIO GIOVANI GADIEL"
+  },
+  {
+   "doc": "1788469531644",
+   "nombre": "ALMA VALENTINA MAMANI"
+  },
+  {
+   "doc": "1788819152046",
+   "nombre": "ARTURO MAMANI"
+  },
+  {
+   "doc": "1788895913627",
+   "nombre": "ROMINA SARMIENTO"
+  },
+  {
+   "doc": "1788895938355",
+   "nombre": "NIRIAM ALLENDE"
+  },
+  {
+   "doc": "1788903367511",
+   "nombre": "IGNACIO FERNANDEZ"
+  },
+  {
+   "doc": "1788994781141",
+   "nombre": "WALTER LAMAS"
+  },
+  {
+   "doc": "1789067301513",
+   "nombre": "YAHIR BENJAMIN HARO"
+  },
+  {
+   "doc": "1789075499201",
+   "nombre": "GIMENEZ MATIAS"
+  },
+  {
+   "doc": "1789082303929",
+   "nombre": "WALTER LAMAS"
+  },
+  {
+   "doc": "1789514262072",
+   "nombre": "PIO  GIANNI GADIEL"
+  },
+  {
+   "doc": "1789514709918",
+   "nombre": "SIHARA RAMOS"
+  },
+  {
+   "doc": "1789514801117",
+   "nombre": "DAMIAN NICOLAS CADIZ"
+  },
+  {
+   "doc": "1789514847425",
+   "nombre": "ROMA VALENTINA HARO"
+  },
+  {
+   "doc": "1789514925325",
+   "nombre": "SOCAÑO DANTE"
+  },
+  {
+   "doc": "1789514951922",
+   "nombre": "NOAH RIQUELME"
+  },
+  {
+   "doc": "1789515131703",
+   "nombre": "LIONEL ROMAN RUIZ"
+  },
+  {
+   "doc": "1789515220622",
+   "nombre": "SANTINO RODRIGUEZ"
+  },
+  {
+   "doc": "1789515377795",
+   "nombre": "VALENTIN VARGAS"
+  },
+  {
+   "doc": "1789515413630",
+   "nombre": "ANDREOLI EVANGELINA"
+  },
+  {
+   "doc": "1789515456129",
+   "nombre": "CHAVARRIA ALMA"
+  },
+  {
+   "doc": "1789515533167",
+   "nombre": "ALINA BRAIN"
+  },
+  {
+   "doc": "1789515656396",
+   "nombre": "LUCIANO MOYANO"
+  },
+  {
+   "doc": "1789515673265",
+   "nombre": "CURSO"
+  },
+  {
+   "doc": "1789515678709",
+   "nombre": "CURSO"
+  },
+  {
+   "doc": "1789515685083",
+   "nombre": "CURSO"
+  },
+  {
+   "doc": "1789591755908",
+   "nombre": "VURGOS AMADEO Y VICENTE"
+  },
+  {
+   "doc": "1789591806765",
+   "nombre": "RODRIGUEZ SANTINO"
+  },
+  {
+   "doc": "1789591838737",
+   "nombre": "SHIARA RAMOS"
+  },
+  {
+   "doc": "1789592694986",
+   "nombre": "AUGUSTO BRUNT"
+  },
+  {
+   "doc": "1789592750873",
+   "nombre": "ALMA MAMANI"
+  },
+  {
+   "doc": "1789592808981",
+   "nombre": "ANGELINO GIULIANA"
+  },
+  {
+   "doc": "1789597595240",
+   "nombre": "OYARZO VANINA"
+  },
+  {
+   "doc": "1789672340908",
+   "nombre": "NOAH ROQUELME"
+  },
+  {
+   "doc": "1789672396282",
+   "nombre": "PIO GIANI GADIEL"
+  },
+  {
+   "doc": "1790004716307",
+   "nombre": "BENJAMIN LESCANO"
+  },
+  {
+   "doc": "1790005023117",
+   "nombre": "SAORI CHIULLI"
+  },
+  {
+   "doc": "1790006088155",
+   "nombre": "MELIAN EMMA"
+  },
+  {
+   "doc": "1790006118739",
+   "nombre": "VICENTE VIDURRIA"
+  },
+  {
+   "doc": "1790031527301",
+   "nombre": "THIAGO OLIVERA"
+  },
+  {
+   "doc": "1790105168574",
+   "nombre": "ROMINA SARMIENTO"
+  },
+  {
+   "doc": "1790105189658",
+   "nombre": "MIRIAM ALLENDE"
+  },
+  {
+   "doc": "1790105268490",
+   "nombre": "VITTO BENINI"
+  },
+  {
+   "doc": "1790105712173",
+   "nombre": "NOHA RIQUELME"
+  },
+  {
+   "doc": "1790105789531",
+   "nombre": "BLASCO BASTIAN"
+  },
+  {
+   "doc": "1790105837235",
+   "nombre": "ZIOMARA AGUIL"
+  },
+  {
+   "doc": "1790105868314",
+   "nombre": "THIAGO OLIVERA"
+  },
+  {
+   "doc": "1790204423419",
+   "nombre": "ROMAN RUIZ"
+  },
+  {
+   "doc": "1790599250238",
+   "nombre": "GONZALES SANTIAGO"
+  },
+  {
+   "doc": "1790599362049",
+   "nombre": "ALMA CHAVARRIA"
+  },
+  {
+   "doc": "1790599446651",
+   "nombre": "MAMANI ALMA"
+  },
+  {
+   "doc": "1790599467477",
+   "nombre": "BRUNT AUGUST"
+  },
+  {
+   "doc": "1790599527187",
+   "nombre": "PIO GIANNI"
+  },
+  {
+   "doc": "1790599570499",
+   "nombre": "MIA GONZALES"
+  },
+  {
+   "doc": "1790599626018",
+   "nombre": "VARGAS VALENTIN"
+  },
+  {
+   "doc": "1790599657784",
+   "nombre": "BRAIAN ALINA"
+  },
+  {
+   "doc": "1790891094369",
+   "nombre": "GIMENEZ MATIAS"
+  },
+  {
+   "doc": "1790891123306",
+   "nombre": "SHIARA RAMOS"
+  },
+  {
+   "doc": "1790891188984",
+   "nombre": "SAORI CHIULLI CANDOLI"
+  },
+  {
+   "doc": "1790891226880",
+   "nombre": "ALMA CHAVARRIA"
+  },
+  {
+   "doc": "1790891297977",
+   "nombre": "THEO PEREZ"
+  },
+  {
+   "doc": "1790891545800",
+   "nombre": "VITTO BENINI"
+  },
+  {
+   "doc": "1790891624980",
+   "nombre": "EMMA MELIAM"
+  },
+  {
+   "doc": "1790891683428",
+   "nombre": "ARTURO MAMANI"
+  },
+  {
+   "doc": "1790891783223",
+   "nombre": "LIONEL ROMAN RUIZ"
+  },
+  {
+   "doc": "1790891886483",
+   "nombre": "SAORI CHIULLI CANOLI"
+  },
+  {
+   "doc": "1790891940940",
+   "nombre": "GALARZA CONSTANTINO"
+  },
+  {
+   "doc": "1790892045870",
+   "nombre": "ROMINA SARMIENTO"
+  },
+  {
+   "doc": "1790892072245",
+   "nombre": "ALLENDE MIRIAM"
+  },
+  {
+   "doc": "1791232200745",
+   "nombre": "RIQUELME  LUISANA"
+  },
+  {
+   "doc": "1791232339571",
+   "nombre": "VITTO BENINI"
+  },
+  {
+   "doc": "1791232437338",
+   "nombre": "VIDELA NAIRA"
+  },
+  {
+   "doc": "1791232668607",
+   "nombre": "ROMERO SION YAMILE"
+  },
+  {
+   "doc": "1791232767991",
+   "nombre": "THEO PEREZ"
+  },
+  {
+   "doc": "1791309123341",
+   "nombre": "FERIADO"
+  },
+  {
+   "doc": "1791309166906",
+   "nombre": "BASTIAN BOTIK RIOS"
+  },
+  {
+   "doc": "1792010938391",
+   "nombre": "SUBIABRE ESTEFANIA"
+  },
+  {
+   "doc": "1792011124112",
+   "nombre": "LIONEL ROMAN RUIZ"
+  },
+  {
+   "doc": "1792011160160",
+   "nombre": "ALINA BRAIN"
+  },
+  {
+   "doc": "1792011212089",
+   "nombre": "GALARZA CONSTANTINO"
+  },
+  {
+   "doc": "1792411700463",
+   "nombre": "THIAGO OLIVETA"
+  },
+  {
+   "doc": "1792411725925",
+   "nombre": "VITTO BENINI"
+  },
+  {
+   "doc": "1792411750204",
+   "nombre": "PEREZ THEO"
+  },
+  {
+   "doc": "1792411791879",
+   "nombre": "FRANCO OJEDA ROMERO"
+  },
+  {
+   "doc": "1792411819744",
+   "nombre": "MAILEN LANCALMHUEN"
+  },
+  {
+   "doc": "1792411881013",
+   "nombre": "PAILLAMAN GIANLUCA"
+  },
+  {
+   "doc": "1792411906140",
+   "nombre": "YANCOVICH NATASHA"
+  },
+  {
+   "doc": "1792411927748",
+   "nombre": "MELIAN EMMA"
+  },
+  {
+   "doc": "1792412018730",
+   "nombre": "MIA MUÑOZ"
+  },
+  {
+   "doc": "1792412126696",
+   "nombre": "NOAH RIQUELME"
+  },
+  {
+   "doc": "1793016941491",
+   "nombre": "NOVIA TANIA"
+  },
+  {
+   "doc": "1793016986459",
+   "nombre": "VITTO BENINI"
+  },
+  {
+   "doc": "1793017040154",
+   "nombre": "TOLEDO GASPAR"
+  },
+  {
+   "doc": "1793017101646",
+   "nombre": "THEO PEREZ"
+  },
+  {
+   "doc": "1793017132133",
+   "nombre": "BASTIAN BOTIK RIOS"
+  },
+  {
+   "doc": "1793017157500",
+   "nombre": "EMMA MELIAN"
+  },
+  {
+   "doc": "1793017179119",
+   "nombre": "LIONEL ROMAN RUIZ"
+  },
+  {
+   "doc": "1793017208888",
+   "nombre": "OJEDA ROMERO FRANCO"
+  },
+  {
+   "doc": "1793017235839",
+   "nombre": "SILVA AMATISTA"
+  },
+  {
+   "doc": "1793017382065",
+   "nombre": "ALINA BRAIN"
+  },
+  {
+   "doc": "1793017448812",
+   "nombre": "CIRO ARAMI VERWEY OSIRIO"
+  },
+  {
+   "doc": "1793017492439",
+   "nombre": "MIRIAM ALLENDE"
+  },
+  {
+   "doc": "1793017523521",
+   "nombre": "ROMERO SION YAMILE"
+  },
+  {
+   "doc": "1793017563724",
+   "nombre": "MUÑOZ MIA"
+  },
+  {
+   "doc": "1793221471680",
+   "nombre": "ASIA ABREGU"
+  },
+  {
+   "doc": "1793221548551",
+   "nombre": "OJEDA ROMERO FRANCO"
+  },
+  {
+   "doc": "1793221641396",
+   "nombre": "NORMA FERNANDEZ"
+  },
+  {
+   "doc": "1793221687346",
+   "nombre": "ALINA BRAIN"
+  },
+  {
+   "doc": "1793306277563",
+   "nombre": "VITTO BENINI"
+  },
+  {
+   "doc": "1793306350064",
+   "nombre": "THEO PEREZ"
+  },
+  {
+   "doc": "1793621402567",
+   "nombre": "NOVIA  TANIA"
+  },
+  {
+   "doc": "1793621433079",
+   "nombre": "MELIAN EMA"
+  },
+  {
+   "doc": "1793621451245",
+   "nombre": "JULIO PALACIO"
+  },
+  {
+   "doc": "1793621519754",
+   "nombre": "NORMA FERNANDEZ"
+  },
+  {
+   "doc": "1793621565761",
+   "nombre": "ASIA ABREGU"
+  },
+  {
+   "doc": "1793621614321",
+   "nombre": "SIMON PEDRO GOTEZ"
+  },
+  {
+   "doc": "1793621703017",
+   "nombre": "OLIVIA BOCKELMAN"
+  },
+  {
+   "doc": "1793621825315",
+   "nombre": "LIONEL ROMAN RUIZ"
+  },
+  {
+   "doc": "1793621871573",
+   "nombre": "EMILIA NAZARENA MEDINA BENITEZ"
+  },
+  {
+   "doc": "1793740225111",
+   "nombre": "NOVOA TANIA"
+  },
+  {
+   "doc": "1793740269172",
+   "nombre": "MIA MUÑOZ GENE"
+  },
+  {
+   "doc": "1793740563509",
+   "nombre": "AGUIL ZIOMARA"
+  },
+  {
+   "doc": "1793740623722",
+   "nombre": "HAEDO GONZALO"
+  },
+  {
+   "doc": "1793879952847",
+   "nombre": "CARLOS HAIQUIL"
+  },
+  {
+   "doc": "1794268188332",
+   "nombre": "TATIANA CONSTANTE"
+  },
+  {
+   "doc": "1794268260984",
+   "nombre": "IKER QUIROGA"
+  },
+  {
+   "doc": "1794268297557",
+   "nombre": "THEO PEREZ"
+  },
+  {
+   "doc": "1794268471698",
+   "nombre": "HAEADO GONZALO"
+  },
+  {
+   "doc": "1794268510417",
+   "nombre": "GEMMA VENECIA SOTO"
+  },
+  {
+   "doc": "1794268536240",
+   "nombre": "MELIAN EMMA"
+  },
+  {
+   "doc": "1794268561669",
+   "nombre": "BASTIAN BATIK RIOS"
+  },
+  {
+   "doc": "1794268614719",
+   "nombre": "AMATISTA SILVA"
+  },
+  {
+   "doc": "1794268644705",
+   "nombre": "URIBE EMILY"
+  },
+  {
+   "doc": "1794342374832",
+   "nombre": "SANTIAGO GONZALEZ"
+  },
+  {
+   "doc": "1794439918190",
+   "nombre": "ALESSIA MARINA"
+  },
+  {
+   "doc": "1794849981761",
+   "nombre": "GIMENEZ MATIAS"
+  },
+  {
+   "doc": "1794850031638",
+   "nombre": "PIETRO TUREUNA OLIVERA"
+  },
+  {
+   "doc": "1794850056692",
+   "nombre": "SANTIAGO GONZALES"
+  },
+  {
+   "doc": "1794850090205",
+   "nombre": "LIONEL ROMAN RUIZ"
+  },
+  {
+   "doc": "1794850115810",
+   "nombre": "PIO GIANNI GADIEL"
+  },
+  {
+   "doc": "1794850134610",
+   "nombre": "TANIA NOVOA"
+  },
+  {
+   "doc": "1794850228421",
+   "nombre": "ISABELA CLOEVERA"
+  },
+  {
+   "doc": "1794850277990",
+   "nombre": "OCHOA SOFIA"
+  },
+  {
+   "doc": "1794850326001",
+   "nombre": "HAEDO GONZALO"
+  }
+ ],
+ "pagos": [
+  {
+   "doc": "1791316168058",
+   "nombre": "ZIOMARA AGUIL"
+  },
+  {
+   "doc": "1791319369469",
+   "nombre": "MIA GONZALES"
+  },
+  {
+   "doc": "1791486450066",
+   "nombre": "OLIVERA THIAGO"
+  },
+  {
+   "doc": "1791486570400",
+   "nombre": "MAMANI ALMA"
+  },
+  {
+   "doc": "1791487888790",
+   "nombre": "RIQUELME  LUISANA"
+  },
+  {
+   "doc": "1791489012156",
+   "nombre": "EMMA MALIAN"
+  },
+  {
+   "doc": "1791490825821",
+   "nombre": "RIQUELME  LUISANA"
+  },
+  {
+   "doc": "1791492083094",
+   "nombre": "GONZALES SANTIAGO"
+  },
+  {
+   "doc": "1791493889301",
+   "nombre": "LIONEL ROMAN RUIZ"
+  },
+  {
+   "doc": "1791923319252",
+   "nombre": "VITTO BENINI"
+  },
+  {
+   "doc": "1791926186595",
+   "nombre": "SHIARA RAMOS"
+  },
+  {
+   "doc": "1791928887019",
+   "nombre": "GIMENEZ MATIAS"
+  },
+  {
+   "doc": "1791928920446",
+   "nombre": "BASTIAN BATIK RIOS"
+  },
+  {
+   "doc": "1792093439158",
+   "nombre": "EMMA MELIAM"
+  },
+  {
+   "doc": "1792097447418",
+   "nombre": "ROMERO SION YAMILE"
+  },
+  {
+   "doc": "1792098359935",
+   "nombre": "LIONEL ROMAN RUIZ"
+  },
+  {
+   "doc": "1792444208579",
+   "nombre": "VITTO BENINI"
+  },
+  {
+   "doc": "1792446210387",
+   "nombre": "PEREZ THEO"
+  },
+  {
+   "doc": "1792526826567",
+   "nombre": "YANCOVICH NATASHA"
+  },
+  {
+   "doc": "1792529229614",
+   "nombre": "MIA MUÑOZ"
+  },
+  {
+   "doc": "1792531713301",
+   "nombre": "MELIAN EMMA"
+  },
+  {
+   "doc": "1793050871509",
+   "nombre": "THEO PEREZ"
+  },
+  {
+   "doc": "1793647865207",
+   "nombre": "ROMERO SION YAMILE"
+  },
+  {
+   "doc": "1793652018437",
+   "nombre": "VITTO BENINI"
+  },
+  {
+   "doc": "1793656705245",
+   "nombre": "MUÑOZ MIA"
+  },
+  {
+   "doc": "1793744027169",
+   "nombre": "MELIAN EMA"
+  },
+  {
+   "doc": "1793744157677",
+   "nombre": "EMILY NAOMI URIBE"
+  },
+  {
+   "doc": "1793909798687",
+   "nombre": "ASIA ABREGU"
+  },
+  {
+   "doc": "1793912665736",
+   "nombre": "CARLOS HAIQUIL"
+  },
+  {
+   "doc": "1793913075383",
+   "nombre": "AGUIL ZIOMARA"
+  },
+  {
+   "doc": "1793915647567",
+   "nombre": "SIMON PEDRO GOTEZ"
+  },
+  {
+   "doc": "1794341053232",
+   "nombre": "IKER QUIROGA"
+  },
+  {
+   "doc": "1794341415973",
+   "nombre": "OLIVIA BOCKELMAN"
+  },
+  {
+   "doc": "1794344952197",
+   "nombre": "LIONEL ROMAN RUIZ"
+  },
+  {
+   "doc": "1794345240627",
+   "nombre": "LIONEL ROMAN RUIZ"
+  },
+  {
+   "doc": "1794347449990",
+   "nombre": "PIO GIANNI GADIEL"
+  },
+  {
+   "doc": "1794351456048",
+   "nombre": "THEO PEREZ"
+  },
+  {
+   "doc": "1794507911424",
+   "nombre": "ALESSIA MARINA CARAZAS"
+  },
+  {
+   "doc": "1794511091797",
+   "nombre": "ALESSIA MARINA CARAZAS"
+  },
+  {
+   "doc": "1794513709112",
+   "nombre": "SANTIAGO GONZALEZ"
+  },
+  {
+   "doc": "1794524407575",
+   "nombre": "BASTIAN BATIK RIOS"
+  },
+  {
+   "doc": "1794525763256",
+   "nombre": "MELIAN EMMA"
+  }
+ ]
+}
